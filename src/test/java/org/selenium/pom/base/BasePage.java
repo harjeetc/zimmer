@@ -11,26 +11,29 @@ import java.time.Duration;
 import java.util.List;
 
 public class BasePage {
-    protected WebDriver driver;
-    protected WebDriverWait wait;
+	protected WebDriver driver;
+	protected WebDriverWait wait;
 
-    public BasePage(WebDriver driver){
-        this.driver = driver;
-        wait = new WebDriverWait(driver, Duration.ofSeconds(30));
-    }
+	public BasePage(WebDriver driver) {
+		this.driver = driver;
+		wait = new WebDriverWait(driver, Duration.ofSeconds(30));
+	}
 
-    public void load(String endPoint){
-        driver.get(ConfigLoader.getInstance().getBaseUrl() + endPoint);
-    }
+	public void load(String endPoint) {
 
-    public void waitForOverlaysToDisappear(By overlay){
-        List<WebElement> overlays = driver.findElements(overlay);
-        System.out.println("OVERLAY SIZE" + overlays.size());
-        if(overlays.size() > 0){
-            wait.until(ExpectedConditions.invisibilityOfAllElements(overlays));
-            System.out.println("OVERLAYS INVISIBLE");
-        } else{
-            System.out.println("OVERLAY NOT FOUND");
-        }
-    }
+		String cred = "zimmer:zmrbmt01!@";
+		driver.get(ConfigLoader.getInstance().getBaseUrl().replace("CRED", cred));
+		//driver.get("https://"+cred+"qa-www.zimmerbiomet.com/en/");
+	}
+
+	public void waitForOverlaysToDisappear(By overlay) {
+		List<WebElement> overlays = driver.findElements(overlay);
+		System.out.println("OVERLAY SIZE" + overlays.size());
+		if (overlays.size() > 0) {
+			wait.until(ExpectedConditions.invisibilityOfAllElements(overlays));
+			System.out.println("OVERLAYS INVISIBLE");
+		} else {
+			System.out.println("OVERLAY NOT FOUND");
+		}
+	}
 }

@@ -14,8 +14,12 @@ public class ZimmerHomePageTest extends BaseTest {
     @Test
     public void homePageTest() throws InterruptedException {
        ZimmerHomePage zimmerHomePage = new ZimmerHomePage(getDriver()).load();
+       
+       
+       Thread.sleep(5000);
    
-       zimmerHomePage.clickFindDoc();
+       //zimmerHomePage.authLogin();
+       //zimmerHomePage.clickFindDoc();
        
     }
 
