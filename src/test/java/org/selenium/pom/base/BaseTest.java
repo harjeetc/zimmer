@@ -69,19 +69,28 @@ public class BaseTest {
 	@AfterMethod
 	public synchronized void quitDriver(@Optional String browser, ITestResult result)
 			throws InterruptedException, IOException {
-		Thread.sleep(300);
-		System.out.println("CURRENT THREAD: " + Thread.currentThread().getId() + ", " + "DRIVER = " + getDriver());
+		try {
+			Thread.sleep(300);
+			System.out.println("CURRENT THREAD: " + Thread.currentThread().getId() + ", " + "DRIVER = " + getDriver());
 //        getDriver().quit();
-		if (result.getStatus() == ITestResult.FAILURE) {
-			File destFile = new File("scr" + File.separator + browser + File.separator
-					+ result.getTestClass().getRealClass().getSimpleName() + "_" + result.getMethod().getMethodName()
-					+ ".png");
-			allureLog("Failed");
+			if (result.getStatus() == ITestResult.FAILURE) {
+				File destFile = new File("scr" + File.separator + browser + File.separator
+						+ result.getTestClass().getRealClass().getSimpleName() + "_" + result.getMethod().getMethodName()
+						+ ".png");
+				allureLog("Failed");
 //            takeScreenshot(destFile);
-			takeScreenshotUsingAShot(destFile);
-		} else if (result.getStatus() == ITestResult.SUCCESS)
-			allureLog("Sucess");
-		getDriverManager().getDriver().quit();
+			//	takeScreenshotUsingAShot(destFile);
+			} else if (result.getStatus() == ITestResult.SUCCESS)
+				allureLog("Sucess");
+			getDriverManager().getDriver().quit();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			throw e;
+		}
+		finally {
+			 getDriver().quit();
+		}
 	}
 
 	// Text attachments for Allure

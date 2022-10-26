@@ -1,27 +1,34 @@
 package org.selenium.pom.tests;
 
-import org.openqa.selenium.WebDriver;
 import org.selenium.pom.base.BaseTest;
-import org.selenium.pom.pages.HomePage;
 import org.selenium.pom.pages.ZimmerHomePage;
-import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import java.io.IOException;
-
 public class ZimmerHomePageTest extends BaseTest {
+	ZimmerHomePage zimmerHomePage;
+	
+	
+	/*
+	 * Validate the Page Title 
+	 */
 
-    @Test
-    public void homePageTest() throws InterruptedException {
-       ZimmerHomePage zimmerHomePage = new ZimmerHomePage(getDriver()).load();
-       
-       
-       Thread.sleep(5000);
-   
-       //zimmerHomePage.authLogin();
-       //zimmerHomePage.clickFindDoc();
-       
-    }
+	@Test(groups = { "HomePage", "Smoke" }, enabled = true)
+	public void verifyHomePageTitle() throws InterruptedException {
+		zimmerHomePage = new ZimmerHomePage(getDriver()).load();
+		zimmerHomePage.verifyPageTitle("Welcome to Zimmer Biomet");
 
-   
+	}
+	
+	/*
+	 * Validate the Careers link is present and Careers title is correct 
+	 */
+
+	@Test(groups = { "HomePage", "Smoke" }, enabled = true)
+	public void verifyCareersPage() throws InterruptedException {
+		zimmerHomePage = new ZimmerHomePage(getDriver()).load();
+		zimmerHomePage.verifyHeaderLink("Careers");
+		zimmerHomePage.navigateAndVerifyHeaderLinkTitle("Careers");
+
+	}
+
 }
