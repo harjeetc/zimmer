@@ -13,7 +13,7 @@ public class ZimmerHomePageTest extends BaseTest {
 	 * Validate the Page Title
 	 */
 
-	@Test(groups = { "HomePage", "Smoke" }, enabled = true)
+	@Test(groups = { "HomePage", "Smoke" }, enabled = false)
 	public void verifyHomePageTitle() throws InterruptedException {
 		log.info("============Test started[ verifyHomePageTitle ] =============");
 		zimmerHomePage = new ZimmerHomePage(getDriver()).load();
@@ -26,7 +26,7 @@ public class ZimmerHomePageTest extends BaseTest {
 	 * Validate the Careers link is present and Careers title is correct
 	 */
 
-	@Test(groups = { "HomePage", "Smoke" }, enabled = true)
+	@Test(groups = { "HomePage", "Smoke" }, enabled = false)
 	public void verifyCareersPage() throws InterruptedException {
 		log.info("============Test started[ verifyCareersPage ] =============");
 		zimmerHomePage = new ZimmerHomePage(getDriver()).load();
@@ -40,7 +40,7 @@ public class ZimmerHomePageTest extends BaseTest {
 	 * Validate the Careers link is present and Careers title is correct
 	 */
 
-	@Test(groups = { "HomePage", "Smoke" }, enabled = true)
+	@Test(groups = { "HomePage", "Smoke" }, enabled = false)
 	public void verifyPrivacyNoticePage() throws InterruptedException {
 		log.info("============Test started[ verifyPrivacyNoticePage ] =============");
 		zimmerHomePage = new ZimmerHomePage(getDriver()).load();
@@ -54,7 +54,7 @@ public class ZimmerHomePageTest extends BaseTest {
 	 * Validate the Careers link is present and Careers title is correct
 	 */
 
-	@Test(groups = { "HomePage", "Smoke" }, enabled = true)
+	@Test(groups = { "HomePage", "Smoke" }, enabled = false)
 	public void verifyLegalNoticePage() throws InterruptedException {
 		log.info("============Test started[ verifyLegalNoticePage ] =============");
 		zimmerHomePage = new ZimmerHomePage(getDriver()).load();
@@ -74,6 +74,28 @@ public class ZimmerHomePageTest extends BaseTest {
 		// zimmerHomePage.verifyHeaderLink("PrivacyPolicy");
 		// zimmerHomePage.navigateAndVerifyHeaderLinkTitle("PrivacyPolicy");
 		zimmerHomePage.grabAllURLLinks();
+
+	}
+
+	/*
+	 * Validate the Careers link is present and Careers title is correct
+	 */
+
+	@Test(groups = { "HomePage", "Smoke" }, enabled = true)
+	public void verifyExpandAndCollapseNavLinks() throws InterruptedException {
+		zimmerHomePage = new ZimmerHomePage(getDriver()).load();
+
+		zimmerHomePage.openAndCloseNavLinks("Products & Solutions", true);
+
+		zimmerHomePage.openAndCloseNavLinks("Products & Solutions", false);
+		
+		zimmerHomePage.openAndCloseNavLinks("Education & Resources", true);
+
+		zimmerHomePage.openAndCloseNavLinks("Education & Resources", false);
+		
+		zimmerHomePage.openAndCloseNavLinks("About Us", true);
+
+		zimmerHomePage.openAndCloseNavLinks("About Us", false);
 
 	}
 

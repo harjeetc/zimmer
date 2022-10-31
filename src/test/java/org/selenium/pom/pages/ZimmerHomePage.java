@@ -25,13 +25,12 @@ public class ZimmerHomePage extends BasePage {
 
 	Functions ptr;
 	// Headers section
-	
-	
-	//product and solutions  for expand and collapse 
-	
-	////span[contains(.,'Products & Solutions')]/following-sibling::div
-	
-	////span[contains(.,'Products & Solutions')]/..
+
+	// product and solutions for expand and collapse
+
+	//// span[contains(.,'Products & Solutions')]/following-sibling::div
+
+	//// span[contains(.,'Products & Solutions')]/..
 
 	@FindBy(xpath = "(//a[contains(text(),'Find a Doctor')])[1]")
 	WebElement findADoclink1;
@@ -49,6 +48,7 @@ public class ZimmerHomePage extends BasePage {
 	String careerHeader = "div[class*='cmp-container'] div[class*='title']:first-child div h4[class*='white']";
 	String privacyPolicyHeader = "div[class*='cmp-container'] h1";
 	String legalNoticeHeader = "div[class*='cmp-container'] h2";
+	String navLinkHeader = "//span[contains(.,'%s')]/..";
 
 	@FindBy(xpath = "(//a[contains(text(),'Investors')])[1]")
 	WebElement Investors;
@@ -130,7 +130,7 @@ public class ZimmerHomePage extends BasePage {
 
 	public String getColorName(String eleLocator) {
 		String hex = Color.fromString(ptr.waitForElement(By.cssSelector(eleLocator)).getCssValue("color")).asHex();
-		log.info("Hex code is : "+hex);
+		log.info("Hex code is : " + hex);
 		String name = "";
 		switch (hex.toLowerCase()) {
 		case "#ff0000":
@@ -388,4 +388,42 @@ public class ZimmerHomePage extends BasePage {
 		}
 	}
 
+	public void openAndCloseNavLinks(String linkName, boolean open) {
+		try {
+			if (open) {
+
+				Assert.assertFalse(
+						ptr.getAttribute(By.xpath(String.format(navLinkHeader, linkName)), "class").contains("opened"),
+						"Failed : " + linkName + " is opened");
+				ptr.clickAt(By.xpath(String.format(navLinkHeader, linkName)));
+			ptr.delay(3);
+				Assert.assertTrue(
+						ptr.getAttribute(By.xpath(String.format(navLinkHeader, linkName)), "class").contains("opened"),
+						"Failed : " + linkName + " is closed");
+				log.info(linkName + " is opened");
+
+			} else {
+
+				Assert.assertTrue(
+						ptr.getAttribute(By.xpath(String.format(navLinkHeader, linkName)), "class").contains("opened"),
+						"Failed : " + linkName + " is closed");
+				ptr.clickAt(By.xpath(String.format(navLinkHeader, linkName)));
+				ptr.delay(3);
+				Assert.assertFalse(
+						ptr.getAttribute(By.xpath(String.format(navLinkHeader, linkName)), "class").contains("opened"),
+						"Failed : " + linkName + " is opened");
+				log.info(linkName + " is closed");
+
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			throw e;
+		} catch (AssertionError e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			throw e;
+		}
+
+	}
 }

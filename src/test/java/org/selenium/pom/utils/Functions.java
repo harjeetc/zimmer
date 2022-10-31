@@ -556,7 +556,7 @@ public class Functions {
 //    readOnly = ((element.getAttribute("disabled") != null) || (element.getAttribute("readonly") != null));
 //    return readOnly;
 //}
-	public void clickAt(WebDriver driver, By locator) {
+	public void clickAt(By locator) {
 		WebElement ele = (new WebDriverWait(driver, Duration.ofSeconds(10)))
 				.until(ExpectedConditions.elementToBeClickable(locator));
 		Actions builder = new Actions(driver);
@@ -571,8 +571,17 @@ public class Functions {
 
 	}
 
+	public String getAttribute(By locator, String attr) {
+		WebElement ele = (new WebDriverWait(driver, Duration.ofSeconds(10)))
+				.until(ExpectedConditions.presenceOfElementLocated(locator));
+		// logger.info("Text captured :" + ele.getText().trim());
+		return ele.getAttribute(attr).trim();
+
+	}
+
 	public void clickAt(WebDriver driver, By locator, String steplog) {
-		WebElement ele = (new WebDriverWait(driver, 10)).until(ExpectedConditions.elementToBeClickable(locator));
+		WebElement ele = (new WebDriverWait(driver, Duration.ofSeconds(10)))
+				.until(ExpectedConditions.elementToBeClickable(locator));
 		Actions builder = new Actions(driver);
 		builder.moveToElement(ele).click().build().perform();
 		// logger.info(steplog);
@@ -767,6 +776,15 @@ public class Functions {
 		DateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss aa");
 		String reportDate = df.format(nextDate);
 		return reportDate;
+	}
+
+	public void delay(int time) {
+		try {
+			Thread.sleep(time * 1000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 }
