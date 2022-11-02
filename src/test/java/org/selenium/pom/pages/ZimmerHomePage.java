@@ -49,6 +49,9 @@ public class ZimmerHomePage extends BasePage {
 	String privacyPolicyHeader = "div[class*='cmp-container'] h1";
 	String legalNoticeHeader = "div[class*='cmp-container'] h2";
 	String navLinkHeader = "//span[contains(.,'%s')]/..";
+	String buttons = "//button[.='%s']";
+	By closePopup = By.cssSelector("div[aria-label='Company Logo']+button[class*='close']");
+	By openPreferencesButton = By.cssSelector("button[aria-label='Open Preferences']");
 
 	@FindBy(xpath = "(//a[contains(text(),'Investors')])[1]")
 	WebElement Investors;
@@ -127,6 +130,12 @@ public class ZimmerHomePage extends BasePage {
 		}
 
 	}
+
+//	
+//	// button[.='Accept Cookies’]
+//	// button[.='Do Not Sell My Personal Information’]
+//	// button[.='Confirm My Choices’]
+//	div[aria-label='Company Logo']+button[class*='close']
 
 	public String getColorName(String eleLocator) {
 		String hex = Color.fromString(ptr.waitForElement(By.cssSelector(eleLocator)).getCssValue("color")).asHex();
@@ -350,6 +359,62 @@ public class ZimmerHomePage extends BasePage {
 		}
 	}
 
+	public void verifyAcceptAndRejectCookies(String buttonName) {
+		try {
+			if (buttonName.equalsIgnoreCase("Accept Cookies")) {
+
+				// is for accept
+
+				Assert.assertTrue(ptr.waitForElement(By.xpath(String.format(buttons, buttonName))).isDisplayed(),
+						"Failed : " + buttonName + " is not displayed");
+				// ptr.highlighElement(By.xpath(String.format(buttons, buttonName)));
+				log.info("Button is displayed : " + buttonName);
+				ptr.click(By.xpath(String.format(buttons, buttonName)), "Button is clicked : " + buttonName);
+
+				Assert.assertEquals(ptr.getElementsSize(By.xpath(String.format(buttons, "Confirm My Choices"))), 0,
+						"Failed : " + buttonName + " is displayed");
+
+				log.info("Popup is not displayed for : "+buttonName);
+				Assert.assertTrue(ptr.waitForElement(openPreferencesButton).isDisplayed(),
+						"Failed : " + buttonName + " is not displayed");
+				log.info("Open Preferences Button is displayed");
+			} else if (buttonName.equalsIgnoreCase("Do Not Sell My Personal Information")) {
+
+				// is for reject
+				Assert.assertTrue(ptr.waitForElement(By.xpath(String.format(buttons, buttonName))).isDisplayed(),
+						"Failed : " + buttonName + " is not displayed");
+				// ptr.highlighElement(By.xpath(String.format(buttons, buttonName)));
+				log.info("Link is displayed : " + buttonName);
+				ptr.click(By.xpath(String.format(buttons, buttonName)), "Button is clicked : " + buttonName);
+				Assert.assertTrue(
+						ptr.waitForElement(By.xpath(String.format(buttons, "Confirm My Choices"))).isDisplayed(),
+						"Failed : " + buttonName + " is not displayed");
+				log.info("Popup is displayed for : "+buttonName);
+				ptr.click(closePopup, "Button is clicked : close");
+				ptr.click(By.xpath(String.format(buttons, buttonName)), "Button is clicked : " + buttonName);
+				Assert.assertTrue(
+						ptr.waitForElement(By.xpath(String.format(buttons, "Confirm My Choices"))).isDisplayed(),
+						"Failed : " + buttonName + " is not displayed");
+				log.info("Popup is displayed for : "+buttonName);
+				ptr.click(By.xpath(String.format(buttons, "Confirm My Choices")),
+						"Button is clicked : Confirm My Choices");
+				Assert.assertTrue(ptr.waitForElement(openPreferencesButton).isDisplayed(),
+						"Failed : " + buttonName + " is not displayed");
+				log.info("Open Preferences Button is displayed");
+
+			}
+		} catch (Exception e) {
+
+			e.printStackTrace();
+			throw e;
+		} catch (AssertionError e) {
+
+			e.printStackTrace();
+			throw e;
+		}
+
+	}
+
 	/*
 	 * Find all the URLS on the home page
 	 */
@@ -396,7 +461,7 @@ public class ZimmerHomePage extends BasePage {
 						ptr.getAttribute(By.xpath(String.format(navLinkHeader, linkName)), "class").contains("opened"),
 						"Failed : " + linkName + " is opened");
 				ptr.clickAt(By.xpath(String.format(navLinkHeader, linkName)));
-			ptr.delay(3);
+				ptr.delay(3);
 				Assert.assertTrue(
 						ptr.getAttribute(By.xpath(String.format(navLinkHeader, linkName)), "class").contains("opened"),
 						"Failed : " + linkName + " is closed");
@@ -426,4 +491,5 @@ public class ZimmerHomePage extends BasePage {
 		}
 
 	}
+
 }

@@ -16,6 +16,7 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Random;
 import java.util.Set;
 import java.util.UUID;
@@ -24,6 +25,7 @@ import java.util.concurrent.TimeUnit;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.ElementClickInterceptedException;
 import org.openqa.selenium.JavascriptExecutor;
@@ -55,7 +57,7 @@ public class Functions {
 
 	private long NINTY_SECOND_IN_MILLIS = 90;
 
-//	private Logger logger = Logger.getLogger(Functions.class);
+	private Logger logger = Logger.getLogger(Functions.class);
 
 	public long launchTime = 0;
 	public static String startTime = "0";
@@ -203,11 +205,11 @@ public class Functions {
 
 			doc2.normalizeDocument();
 			Assert.assertTrue(doc1.isEqualNode(doc2));
-			// logger.info("XML comparison Passed");
+			logger.info("XML comparison Passed");
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			// logger.info("XML comparison failed");
+			logger.info("XML comparison failed");
 		}
 
 	}
@@ -230,7 +232,7 @@ public class Functions {
 	 */
 	public int FindHeaderColumn(WebDriver driver, String Col_Header) throws Exception {
 		int FoundInColumn = 0;
-		// logger.info("Searching table for string: " + Col_Header);
+		logger.info("Searching table for string: " + Col_Header);
 
 		// get the header and size
 		int Cols = driver.findElements(By.xpath("//div[1]/table/tbody/tr[2]/td")).size();
@@ -241,8 +243,7 @@ public class Functions {
 			String ColumnTxt = driver.findElement(By.xpath("//div[1]/table/tbody/tr[2]/td[" + x + "]")).getText();
 			if (ColumnTxt.contains(Col_Header)) {
 				FoundInColumn = x;
-				// logger.info("Grid header with '" + Col_Header + "'found in column" +
-				// FoundInColumn);
+				logger.info("Grid header with '" + Col_Header + "'found in column" + FoundInColumn);
 				break;
 			}
 		}
@@ -268,12 +269,12 @@ public class Functions {
 
 	public void callingvbs(String fileName) throws IOException {
 		try {
-			// logger.info("TestData/UploadBatchData/" + fileName + "_xml.vbs file");
+			logger.info("TestData/UploadBatchData/" + fileName + "_xml.vbs file");
 
 			final URL fileURL = Functions.class.getClassLoader().getResource("TestData/UploadBatchData");
 			final String folderPath = fileURL.getPath().substring(1);
 
-			// logger.info("VBS file path = " + folderPath + "/" + fileName + "_xml.vbs");
+			logger.info("VBS file path = " + folderPath + "/" + fileName + "_xml.vbs");
 			String cmd = "wscript " + folderPath + "/" + fileName + "_xml.vbs  \"" + folderPath + "\" ";
 			Process p = Runtime.getRuntime().exec(cmd);
 			// int exitValue =p.exitValue();
@@ -290,7 +291,7 @@ public class Functions {
 
 	public void CreateBatchfile_XML(String path) throws IOException {
 		try {
-			// logger.info(path);
+			logger.info(path);
 			String cmd = "wscript " + path;
 			// String cmd= "wscript "+"TestData/UploadBatchData/Inline-Minutes_xml.vbs";
 			Runtime.getRuntime().exec(cmd);
@@ -318,7 +319,7 @@ public class Functions {
 		WebElement element = new WebDriverWait(driver, 5).until(ExpectedConditions.visibilityOfElementLocated(locator));
 		element.clear();
 		element.sendKeys(value);
-		// logger.info(steplog);
+		logger.info(steplog);
 	}
 
 	// click function that will wait for visibilityOf element
@@ -345,7 +346,7 @@ public class Functions {
 	public void click(By by) throws InterruptedException {
 		WebElement ele = (new WebDriverWait(driver, Duration.ofSeconds(10)))
 				.until(ExpectedConditions.elementToBeClickable(by));
-		highlighElement(driver, by);
+		highlighElement(by);
 		try {
 			ele.click();
 		} catch (ElementClickInterceptedException e) {
@@ -354,7 +355,7 @@ public class Functions {
 				Thread.sleep(i * 1000);
 				try {
 					ele.click();
-					// logger.info("Cliked for ElementClickInterceptedException");
+					logger.info("Cliked for ElementClickInterceptedException");
 					break;
 				} catch (Exception e1) {
 
@@ -366,25 +367,24 @@ public class Functions {
 	public void waitElementToLoad(WebDriver driver, By locator, int time) throws InterruptedException {
 		int visible = 0;
 		while (driver.findElements(locator).size() == 0 && visible < time) {
-			// logger.info("Waiting for element " + locator + " to visible");
+			logger.info("Waiting for element " + locator + " to visible");
 			visible++;
 		}
-		// logger.info("Element" + locator + "is visible");
+		logger.info("Element" + locator + "is visible");
 		int enable = 0;
 		while (enable < time) {
-			// logger.info("Waiting for element " + locator + " to enable");
+			logger.info("Waiting for element " + locator + " to enable");
 			// Thread.sleep(enable*50);
 			Thread.sleep(2000);
 			try {
 				if (driver.findElement(locator).isEnabled()) {
-					// logger.info("Element" + locator + "is enable");
+					logger.info("Element" + locator + "is enable");
 					break;
 				}
 
 				// enable++;
 			} catch (Exception e) {
-				// logger.info("Checking for Element" + locator + "is enable for " + enable + "
-				// Time(s)");
+				logger.info("Checking for Element" + locator + "is enable for " + enable + "Time(s)");
 			}
 			enable++;
 
@@ -393,11 +393,12 @@ public class Functions {
 	}
 
 	// click and wait and log
-	public void click(WebDriver driver, By by, String steplog) {
-		WebElement ele = (new WebDriverWait(driver, 10)).until(ExpectedConditions.elementToBeClickable(by));
-		highlighElement(driver, by);
+	public void click(By by, String steplog) {
+		WebElement ele = (new WebDriverWait(driver, Duration.ofSeconds(10)))
+				.until(ExpectedConditions.elementToBeClickable(by));
+		highlighElement(by);
 		ele.click();
-		// logger.info(steplog);
+		logger.info(steplog);
 	}
 
 	/**
@@ -409,7 +410,7 @@ public class Functions {
 //adding step
 	public WebElement waitForElement(By elementLocator) {
 		WebElement webElement = null;
-		int timeout = 20; // in seconds
+		int timeout = 10; // in seconds
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 		try {
 			System.err.println(elementLocator);
@@ -423,6 +424,21 @@ public class Functions {
 					+ elementLocator + "\nCurrent page: " + driver.getCurrentUrl());
 		}
 		return webElement;
+	}
+	
+	public int getElementsSize(By elementLocator) {
+		List<WebElement> webElement = null;
+		int size =0;
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(2));
+		try {
+			System.err.println(elementLocator);
+			size = wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(elementLocator)).size();
+		
+		} catch (WebDriverException e) {
+			// do nothing, don't want to log this
+		}
+
+		return size;
 	}
 
 	public WebElement waitForElementPrescence(WebDriver driver, By elementLocator) {
@@ -496,11 +512,11 @@ public class Functions {
 			driver.manage().timeouts().pageLoadTimeout(50, TimeUnit.SECONDS);
 
 			while (driver.findElements(By.xpath("//iframe[@aria-label='Main content']")).size() == 0) {
-				// logger.info("waiting for page to load");
+				logger.info("waiting for page to load");
 			}
 			wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt(elementLocator));
 
-			// logger.info("Switched To Frame :" + elementLocator.toString());
+			logger.info("Switched To Frame :" + elementLocator.toString());
 		} catch (NoSuchFrameException e) {
 			// do nothing, don't want to log this
 			e.printStackTrace();
@@ -508,12 +524,12 @@ public class Functions {
 		}
 	}
 
-	public WebElement highlighElement(WebDriver driver, By by) {
+	public WebElement highlighElement(By by) {
 		WebElement element = driver.findElement(by);
 		// draw a border around the found element
 		try {
 			if (driver instanceof JavascriptExecutor) {
-				((JavascriptExecutor) driver).executeScript("arguments[0].style.border='2px solid yellow'", element);
+				((JavascriptExecutor) driver).executeScript("arguments[0].style.border='2px solid red'", element);
 
 				Thread.sleep(500);
 
@@ -566,7 +582,7 @@ public class Functions {
 	public String getVisibleText(By locator) {
 		WebElement ele = (new WebDriverWait(driver, Duration.ofSeconds(10)))
 				.until(ExpectedConditions.presenceOfElementLocated(locator));
-		// logger.info("Text captured :" + ele.getText().trim());
+		logger.info("Text captured :" + ele.getText().trim());
 		return ele.getText().trim();
 
 	}
@@ -574,7 +590,7 @@ public class Functions {
 	public String getAttribute(By locator, String attr) {
 		WebElement ele = (new WebDriverWait(driver, Duration.ofSeconds(10)))
 				.until(ExpectedConditions.presenceOfElementLocated(locator));
-		// logger.info("Text captured :" + ele.getText().trim());
+		logger.info("Text captured :" + ele.getText().trim());
 		return ele.getAttribute(attr).trim();
 
 	}
@@ -584,7 +600,7 @@ public class Functions {
 				.until(ExpectedConditions.elementToBeClickable(locator));
 		Actions builder = new Actions(driver);
 		builder.moveToElement(ele).click().build().perform();
-		// logger.info(steplog);
+		logger.info(steplog);
 	}
 
 	public void moveTo(WebDriver driver, By locator) {
@@ -739,7 +755,7 @@ public class Functions {
 
 		ArrayList<String> tabs2 = new ArrayList<String>(driver.getWindowHandles());
 		driver.switchTo().window(tabs2.get(index));
-		// logger.info("Switched to window " + tabs2.get(index));
+		logger.info("Switched to window " + tabs2.get(index));
 	}
 
 //wait for Left Nav loader to disappear:
@@ -749,7 +765,7 @@ public class Functions {
 			wait.until(ExpectedConditions
 					.invisibilityOf(driver.findElement(By.xpath("//div/Span[@class='icon-loading']"))));
 		} catch (Exception e) {
-			// logger.info("element not available"+e.getMessage());
+			logger.info("element not available" + e.getMessage());
 		}
 
 	}
