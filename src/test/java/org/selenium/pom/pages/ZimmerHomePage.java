@@ -13,6 +13,7 @@ import org.testng.Assert;
 
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Base64;
 import java.util.Iterator;
 import java.util.List;
 
@@ -52,6 +53,8 @@ public class ZimmerHomePage extends BasePage {
 	String buttons = "//button[.='%s']";
 	By closePopup = By.cssSelector("div[aria-label='Company Logo']+button[class*='close']");
 	By openPreferencesButton = By.cssSelector("button[aria-label='Open Preferences']");
+	By footerLinkes = By.cssSelector("nav[class*='navigation--utility'] a");
+	By headerLinkes = By.cssSelector("div[class*='global-footer--primary-row'] a");
 
 	@FindBy(xpath = "(//a[contains(text(),'Investors')])[1]")
 	WebElement Investors;
@@ -374,7 +377,7 @@ public class ZimmerHomePage extends BasePage {
 				Assert.assertEquals(ptr.getElementsSize(By.xpath(String.format(buttons, "Confirm My Choices"))), 0,
 						"Failed : " + buttonName + " is displayed");
 
-				log.info("Popup is not displayed for : "+buttonName);
+				log.info("Popup is not displayed for : " + buttonName);
 				Assert.assertTrue(ptr.waitForElement(openPreferencesButton).isDisplayed(),
 						"Failed : " + buttonName + " is not displayed");
 				log.info("Open Preferences Button is displayed");
@@ -389,13 +392,13 @@ public class ZimmerHomePage extends BasePage {
 				Assert.assertTrue(
 						ptr.waitForElement(By.xpath(String.format(buttons, "Confirm My Choices"))).isDisplayed(),
 						"Failed : " + buttonName + " is not displayed");
-				log.info("Popup is displayed for : "+buttonName);
+				log.info("Popup is displayed for : " + buttonName);
 				ptr.click(closePopup, "Button is clicked : close");
 				ptr.click(By.xpath(String.format(buttons, buttonName)), "Button is clicked : " + buttonName);
 				Assert.assertTrue(
 						ptr.waitForElement(By.xpath(String.format(buttons, "Confirm My Choices"))).isDisplayed(),
 						"Failed : " + buttonName + " is not displayed");
-				log.info("Popup is displayed for : "+buttonName);
+				log.info("Popup is displayed for : " + buttonName);
 				ptr.click(By.xpath(String.format(buttons, "Confirm My Choices")),
 						"Button is clicked : Confirm My Choices");
 				Assert.assertTrue(ptr.waitForElement(openPreferencesButton).isDisplayed(),
@@ -418,34 +421,46 @@ public class ZimmerHomePage extends BasePage {
 	/*
 	 * Find all the URLS on the home page
 	 */
-	public void grabAllURLLinks() {
-		String url = "";
-		List<WebElement> allURLs = driver.findElements(By.tagName("a"));
+	public void verifyBrokenLinks(String type) {
+
+		List<WebElement> allURLs = null;
+		if (type.equalsIgnoreCase("header")) {
+			allURLs = driver.findElements(headerLinkes);
+		} else if (type.equalsIgnoreCase("footer")) {
+			allURLs = driver.findElements(footerLinkes);
+		}
 		System.out.println("Total links on the Wb Page: " + allURLs.size());
 
 		// iterate through the list and will check the elements in the list.
 		Iterator<WebElement> iterator = allURLs.iterator();
 		while (iterator.hasNext()) {
-			url = iterator.next().getText();
-			System.out.println(url);
+			String url = iterator.next().getAttribute("href");
+			verifyLinkActive(url,type);
+			// System.out.println(url);
+
 		}
 	}
 
-	public static void verifyLinkActive(String linkUrl) {
+	public void verifyLinkActive(String linkUrl,String type) {
 		try {
 			URL url = new URL(linkUrl);
 
 			HttpURLConnection httpURLConnect = (HttpURLConnection) url.openConnection();
+			String userpass = "zimmer" + ":" + "zmrbmt01!";
+			String basicAuth = "Basic " + new String(Base64.getEncoder().encode(userpass.getBytes()));
 
+			httpURLConnect.setRequestProperty("Authorization", basicAuth);
 			httpURLConnect.setConnectTimeout(3000);
 
 			httpURLConnect.connect();
 
-			if (httpURLConnect.getResponseCode() == 200) {
-				System.out.println(linkUrl + " - " + httpURLConnect.getResponseMessage());
+			
+			if (httpURLConnect.getResponseCode() == 200 || httpURLConnect.getResponseCode() == 301) {
+
+				log.info("[ "+type.toUpperCase()+" ] : "+linkUrl + " - " + httpURLConnect.getResponseMessage() + " : NOT BROKEN");
 			}
 			if (httpURLConnect.getResponseCode() == HttpURLConnection.HTTP_NOT_FOUND) {
-				System.out.println(linkUrl + " - " + httpURLConnect.getResponseMessage() + " - "
+				log.info(linkUrl + " - " + httpURLConnect.getResponseMessage() + " - "
 						+ HttpURLConnection.HTTP_NOT_FOUND);
 			}
 		} catch (Exception e) {
