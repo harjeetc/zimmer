@@ -10,7 +10,9 @@ import org.openqa.selenium.support.PageFactory;
 import org.selenium.pom.base.BasePage;
 import org.selenium.pom.utils.Functions;
 import org.testng.Assert;
+import org.testng.asserts.SoftAssert;
 
+import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Base64;
@@ -55,6 +57,7 @@ public class ZimmerHomePage extends BasePage {
 	By openPreferencesButton = By.cssSelector("button[aria-label='Open Preferences']");
 	By footerLinkes = By.cssSelector("nav[class*='navigation--utility'] a");
 	By headerLinkes = By.cssSelector("div[class*='global-footer--primary-row'] a");
+	By images = By.tagName("img");
 
 	@FindBy(xpath = "(//a[contains(text(),'Investors')])[1]")
 	WebElement Investors;
@@ -428,24 +431,55 @@ public class ZimmerHomePage extends BasePage {
 			allURLs = driver.findElements(headerLinkes);
 		} else if (type.equalsIgnoreCase("footer")) {
 			allURLs = driver.findElements(footerLinkes);
+		} else if (type.equalsIgnoreCase("image")) {
+			allURLs = driver.findElements(images);
 		}
 		System.out.println("Total links on the Wb Page: " + allURLs.size());
 
-		// iterate through the list and will check the elements in the list.
 		Iterator<WebElement> iterator = allURLs.iterator();
 		while (iterator.hasNext()) {
-			String url = iterator.next().getAttribute("href");
-			verifyLinkActive(url,type);
-			// System.out.println(url);
+			String url;
+			if (!type.equalsIgnoreCase("image")) {
+				url = iterator.next().getAttribute("href");
+			} else {
+				url = iterator.next().getAttribute("src");
+			}
+			verifyLinkActive(url, type);
 
+		}
+		try {
+			ptr.verifyAll();
+		} catch (AssertionError e) {
+			throw e;
 		}
 	}
 
-	public void verifyLinkActive(String linkUrl,String type) {
+//	ptr.verifyAll();
+//	if (httpURLConnect.getResponseCode() == 200 || httpURLConnect.getResponseCode() == 301) {
+//
+//		log.info("[ " + type.toUpperCase() + " ] : " + linkUrl + " - " + httpURLConnect.getResponseMessage()
+//				+ " : " + httpURLConnect.getResponseCode() + " : NOT BROKEN");
+//	}
+//	if (httpURLConnect.getResponseCode() == HttpURLConnection.HTTP_NOT_FOUND) {
+//		log.info(linkUrl + " - " + httpURLConnect.getResponseMessage() + " - "
+//				+ HttpURLConnection.HTTP_NOT_FOUND);
+
+//	} catch (AssertionError e) {
+//		log.info(linkUrl + " - " + httpURLConnect.getResponseMessage() + " - "
+//				+ HttpURLConnection.HTTP_NOT_FOUND);
+//		throw e;
+//	}
+
+	// || httpURLConnect.getResponseCode() == 301
+	// }
+	public void verifyLinkActive(String linkUrl, String type) {
+		HttpURLConnection httpURLConnect = null;
+
 		try {
+
 			URL url = new URL(linkUrl);
 
-			HttpURLConnection httpURLConnect = (HttpURLConnection) url.openConnection();
+			httpURLConnect = (HttpURLConnection) url.openConnection();
 			String userpass = "zimmer" + ":" + "zmrbmt01!";
 			String basicAuth = "Basic " + new String(Base64.getEncoder().encode(userpass.getBytes()));
 
@@ -454,15 +488,21 @@ public class ZimmerHomePage extends BasePage {
 
 			httpURLConnect.connect();
 
-			
-			if (httpURLConnect.getResponseCode() == 200 || httpURLConnect.getResponseCode() == 301) {
+			if (httpURLConnect.getResponseCode() == 200) {
 
-				log.info("[ "+type.toUpperCase()+" ] : "+linkUrl + " - " + httpURLConnect.getResponseMessage() + " : NOT BROKEN");
+				log.info("[ " + type.toUpperCase() + " ] : " + linkUrl + " - " + httpURLConnect.getResponseMessage()
+						+ " : " + httpURLConnect.getResponseCode() + " : NOT BROKEN");
+				ptr.verifyEquals(httpURLConnect.getResponseCode(), 200, "Failed : BROKEN : "+httpURLConnect.getResponseCode());
 			}
-			if (httpURLConnect.getResponseCode() == HttpURLConnection.HTTP_NOT_FOUND) {
+			// if (httpURLConnect.getResponseCode() == HttpURLConnection.HTTP_NOT_FOUND) {
+			else {
+
+				ptr.verifyTrue(false, "Failed : BROKEN : " + httpURLConnect.getResponseCode());
 				log.info(linkUrl + " - " + httpURLConnect.getResponseMessage() + " - "
 						+ HttpURLConnection.HTTP_NOT_FOUND);
+
 			}
+
 		} catch (Exception e) {
 
 		}

@@ -95,12 +95,25 @@ public class ZimmerHomePageTest extends BaseTest {
 	}
 
 
+	/*
+	 *  validate images are not broken on homepage  
+	 */
+
+	@Test(groups = { "HomePage", "Smoke" }, enabled = true)
+	public void verifyBrokenImages() {
+		zimmerHomePage = new ZimmerHomePage(getDriver()).load();
+		zimmerHomePage.verifyBrokenLinks("image");
+	}
+	
+	/*
+	 * Validate any footer links are broken need to add the 200 status codes 
+	 */
 	
 	/*
 	 *  validate header links are not broken 
 	 */
 
-	@Test(groups = { "HomePage", "Smoke" }, enabled = true)
+	@Test(groups = { "HomePage", "Smoke" }, enabled = false)
 	public void verifyHeaderBrokenLinks() {
 		zimmerHomePage = new ZimmerHomePage(getDriver()).load();
 		zimmerHomePage.verifyBrokenLinks("header");
@@ -110,7 +123,7 @@ public class ZimmerHomePageTest extends BaseTest {
 	 * Validate any footer links are broken need to add the 200 status codes 
 	 */
 	
-	@Test(groups = { "HomePage", "Smoke" }, enabled = true)
+	@Test(groups = { "HomePage", "Smoke" }, enabled = false)
 
 	public void verifyFooterBrokenLinks() {
 		zimmerHomePage = new ZimmerHomePage(getDriver()).load();
