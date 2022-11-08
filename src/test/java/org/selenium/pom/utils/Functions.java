@@ -20,7 +20,6 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -29,7 +28,6 @@ import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.ElementClickInterceptedException;
 import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.NoSuchFrameException;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
@@ -40,6 +38,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
+import org.testng.asserts.SoftAssert;
 
 /**
  * Takes care of common functions
@@ -48,9 +47,11 @@ import org.testng.Assert;
  */
 public class Functions {
 	private WebDriver driver;
+	SoftAssert verify;
 
 	public Functions(WebDriver driver) {
 		this.driver = driver;
+		verify = new SoftAssert();
 	}
 
 	private long WAIT_DURATION_IN_SECONDS = 60;
@@ -71,6 +72,28 @@ public class Functions {
 			throw new FileNotFoundException("resource '" + resourceName + "' not found in the classpath");
 		}
 		return inputStream;
+	}
+
+	/**
+	 *
+	 * @author SreeMoore
+	 *
+	 */
+//Function to get time stamp in YYYY-MM-DD format
+	public void verifyEquals(Object actual, Object expected, String failedLog) {
+		verify.assertEquals(actual, expected, failedLog);
+
+	}
+
+	public void verifyTrue(boolean value, String failedLog) {
+		verify.assertTrue(value, failedLog);
+
+	}
+
+	// Function to get time stamp in YYYY-MM-DD format
+	public void verifyAll() {
+		verify.assertAll();
+
 	}
 
 	/**
@@ -221,7 +244,7 @@ public class Functions {
 	 */
 	public static void WaitforPresenceOfElementLocated(WebDriver driver, By by) throws Exception {
 
-		WebDriverWait wait = new WebDriverWait(driver, 10);
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 		wait.until(ExpectedConditions.presenceOfElementLocated(by));
 	}
 
@@ -316,7 +339,8 @@ public class Functions {
 
 	// send keys and get visibilityOf of Element
 	public void type(WebDriver driver, By locator, String value, String steplog) {
-		WebElement element = new WebDriverWait(driver, 5).until(ExpectedConditions.visibilityOfElementLocated(locator));
+		WebElement element = new WebDriverWait(driver, Duration.ofSeconds(10))
+				.until(ExpectedConditions.visibilityOfElementLocated(locator));
 		element.clear();
 		element.sendKeys(value);
 		logger.info(steplog);
@@ -324,7 +348,7 @@ public class Functions {
 
 	// click function that will wait for visibilityOf element
 	public void clickOnElement(WebDriver driver, WebElement element, int timeout) {
-		new WebDriverWait(driver, timeout).until(ExpectedConditions.visibilityOf(element));
+		new WebDriverWait(driver, Duration.ofSeconds(10)).until(ExpectedConditions.visibilityOf(element));
 		element.click();
 	}
 
@@ -393,12 +417,12 @@ public class Functions {
 	}
 
 	// click and wait and log
-	public void click(By by, String steplog) {
+	public void click(By by, String eleName) {
 		WebElement ele = (new WebDriverWait(driver, Duration.ofSeconds(10)))
 				.until(ExpectedConditions.elementToBeClickable(by));
 		highlighElement(by);
 		ele.click();
-		logger.info(steplog);
+		logger.info("Clicked at : " + eleName);
 	}
 
 	/**
@@ -425,15 +449,15 @@ public class Functions {
 		}
 		return webElement;
 	}
-	
+
 	public int getElementsSize(By elementLocator) {
 		List<WebElement> webElement = null;
-		int size =0;
+		int size = 0;
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(2));
 		try {
 			System.err.println(elementLocator);
 			size = wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(elementLocator)).size();
-		
+
 		} catch (WebDriverException e) {
 			// do nothing, don't want to log this
 		}
@@ -444,7 +468,7 @@ public class Functions {
 	public WebElement waitForElementPrescence(WebDriver driver, By elementLocator) {
 		WebElement webElement = null;
 		int timeout = 10; // in seconds
-		WebDriverWait wait = new WebDriverWait(driver, timeout);
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 		try {
 			System.out.println(elementLocator);
 			webElement = wait.until(ExpectedConditions.presenceOfElementLocated(elementLocator));
@@ -506,10 +530,10 @@ public class Functions {
 	public void waitForFrameAndSwitch(WebDriver driver, By elementLocator) {
 
 		int timeout = 10; // in seconds
-		WebDriverWait wait = new WebDriverWait(driver, timeout);
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 		try {
 			// System.out.println(elementLocator);
-			driver.manage().timeouts().pageLoadTimeout(50, TimeUnit.SECONDS);
+			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(10));
 
 			while (driver.findElements(By.xpath("//iframe[@aria-label='Main content']")).size() == 0) {
 				logger.info("waiting for page to load");
@@ -546,7 +570,7 @@ public class Functions {
 	public WebElement waitForElementToBeClickable(WebDriver driver, By elementLocator, int timeout) {
 		WebElement webElement = null;
 		// int timeout = 10; // in seconds
-		WebDriverWait wait = new WebDriverWait(driver, timeout);
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 		try {
 			System.out.println(elementLocator);
 			webElement = wait.until(ExpectedConditions.elementToBeClickable(elementLocator));
@@ -644,7 +668,7 @@ public class Functions {
 
 	public void waitForWebElementInvisibility(WebDriver driver, WebElement webElement) {
 		boolean found = false;
-		wait = new WebDriverWait(driver, 120);
+		wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 		try {
 			wait.until(ExpectedConditions.invisibilityOf(webElement));
 		} catch (final Exception e) {
@@ -758,18 +782,6 @@ public class Functions {
 		logger.info("Switched to window " + tabs2.get(index));
 	}
 
-//wait for Left Nav loader to disappear:
-	public void waitForLeftNavToLoad() {
-		try {
-			WebDriverWait wait = new WebDriverWait(driver, 5000L);
-			wait.until(ExpectedConditions
-					.invisibilityOf(driver.findElement(By.xpath("//div/Span[@class='icon-loading']"))));
-		} catch (Exception e) {
-			logger.info("element not available" + e.getMessage());
-		}
-
-	}
-
 	/**
 	 * @author SreeMoore Function to get time stamp in yyyy-MM-dd hh:mm:ss format
 	 */
@@ -801,6 +813,17 @@ public class Functions {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+
+	public By getDynamicLocator(String type, String dynamicValue, String locator) {
+
+		By by = null;
+		if (type.equalsIgnoreCase("XPATH"))
+			by = By.xpath(String.format(locator, dynamicValue));
+		else if (type.equalsIgnoreCase("CSS"))
+			by = By.cssSelector(String.format(locator, dynamicValue));
+
+		return by;
 	}
 
 }

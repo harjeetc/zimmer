@@ -1,15 +1,12 @@
 package org.selenium.pom.tests;
 
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.concurrent.TimeUnit;
-
 import org.apache.log4j.Logger;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.internal.Debug;
 import org.selenium.pom.base.BaseTest;
 import org.selenium.pom.pages.ZimmerHomePage;
 import org.testng.annotations.Test;
+
+import io.qameta.allure.Description;
+import io.qameta.allure.Feature;
 
 public class ZimmerHomePageTest extends BaseTest {
 	ZimmerHomePage zimmerHomePage;
@@ -19,7 +16,9 @@ public class ZimmerHomePageTest extends BaseTest {
 	 * Validate the Page Title is correct 
 	 */
 
-	@Test(groups = { "HomePage", "Smoke" }, enabled = false)
+	@Test(groups = { "HomePage", "Smoke","sanity" }, enabled = false)
+	@Description("Test to verify HomePage Title")
+	@Feature("HomePage Tests")
 	public void verifyHomePageTitle() throws InterruptedException {
 		log.info("============Test started[ verifyHomePageTitle ] =============");
 		zimmerHomePage = new ZimmerHomePage(getDriver()).load();
@@ -33,6 +32,7 @@ public class ZimmerHomePageTest extends BaseTest {
 	 */
 
 	@Test(groups = { "HomePage", "Smoke" }, enabled = false)
+	@Feature("HomePage Tests")
 	public void verifyCareersPage() throws InterruptedException {
 		log.info("============Test started[ verifyCareersPage ] =============");
 		zimmerHomePage = new ZimmerHomePage(getDriver()).load();
@@ -61,6 +61,7 @@ public class ZimmerHomePageTest extends BaseTest {
 	 */
 
 	@Test(groups = { "HomePage", "Smoke" }, enabled = false)
+	@Feature("HomePage Tests")
 	public void verifyLegalNoticePage() throws InterruptedException {
 		log.info("============Test started[ verifyLegalNoticePage ] =============");
 		zimmerHomePage = new ZimmerHomePage(getDriver()).load();
@@ -77,6 +78,7 @@ public class ZimmerHomePageTest extends BaseTest {
 	 */
 
 	@Test(groups = { "HomePage", "Smoke" }, enabled = false)
+	
 	public void verifyExpandAndCollapseProdSolutionsLink() throws InterruptedException {
 		zimmerHomePage = new ZimmerHomePage(getDriver()).load();
 
@@ -99,7 +101,8 @@ public class ZimmerHomePageTest extends BaseTest {
 	 *  validate images are not broken on homepage  
 	 */
 
-	@Test(groups = { "HomePage", "Smoke" }, enabled = true)
+	@Test(groups = { "HomePage", "Smoke" }, enabled = false)
+	@Description("Verify Broken Images")
 	public void verifyBrokenImages() {
 		zimmerHomePage = new ZimmerHomePage(getDriver()).load();
 		zimmerHomePage.verifyBrokenLinks("image");
@@ -155,4 +158,19 @@ public class ZimmerHomePageTest extends BaseTest {
 		log.info("============Test ended[ verifyAcceptCookies ] =============");
 
 	}
+	@Test(groups = { "HomePage", "Smoke" }, enabled = true)
+	@Description("Test : Verify Embedded Video Player")
+
+	public void verifyEmbeddedVideoPlayer() {
+		zimmerHomePage = new ZimmerHomePage(getDriver()).load();
+		zimmerHomePage.verifyVideoPlayer("Watch the ZBEdge Video", "Close");
+	}
+	
+	/*
+	 * Validate any footer links are broken need to add the 200 status codes 
+	 */
+	
+	
+	
+	
 }

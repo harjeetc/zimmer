@@ -7,6 +7,8 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.selenium.pom.utils.ConfigLoader;
 
+import io.qameta.allure.Step;
+
 import java.time.Duration;
 import java.util.List;
 
@@ -19,6 +21,7 @@ public class BasePage {
 		wait = new WebDriverWait(driver, Duration.ofSeconds(30));
 	}
 
+	@Step("Login with user credentials")
 	public void load(String endPoint) {
 
 		String cred = "zimmer:zmrbmt01!@";

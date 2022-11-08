@@ -12,6 +12,8 @@ import org.selenium.pom.utils.Functions;
 import org.testng.Assert;
 import org.testng.asserts.SoftAssert;
 
+import io.qameta.allure.Step;
+
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -27,19 +29,16 @@ public class ZimmerHomePage extends BasePage {
 	private Logger log = Logger.getLogger(ZimmerHomePage.class);
 
 	Functions ptr;
-	// Headers section
 
-	// product and solutions for expand and collapse
+	public ZimmerHomePage(WebDriver driver) {
 
-	//// span[contains(.,'Products & Solutions')]/following-sibling::div
-
-	//// span[contains(.,'Products & Solutions')]/..
+		super(driver);
+		ptr = new Functions(driver);
+		// TODO Auto-generated constructor stub
+	}
 
 	@FindBy(xpath = "(//a[contains(text(),'Find a Doctor')])[1]")
 	WebElement findADoclink1;
-
-//	@FindBy(xpath = "(//a[contains(text(),'Careers')])[1]")
-//	WebElement careers;
 
 	/*
 	 * String headerLinks = "(//a[.='%s'])[1]"; String.format(headerLinks, linkName)
@@ -58,36 +57,16 @@ public class ZimmerHomePage extends BasePage {
 	By footerLinkes = By.cssSelector("nav[class*='navigation--utility'] a");
 	By headerLinkes = By.cssSelector("div[class*='global-footer--primary-row'] a");
 	By images = By.tagName("img");
-
-	@FindBy(xpath = "(//a[contains(text(),'Investors')])[1]")
-	WebElement Investors;
-
-	@FindBy(xpath = "(//a[contains(text(),'ç Us')])[1]")
-	WebElement contact_Us;
-
-	@FindBy(xpath = "(//a[contains(text(),'Patients')])[1]")
-	WebElement patients;
-
-	@FindBy(xpath = "(//a[contains(text(),'Find a Rep')])[1]")
-	WebElement findARep;
-
-	@FindBy(xpath = "(//a[contains(text(),'US')])[1]")
-	WebElement US;
-
-	// (//a[contains(text(),'US')])[1]
-
-	public ZimmerHomePage(WebDriver driver) {
-		super(driver);
-		PageFactory.initElements(driver, this);
-		ptr = new Functions(driver);
-
-	}
+	String playButton = "//*[.='%s']/../../../..//button";
+	String closeVideoPlayer = "//div[contains(@id,'%s')  and contains(@class,'card')]/../../../../..//button[contains(@class,'modal-close')]";
+	String videoPlayer = "div[id*='%s'][class*='card'] video";
 
 	public ZimmerHomePage load() {
 		load("/");
 		return this;
 	}
 
+	@Step("Verify Page Title")
 	public void verifyPageTitle(String title) {
 		try {
 			Assert.assertEquals(driver.getTitle(), title, "Faild : page title not matched");
@@ -103,6 +82,35 @@ public class ZimmerHomePage extends BasePage {
 		}
 	}
 
+	@Step("Verify Embedded Video Player [ {0} ] with Action [ {1} ]")
+	public void verifyVideoPlayer(String videoName, String action) {
+		try {
+			ptr.scrollPage(ptr.getDynamicLocator("XPATH", videoName, playButton));
+			String playerId = ptr.getAttribute(ptr.getDynamicLocator("XPATH", videoName, playButton), "data-modal");
+			ptr.click(ptr.getDynamicLocator("XPATH", videoName, playButton), videoName);
+			Assert.assertTrue(ptr.waitForElement(ptr.getDynamicLocator("CSS", playerId, videoPlayer)).isDisplayed(),
+					"Faild : Video Player is not found with name " + videoName);
+			ptr.highlighElement(ptr.getDynamicLocator("CSS", playerId, videoPlayer));
+			log.info("Video player [ " + videoName + " ] is opened ");
+
+			if (action.equalsIgnoreCase("Close")) {
+				ptr.click(ptr.getDynamicLocator("XPATH", playerId, closeVideoPlayer), "close video player");
+				Assert.assertEquals(ptr.getElementsSize(ptr.getDynamicLocator("XPATH", playerId, videoPlayer)), 0,
+						"Failed : " + videoName + " is displayed");
+				log.info("Video player [ " + videoName + " ] is closed ");
+			}
+		} catch (Exception e) {
+
+			e.printStackTrace();
+			throw e;
+		} catch (AssertionError e) {
+
+			e.printStackTrace();
+			throw e;
+		}
+	}
+
+	@Step("Verify Header Link")
 	public void verifyHeaderLink(String linkName) {
 		try {
 			ptr.scrollPage(By.xpath(String.format(headerLinks, linkName)));
@@ -137,12 +145,7 @@ public class ZimmerHomePage extends BasePage {
 
 	}
 
-//	
-//	// button[.='Accept Cookies’]
-//	// button[.='Do Not Sell My Personal Information’]
-//	// button[.='Confirm My Choices’]
-//	div[aria-label='Company Logo']+button[class*='close']
-
+	@Step("This will add the color to element locator {0}")
 	public String getColorName(String eleLocator) {
 		String hex = Color.fromString(ptr.waitForElement(By.cssSelector(eleLocator)).getCssValue("color")).asHex();
 		log.info("Hex code is : " + hex);
@@ -454,24 +457,6 @@ public class ZimmerHomePage extends BasePage {
 		}
 	}
 
-//	ptr.verifyAll();
-//	if (httpURLConnect.getResponseCode() == 200 || httpURLConnect.getResponseCode() == 301) {
-//
-//		log.info("[ " + type.toUpperCase() + " ] : " + linkUrl + " - " + httpURLConnect.getResponseMessage()
-//				+ " : " + httpURLConnect.getResponseCode() + " : NOT BROKEN");
-//	}
-//	if (httpURLConnect.getResponseCode() == HttpURLConnection.HTTP_NOT_FOUND) {
-//		log.info(linkUrl + " - " + httpURLConnect.getResponseMessage() + " - "
-//				+ HttpURLConnection.HTTP_NOT_FOUND);
-
-//	} catch (AssertionError e) {
-//		log.info(linkUrl + " - " + httpURLConnect.getResponseMessage() + " - "
-//				+ HttpURLConnection.HTTP_NOT_FOUND);
-//		throw e;
-//	}
-
-	// || httpURLConnect.getResponseCode() == 301
-	// }
 	public void verifyLinkActive(String linkUrl, String type) {
 		HttpURLConnection httpURLConnect = null;
 
@@ -492,7 +477,8 @@ public class ZimmerHomePage extends BasePage {
 
 				log.info("[ " + type.toUpperCase() + " ] : " + linkUrl + " - " + httpURLConnect.getResponseMessage()
 						+ " : " + httpURLConnect.getResponseCode() + " : NOT BROKEN");
-				ptr.verifyEquals(httpURLConnect.getResponseCode(), 200, "Failed : BROKEN : "+httpURLConnect.getResponseCode());
+				ptr.verifyEquals(httpURLConnect.getResponseCode(), 200,
+						"Failed : BROKEN : " + httpURLConnect.getResponseCode());
 			}
 			// if (httpURLConnect.getResponseCode() == HttpURLConnection.HTTP_NOT_FOUND) {
 			else {

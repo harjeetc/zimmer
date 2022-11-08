@@ -32,6 +32,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
+
 public class BaseTest {
 	private final ThreadLocal<DriverManagerAbstract> driverManager = new ThreadLocal<>();
 	private final ThreadLocal<WebDriver> driver = new ThreadLocal<>();
@@ -56,6 +57,7 @@ public class BaseTest {
 	@BeforeMethod
 	public synchronized void startDriver(@Optional String browser) {
 		browser = System.getProperty("browser", browser);
+		
 //        if(browser == null) browser = "CHROME";
 //        setDriver(new DriverManagerOriginal().initializeDriver(browser));
 //        setDriver(DriverManagerFactory.getManager(DriverType.valueOf(browser)).createDriver());
@@ -78,18 +80,20 @@ public class BaseTest {
 						+ result.getTestClass().getRealClass().getSimpleName() + "_" + result.getMethod().getMethodName()
 						+ ".png");
 				allureLog("Failed");
+				saveScreenshotPNG(getDriver());
 //            takeScreenshot(destFile);
 			//	takeScreenshotUsingAShot(destFile);
 			} else if (result.getStatus() == ITestResult.SUCCESS)
 				allureLog("Sucess");
 			getDriverManager().getDriver().quit();
-		} catch (InterruptedException e) {
+			System.out.println("55555555");
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
-			throw e;
+			//e.printStackTrace();
+			//throw e;
 		}
 		finally {
-			 getDriver().quit();
+			getDriverManager().getDriver().quit();
 		}
 	}
 
