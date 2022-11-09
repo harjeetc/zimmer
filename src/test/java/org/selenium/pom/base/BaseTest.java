@@ -86,14 +86,14 @@ public class BaseTest {
 			} else if (result.getStatus() == ITestResult.SUCCESS)
 				allureLog("Sucess");
 			getDriverManager().getDriver().quit();
-			System.out.println("55555555");
+
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			//e.printStackTrace();
 			//throw e;
 		}
 		finally {
-			getDriverManager().getDriver().quit();
+			//getDriverManager().getDriver().quit();
 		}
 	}
 

@@ -158,7 +158,7 @@ public class ZimmerHomePageTest extends BaseTest {
 		log.info("============Test ended[ verifyAcceptCookies ] =============");
 
 	}
-	@Test(groups = { "HomePage", "Smoke" }, enabled = true)
+	@Test(groups = { "HomePage", "Smoke" }, enabled = false)
 	@Description("Test : Verify Embedded Video Player")
 
 	public void verifyEmbeddedVideoPlayer() {
@@ -169,6 +169,24 @@ public class ZimmerHomePageTest extends BaseTest {
 	/*
 	 * Validate any footer links are broken need to add the 200 status codes 
 	 */
+	@Test(groups = { "HomePage", "Smoke" }, enabled = true)
+	@Description("Test : Verify Diffrent Country PopupMessage From Site Navigation")
+  
+	public void verifyDiffrentCountryPopupMessageFromSiteNavigation() {
+		zimmerHomePage = new ZimmerHomePage(getDriver()).load();
+		zimmerHomePage.verifySwitchCountry("Latin America");
+	}
+	
+	@Test(groups = { "HomePage", "Smoke" }, enabled = true)
+	@Description("Test : Verify Diffrent Country PopupMessage By Launching Url")
+  	public void verifyDiffrentCountryPopupMessage() {
+		/*
+		 * Validate any footer links are broken need to add the 200 status codes 
+		 */
+		log.info("============Test started[ verifyAcceptCookie ] =============");
+		zimmerHomePage = new ZimmerHomePage(getDriver()).load();
+		zimmerHomePage.verifySwitchCountry("");
+	}
 	
 	
 	

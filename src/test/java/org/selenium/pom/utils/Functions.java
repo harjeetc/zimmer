@@ -517,6 +517,11 @@ public class Functions {
 		driver.navigate().to(currentURL);
 	}
 
+	public void navigateTo(String url) {
+
+		driver.navigate().to(url);
+	}
+
 	public String getCurrentURL(WebDriver driver) {
 		return driver.getCurrentUrl();
 	}

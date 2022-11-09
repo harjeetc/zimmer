@@ -8,6 +8,7 @@ import org.openqa.selenium.support.Color;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.selenium.pom.base.BasePage;
+import org.selenium.pom.utils.ConfigLoader;
 import org.selenium.pom.utils.Functions;
 import org.testng.Assert;
 import org.testng.asserts.SoftAssert;
@@ -60,6 +61,10 @@ public class ZimmerHomePage extends BasePage {
 	String playButton = "//*[.='%s']/../../../..//button";
 	String closeVideoPlayer = "//div[contains(@id,'%s')  and contains(@class,'card')]/../../../../..//button[contains(@class,'modal-close')]";
 	String videoPlayer = "div[id*='%s'][class*='card'] video";
+	By siteLink = By.cssSelector("nav[class*='navigation--utility'] a[href*='en/site']");
+	String countryButtons = "(//div[.='%s'])[1]";
+	By differentCountryPopup = By.xpath("//*[.='We noticed that you are visiting from a different country']/..");
+	By differentCountryPopupMessage = By.xpath("//*[.='We noticed that you are visiting from a different country']");
 
 	public ZimmerHomePage load() {
 		load("/");
@@ -139,6 +144,30 @@ public class ZimmerHomePage extends BasePage {
 			e.printStackTrace();
 		} catch (AssertionError e) {
 			// TODO Auto-generated catch block
+			e.printStackTrace();
+			throw e;
+		}
+
+	}
+	@Step("Verify Switch Country PopUp Message (We noticed that you are visiting from a different country)")
+	public void verifySwitchCountry(String countryName) {
+		try {
+			if (countryName.length() > 1) {
+				ptr.click(siteLink, "EN Site Link");
+				ptr.click(ptr.getDynamicLocator("XPATH", countryName, countryButtons), countryName);
+			}else {
+				ptr.navigateTo(ConfigLoader.getInstance().getSwitchUrl());
+			}
+			Assert.assertEquals(ptr.waitForElement(differentCountryPopup).isDisplayed(), true,
+					"Failed : popup is not displayed");
+			ptr.highlighElement(differentCountryPopup);
+			Assert.assertEquals(ptr.waitForElement(differentCountryPopupMessage).isDisplayed(), true,
+					"Failed : popup is not displayed");
+			ptr.highlighElement(differentCountryPopupMessage);
+			log.info("We noticed that you are visiting from a different country : is displayed");
+		} catch (Exception e) {
+			e.printStackTrace();
+		} catch (AssertionError e) {
 			e.printStackTrace();
 			throw e;
 		}
