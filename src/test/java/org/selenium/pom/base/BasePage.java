@@ -25,6 +25,7 @@ public class BasePage {
 	public void load(String endPoint) {
 
 		String cred = "zimmer:zmrbmt01!@";
+		System.out.println("========="+ConfigLoader.getInstance().getBaseUrl());
 		driver.get(ConfigLoader.getInstance().getBaseUrl().replace("CRED", cred));
 		//driver.get("https://"+cred+"qa-www.zimmerbiomet.com/en/");
 	}

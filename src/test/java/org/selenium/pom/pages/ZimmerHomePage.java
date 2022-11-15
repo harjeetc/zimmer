@@ -13,7 +13,10 @@ import org.selenium.pom.utils.Functions;
 import org.testng.Assert;
 import org.testng.asserts.SoftAssert;
 
+import io.qameta.allure.Allure;
 import io.qameta.allure.Step;
+import io.qameta.allure.internal.AllureStorage;
+import io.qameta.allure.model.Status;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -55,8 +58,9 @@ public class ZimmerHomePage extends BasePage {
 	String buttons = "//button[.='%s']";
 	By closePopup = By.cssSelector("div[aria-label='Company Logo']+button[class*='close']");
 	By openPreferencesButton = By.cssSelector("button[aria-label='Open Preferences']");
-	By footerLinkes = By.cssSelector("nav[class*='navigation--utility'] a");
-	By headerLinkes = By.cssSelector("div[class*='global-footer--primary-row'] a");
+	By headerLinkes = By.cssSelector("nav[class*='navigation--utility'] a");
+	By footerLinkes = By.cssSelector("div[class*='global-footer--primary-container'] ul[label='footer'] a");
+
 	By images = By.tagName("img");
 	String playButton = "//*[.='%s']/../../../..//button";
 	String closeVideoPlayer = "//div[contains(@id,'%s')  and contains(@class,'card')]/../../../../..//button[contains(@class,'modal-close')]";
@@ -149,13 +153,14 @@ public class ZimmerHomePage extends BasePage {
 		}
 
 	}
+
 	@Step("Verify Switch Country PopUp Message (We noticed that you are visiting from a different country)")
 	public void verifySwitchCountry(String countryName) {
 		try {
 			if (countryName.length() > 1) {
 				ptr.click(siteLink, "EN Site Link");
 				ptr.click(ptr.getDynamicLocator("XPATH", countryName, countryButtons), countryName);
-			}else {
+			} else {
 				ptr.navigateTo(ConfigLoader.getInstance().getSwitchUrl());
 			}
 			Assert.assertEquals(ptr.waitForElement(differentCountryPopup).isDisplayed(), true,
@@ -456,6 +461,7 @@ public class ZimmerHomePage extends BasePage {
 	/*
 	 * Find all the URLS on the home page
 	 */
+	@Step("verifyBrokenLinks [ {1} ]")
 	public void verifyBrokenLinks(String type) {
 
 		List<WebElement> allURLs = null;
@@ -467,12 +473,13 @@ public class ZimmerHomePage extends BasePage {
 			allURLs = driver.findElements(images);
 		}
 		System.out.println("Total links on the Wb Page: " + allURLs.size());
-
+		
 		Iterator<WebElement> iterator = allURLs.iterator();
 		while (iterator.hasNext()) {
 			String url;
 			if (!type.equalsIgnoreCase("image")) {
 				url = iterator.next().getAttribute("href");
+				//log.info("======" + url);
 			} else {
 				url = iterator.next().getAttribute("src");
 			}
@@ -485,6 +492,7 @@ public class ZimmerHomePage extends BasePage {
 			throw e;
 		}
 	}
+
 
 	public void verifyLinkActive(String linkUrl, String type) {
 		HttpURLConnection httpURLConnect = null;
@@ -506,6 +514,8 @@ public class ZimmerHomePage extends BasePage {
 
 				log.info("[ " + type.toUpperCase() + " ] : " + linkUrl + " - " + httpURLConnect.getResponseMessage()
 						+ " : " + httpURLConnect.getResponseCode() + " : NOT BROKEN");
+				Allure.step("[ " + type.toUpperCase() + " ] : " + linkUrl + " - " + httpURLConnect.getResponseMessage()
+				+ " : " + httpURLConnect.getResponseCode() + " : NOT BROKEN");
 				ptr.verifyEquals(httpURLConnect.getResponseCode(), 200,
 						"Failed : BROKEN : " + httpURLConnect.getResponseCode());
 			}
@@ -515,6 +525,9 @@ public class ZimmerHomePage extends BasePage {
 				ptr.verifyTrue(false, "Failed : BROKEN : " + httpURLConnect.getResponseCode());
 				log.info(linkUrl + " - " + httpURLConnect.getResponseMessage() + " - "
 						+ HttpURLConnection.HTTP_NOT_FOUND);
+				
+				Allure.step("[ " + type.toUpperCase() + " ] : " + linkUrl + " - " + httpURLConnect.getResponseMessage()
+				+ " : " + httpURLConnect.getResponseCode() + " : BROKEN",Status.FAILED);
 
 			}
 

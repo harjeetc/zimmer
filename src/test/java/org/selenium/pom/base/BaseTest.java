@@ -20,8 +20,11 @@ import org.selenium.pom.utils.CookieUtils;
 import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Optional;
 import org.testng.annotations.Parameters;
+
+import com.google.common.collect.ImmutableMap;
 
 import ru.yandex.qatools.ashot.AShot;
 import ru.yandex.qatools.ashot.Screenshot;
@@ -31,7 +34,7 @@ import javax.imageio.ImageIO;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
-
+import static com.github.automatedowl.tools.AllureEnvironmentWriter.allureEnvironmentWriter;
 
 public class BaseTest {
 	private final ThreadLocal<DriverManagerAbstract> driverManager = new ThreadLocal<>();
@@ -52,6 +55,16 @@ public class BaseTest {
 	protected WebDriver getDriver() {
 		return this.driver.get();
 	}
+//	
+//	 @BeforeSuite
+//	    void setAllureEnvironment() {
+//	        allureEnvironmentWriter(
+//	                ImmutableMap.<String, String> builder()
+//	                        .put("Browser", "chrome")
+//	                        .put("Env", System.getProperty("ENV"))
+//	                        .put("URL", "https://qa-www.zimmerbiomet.com/en")
+//	                        .build());
+//	    }
 
 	@Parameters("browser")
 	@BeforeMethod
@@ -85,7 +98,7 @@ public class BaseTest {
 			//	takeScreenshotUsingAShot(destFile);
 			} else if (result.getStatus() == ITestResult.SUCCESS)
 				allureLog("Sucess");
-			getDriverManager().getDriver().quit();
+			//getDriverManager().getDriver().quit();
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

@@ -101,23 +101,23 @@ public class ZimmerHomePageTest extends BaseTest {
 	 *  validate images are not broken on homepage  
 	 */
 
-	@Test(groups = { "HomePage", "Smoke" }, enabled = false)
+	@Test(groups = { "HomePage", "Smoke" }, enabled = true)
 	@Description("Verify Broken Images")
 	public void verifyBrokenImages() {
 		zimmerHomePage = new ZimmerHomePage(getDriver()).load();
 		zimmerHomePage.verifyBrokenLinks("image");
 	}
 	
-	/*
-	 * Validate any footer links are broken need to add the 200 status codes 
-	 */
+
 	
 	/*
 	 *  validate header links are not broken 
 	 */
 
-	@Test(groups = { "HomePage", "Smoke" }, enabled = false)
+	@Test(groups = { "HomePage", "Smoke" }, enabled = true)
+	@Description("Test : Verify Header Broken Links")
 	public void verifyHeaderBrokenLinks() {
+		log.info("============Test started[ verifyHeaderLinks ] =============");
 		zimmerHomePage = new ZimmerHomePage(getDriver()).load();
 		zimmerHomePage.verifyBrokenLinks("header");
 	}
@@ -126,8 +126,8 @@ public class ZimmerHomePageTest extends BaseTest {
 	 * Validate any footer links are broken need to add the 200 status codes 
 	 */
 	
-	@Test(groups = { "HomePage", "Smoke" }, enabled = false)
-
+	@Test(groups = { "HomePage", "Smoke" }, enabled = true)
+	@Description("Test : Verify Footer Broken Links")
 	public void verifyFooterBrokenLinks() {
 		zimmerHomePage = new ZimmerHomePage(getDriver()).load();
 		zimmerHomePage.verifyBrokenLinks("footer");
@@ -156,6 +156,10 @@ public class ZimmerHomePageTest extends BaseTest {
 		zimmerHomePage.verifyAcceptAndRejectCookies("Do Not Sell My Personal Information");
 
 		log.info("============Test ended[ verifyAcceptCookies ] =============");
+		
+		/*
+		 * Validate Verify Embedded Video Player ZBEdge Video
+		 */
 
 	}
 	@Test(groups = { "HomePage", "Smoke" }, enabled = false)
@@ -167,9 +171,10 @@ public class ZimmerHomePageTest extends BaseTest {
 	}
 	
 	/*
-	 * Validate any footer links are broken need to add the 200 status codes 
+	 * Verify Diffrent Country PopupMessage From Site Navigation")
+ 
 	 */
-	@Test(groups = { "HomePage", "Smoke" }, enabled = true)
+	@Test(groups = { "HomePage", "Smoke" }, enabled = false)
 	@Description("Test : Verify Diffrent Country PopupMessage From Site Navigation")
   
 	public void verifyDiffrentCountryPopupMessageFromSiteNavigation() {
@@ -177,7 +182,12 @@ public class ZimmerHomePageTest extends BaseTest {
 		zimmerHomePage.verifySwitchCountry("Latin America");
 	}
 	
-	@Test(groups = { "HomePage", "Smoke" }, enabled = true)
+	/*
+	 * Verify Verify Diffrent Country PopupMessage By Launching Url")
+")
+	 */
+	
+	@Test(groups = { "HomePage", "Smoke" }, enabled = false)
 	@Description("Test : Verify Diffrent Country PopupMessage By Launching Url")
   	public void verifyDiffrentCountryPopupMessage() {
 		/*
