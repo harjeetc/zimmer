@@ -1,10 +1,12 @@
 package org.selenium.pom.base;
 
+import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.selenium.pom.tests.ZimmerHomePageTest;
 import org.selenium.pom.utils.ConfigLoader;
 
 import io.qameta.allure.Step;
@@ -15,6 +17,8 @@ import java.util.List;
 public class BasePage {
 	protected WebDriver driver;
 	protected WebDriverWait wait;
+	private Logger log = Logger.getLogger(ZimmerHomePageTest.class);
+
 
 	public BasePage(WebDriver driver) {
 		this.driver = driver;
@@ -23,8 +27,8 @@ public class BasePage {
 
 	@Step("Login with user credentials")
 	public void load(String endPoint) {
-
-		String cred = "zimmer:zmrbmt01!@";
+		log.info("============entered userName + passwrd[User is logged into QA Zimmer Website] =============");
+	String cred = "zimmer:zmrbmt01!@";
 		System.out.println("========="+ConfigLoader.getInstance().getBaseUrl());
 		driver.get(ConfigLoader.getInstance().getBaseUrl().replace("CRED", cred));
 		//driver.get("https://"+cred+"qa-www.zimmerbiomet.com/en/");

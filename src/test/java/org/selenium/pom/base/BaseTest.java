@@ -87,26 +87,21 @@ public class BaseTest {
 		try {
 			Thread.sleep(300);
 			System.out.println("CURRENT THREAD: " + Thread.currentThread().getId() + ", " + "DRIVER = " + getDriver());
-//        getDriver().quit();
 			if (result.getStatus() == ITestResult.FAILURE) {
 				File destFile = new File("scr" + File.separator + browser + File.separator
 						+ result.getTestClass().getRealClass().getSimpleName() + "_" + result.getMethod().getMethodName()
 						+ ".png");
 				allureLog("Failed");
-				saveScreenshotPNG(getDriver());
-//            takeScreenshot(destFile);
-			//	takeScreenshotUsingAShot(destFile);
+				//saveScreenshotPNG(getDriver());
 			} else if (result.getStatus() == ITestResult.SUCCESS)
 				allureLog("Sucess");
 			//getDriverManager().getDriver().quit();
 
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			//e.printStackTrace();
-			//throw e;
+
 		}
 		finally {
-			//getDriverManager().getDriver().quit();
+			getDriverManager().getDriver().quit();
 		}
 	}
 

@@ -2,6 +2,10 @@ package org.selenium.pom.pages;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.Color;
@@ -14,6 +18,7 @@ import org.testng.Assert;
 import org.testng.asserts.SoftAssert;
 
 import io.qameta.allure.Allure;
+import io.qameta.allure.Attachment;
 import io.qameta.allure.Step;
 import io.qameta.allure.internal.AllureStorage;
 import io.qameta.allure.model.Status;
@@ -60,6 +65,11 @@ public class ZimmerHomePage extends BasePage {
 	By openPreferencesButton = By.cssSelector("button[aria-label='Open Preferences']");
 	By headerLinkes = By.cssSelector("nav[class*='navigation--utility'] a");
 	By footerLinkes = By.cssSelector("div[class*='global-footer--primary-container'] ul[label='footer'] a");
+	By socialMediaLinkes = By.cssSelector("div[class*='global-footer--primary-container'] ul[class*='social-media'] a");
+	By globalSearchTextBox = By.id("global-search");
+	By globalSearchButton = By.cssSelector(
+			"div[class='container container--default grid grid__gap--none grid__breakpoint--nobreak global-header__row-bottom'] button[aria-label='Site search']");
+	By searchResultTerm = By.cssSelector("label[for='site-search__term']");
 
 	By images = By.tagName("img");
 	String playButton = "//*[.='%s']/../../../..//button";
@@ -367,9 +377,6 @@ public class ZimmerHomePage extends BasePage {
 				log.info("Font color is " + getColorName(careerHeader));
 			}
 
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		} catch (AssertionError e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -392,9 +399,6 @@ public class ZimmerHomePage extends BasePage {
 						"Faild : page header not matched");
 			}
 
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		} catch (AssertionError e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -471,15 +475,18 @@ public class ZimmerHomePage extends BasePage {
 			allURLs = driver.findElements(footerLinkes);
 		} else if (type.equalsIgnoreCase("image")) {
 			allURLs = driver.findElements(images);
+		} else {
+			allURLs = driver.findElements(socialMediaLinkes);
+
 		}
 		System.out.println("Total links on the Wb Page: " + allURLs.size());
-		
+
 		Iterator<WebElement> iterator = allURLs.iterator();
 		while (iterator.hasNext()) {
 			String url;
 			if (!type.equalsIgnoreCase("image")) {
 				url = iterator.next().getAttribute("href");
-				//log.info("======" + url);
+				// log.info("======" + url);
 			} else {
 				url = iterator.next().getAttribute("src");
 			}
@@ -492,7 +499,6 @@ public class ZimmerHomePage extends BasePage {
 			throw e;
 		}
 	}
-
 
 	public void verifyLinkActive(String linkUrl, String type) {
 		HttpURLConnection httpURLConnect = null;
@@ -515,7 +521,7 @@ public class ZimmerHomePage extends BasePage {
 				log.info("[ " + type.toUpperCase() + " ] : " + linkUrl + " - " + httpURLConnect.getResponseMessage()
 						+ " : " + httpURLConnect.getResponseCode() + " : NOT BROKEN");
 				Allure.step("[ " + type.toUpperCase() + " ] : " + linkUrl + " - " + httpURLConnect.getResponseMessage()
-				+ " : " + httpURLConnect.getResponseCode() + " : NOT BROKEN");
+						+ " : " + httpURLConnect.getResponseCode() + " : NOT BROKEN");
 				ptr.verifyEquals(httpURLConnect.getResponseCode(), 200,
 						"Failed : BROKEN : " + httpURLConnect.getResponseCode());
 			}
@@ -523,11 +529,12 @@ public class ZimmerHomePage extends BasePage {
 			else {
 
 				ptr.verifyTrue(false, "Failed : BROKEN : " + httpURLConnect.getResponseCode());
-				log.info(linkUrl + " - " + httpURLConnect.getResponseMessage() + " - "
-						+ HttpURLConnection.HTTP_NOT_FOUND);
-				
+
+				log.info("[ " + type.toUpperCase() + " ] : " + linkUrl + " - " + httpURLConnect.getResponseMessage()
+						+ " : " + httpURLConnect.getResponseCode() + " : BROKEN");
+
 				Allure.step("[ " + type.toUpperCase() + " ] : " + linkUrl + " - " + httpURLConnect.getResponseMessage()
-				+ " : " + httpURLConnect.getResponseCode() + " : BROKEN",Status.FAILED);
+						+ " : " + httpURLConnect.getResponseCode() + " : BROKEN", Status.FAILED);
 
 			}
 
@@ -543,7 +550,7 @@ public class ZimmerHomePage extends BasePage {
 				Assert.assertFalse(
 						ptr.getAttribute(By.xpath(String.format(navLinkHeader, linkName)), "class").contains("opened"),
 						"Failed : " + linkName + " is opened");
-				ptr.clickAt(By.xpath(String.format(navLinkHeader, linkName)));
+				ptr.clickAt(By.xpath(String.format(navLinkHeader, linkName)), "Nav Link Header");
 				ptr.delay(3);
 				Assert.assertTrue(
 						ptr.getAttribute(By.xpath(String.format(navLinkHeader, linkName)), "class").contains("opened"),
@@ -555,7 +562,7 @@ public class ZimmerHomePage extends BasePage {
 				Assert.assertTrue(
 						ptr.getAttribute(By.xpath(String.format(navLinkHeader, linkName)), "class").contains("opened"),
 						"Failed : " + linkName + " is closed");
-				ptr.clickAt(By.xpath(String.format(navLinkHeader, linkName)));
+				ptr.clickAt(By.xpath(String.format(navLinkHeader, linkName)), "Nav Link Header");
 				ptr.delay(3);
 				Assert.assertFalse(
 						ptr.getAttribute(By.xpath(String.format(navLinkHeader, linkName)), "class").contains("opened"),
@@ -570,6 +577,44 @@ public class ZimmerHomePage extends BasePage {
 		} catch (AssertionError e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			throw e;
+		}
+
+	}
+	@Attachment(value = "Page screenshot", type = "image/png")
+	public byte[] saveScreenshotPNG(WebDriver driver) {
+		return ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
+	}
+
+	@Step("[ {0} ] search with keyword [ {1} ] and verify search term [ {2} ]")
+	public void verifySearch(String type, String serachKeyword, String searchTerm) {
+		try {
+			if (serachKeyword.length() > 0) {
+				if (type.equalsIgnoreCase("global")) {
+
+					ptr.type(globalSearchTextBox, serachKeyword, "Global Search");
+				} else {
+					ptr.type(globalSearchTextBox, serachKeyword, "Child Search");
+				}
+			}
+			//ptr.delay(2);
+			ptr.pressTabAndEnter(globalSearchTextBox);
+			ptr.pressEnter();
+			ptr.waitForElement(searchResultTerm);
+			Assert.assertEquals(ptr.getVisibleText(searchResultTerm), searchTerm,
+					"Failed : " + searchTerm + " is no found");
+			ptr.highlighElement(searchResultTerm);
+			Allure.step("Search Term is visible : " + searchTerm);
+			log.info("Search Term is visible : " + searchTerm);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			throw e;
+		} catch (AssertionError e) {
+			Allure.step("Search Term is not visible : " + searchTerm,Status.FAILED);
+			ptr.highlight(searchResultTerm);
+			saveScreenshotPNG(driver);
+			log.info("Search Term is not visible : " + searchTerm);
 			throw e;
 		}
 

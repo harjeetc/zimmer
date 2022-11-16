@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 import java.util.Set;
 import java.util.UUID;
@@ -28,6 +29,7 @@ import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.ElementClickInterceptedException;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchFrameException;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
@@ -39,6 +41,8 @@ import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.asserts.SoftAssert;
+
+import net.bytebuddy.asm.Advice.Enter;
 
 /**
  * Takes care of common functions
@@ -338,12 +342,12 @@ public class Functions {
 	 */
 
 	// send keys and get visibilityOf of Element
-	public void type(WebDriver driver, By locator, String value, String steplog) {
+	public void type(By locator, String value, String ele) {
 		WebElement element = new WebDriverWait(driver, Duration.ofSeconds(10))
 				.until(ExpectedConditions.visibilityOfElementLocated(locator));
 		element.clear();
 		element.sendKeys(value);
-		logger.info(steplog);
+		logger.info(value+" typed in "+ele);
 	}
 
 	// click function that will wait for visibilityOf element
@@ -367,7 +371,7 @@ public class Functions {
 	}
 	// click and wait
 
-	public void click(By by) throws InterruptedException {
+	public void click(By by)  {
 		WebElement ele = (new WebDriverWait(driver, Duration.ofSeconds(10)))
 				.until(ExpectedConditions.elementToBeClickable(by));
 		highlighElement(by);
@@ -376,7 +380,12 @@ public class Functions {
 		} catch (ElementClickInterceptedException e) {
 			int i = 0;
 			while (i < 5) {
-				Thread.sleep(i * 1000);
+				try {
+					Thread.sleep(i * 1000);
+				} catch (InterruptedException e2) {
+					// TODO Auto-generated catch block
+					e2.printStackTrace();
+				}
 				try {
 					ele.click();
 					logger.info("Cliked for ElementClickInterceptedException");
@@ -388,7 +397,7 @@ public class Functions {
 		}
 	}
 
-	public void waitElementToLoad(WebDriver driver, By locator, int time) throws InterruptedException {
+	public void waitElementToLoad(By locator, int time) throws InterruptedException {
 		int visible = 0;
 		while (driver.findElements(locator).size() == 0 && visible < time) {
 			logger.info("Waiting for element " + locator + " to visible");
@@ -463,6 +472,14 @@ public class Functions {
 		}
 
 		return size;
+	}
+	public WebElement getElement(By elementLocator) {
+		
+
+		if (Objects.isNull(elementLocator) ) {
+			return null ;
+		}
+		return driver.findElement(elementLocator);
 	}
 
 	public WebElement waitForElementPrescence(WebDriver driver, By elementLocator) {
@@ -571,6 +588,24 @@ public class Functions {
 		}
 		return element;
 	}
+	public WebElement highlight(By by) {
+		WebElement element = driver.findElement(by);
+		// draw a border around the found element
+		try {
+			if (driver instanceof JavascriptExecutor) {
+				((JavascriptExecutor) driver).executeScript("arguments[0].style.border='2px solid red'", element);
+
+				Thread.sleep(500);
+
+			//	((JavascriptExecutor) driver).executeScript("arguments[0].style.border=''", element);
+
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			Assert.fail("Failed : highlighElement" + e.toString());
+		}
+		return element;
+	}
 
 	public WebElement waitForElementToBeClickable(WebDriver driver, By elementLocator, int timeout) {
 		WebElement webElement = null;
@@ -600,13 +635,6 @@ public class Functions {
 //    Boolean readOnly = false;
 //    readOnly = ((element.getAttribute("disabled") != null) || (element.getAttribute("readonly") != null));
 //    return readOnly;
-//}
-	public void clickAt(By locator) {
-		WebElement ele = (new WebDriverWait(driver, Duration.ofSeconds(10)))
-				.until(ExpectedConditions.elementToBeClickable(locator));
-		Actions builder = new Actions(driver);
-		builder.moveToElement(ele).click().build().perform();
-	}
 
 	public String getVisibleText(By locator) {
 		WebElement ele = (new WebDriverWait(driver, Duration.ofSeconds(10)))
@@ -624,12 +652,30 @@ public class Functions {
 
 	}
 
-	public void clickAt(WebDriver driver, By locator, String steplog) {
+	public void clickAt (By locator, String elem) {
 		WebElement ele = (new WebDriverWait(driver, Duration.ofSeconds(10)))
 				.until(ExpectedConditions.elementToBeClickable(locator));
 		Actions builder = new Actions(driver);
-		builder.moveToElement(ele).click().build().perform();
-		logger.info(steplog);
+		highlighElement(locator);
+		builder.moveToElement(ele).pause(1000).build().perform();
+		logger.info("clicked at "+elem);
+	}
+	public void pressTabAndEnter (By locator) {
+		WebElement ele = (new WebDriverWait(driver, Duration.ofSeconds(10)))
+				.until(ExpectedConditions.elementToBeClickable(locator));
+		Actions builder = new Actions(driver);
+		highlighElement(locator);
+		builder.moveToElement(ele).click().pause(1000).sendKeys(Keys.TAB).sendKeys(Keys.ENTER).perform();
+		
+	}
+	public void pressEnter() {
+
+
+		Actions builder = new Actions(driver);
+
+		builder.pause(1000).sendKeys(Keys.ENTER).pause(1000).build().perform();
+		
+	
 	}
 
 	public void moveTo(WebDriver driver, By locator) {
@@ -827,6 +873,8 @@ public class Functions {
 			by = By.xpath(String.format(locator, dynamicValue));
 		else if (type.equalsIgnoreCase("CSS"))
 			by = By.cssSelector(String.format(locator, dynamicValue));
+		else if (type.equalsIgnoreCase("ID"))
+			by = By.id(String.format(locator, dynamicValue));
 
 		return by;
 	}

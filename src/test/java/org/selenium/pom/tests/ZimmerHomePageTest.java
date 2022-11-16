@@ -16,12 +16,13 @@ public class ZimmerHomePageTest extends BaseTest {
 	 * Validate the Page Title is correct 
 	 */
 
-	@Test(groups = { "HomePage", "Smoke","sanity" }, enabled = false)
+	@Test(groups = { "HomePage", "Smoke","sanity" }, enabled = true)
 	@Description("Test to verify HomePage Title")
 	@Feature("HomePage Tests")
 	public void verifyHomePageTitle() throws InterruptedException {
 		log.info("============Test started[ verifyHomePageTitle ] =============");
 		zimmerHomePage = new ZimmerHomePage(getDriver()).load();
+		log.info("============Test Steps[ User is logged into QA Zimmer HomePage ] =============");
 		zimmerHomePage.verifyPageTitle("Welcome to Zimmer Biomet");
 		log.info("============Test ended[ verifyHomePageTitle ] =============");
 
@@ -132,6 +133,19 @@ public class ZimmerHomePageTest extends BaseTest {
 		zimmerHomePage = new ZimmerHomePage(getDriver()).load();
 		zimmerHomePage.verifyBrokenLinks("footer");
 	}
+	
+	
+	/*
+	 *  validate socila media links are not broken 
+	 */
+
+	@Test(groups = { "HomePage", "Smoke" }, enabled = false)
+	@Description("Test : Verify Social Media Broken Links")
+	public void verifySocialMediaBrokenLinks() {
+		log.info("============Test started[ verifySocialMediaLinks ] =============");
+		zimmerHomePage = new ZimmerHomePage(getDriver()).load();
+		zimmerHomePage.verifyBrokenLinks("socialmedia");
+	}
 	/*
 	 * Validate The accept cookies button 
 	 */
@@ -198,6 +212,17 @@ public class ZimmerHomePageTest extends BaseTest {
 		zimmerHomePage.verifySwitchCountry("");
 	}
 	
+	
+	@Test(groups = { "HomePage", "Smoke" }, enabled = true)
+	@Description("Test : Verify Global Search")
+  	public void verifyGlobalSearch() {
+		/*
+		 * Validate any footer links are broken need to add the 200 status codes 
+		 */
+		log.info("============Test started[ verifyGlobalSearch ] =============");
+		zimmerHomePage = new ZimmerHomePage(getDriver()).load();
+		zimmerHomePage.verifySearch("global", "", "Search gesults");
+	}
 	
 	
 	
