@@ -347,7 +347,7 @@ public class Functions {
 				.until(ExpectedConditions.visibilityOfElementLocated(locator));
 		element.clear();
 		element.sendKeys(value);
-		logger.info(value+" typed in "+ele);
+		logger.info(value + " typed in " + ele);
 	}
 
 	// click function that will wait for visibilityOf element
@@ -371,7 +371,7 @@ public class Functions {
 	}
 	// click and wait
 
-	public void click(By by)  {
+	public void click(By by) {
 		WebElement ele = (new WebDriverWait(driver, Duration.ofSeconds(10)))
 				.until(ExpectedConditions.elementToBeClickable(by));
 		highlighElement(by);
@@ -473,13 +473,21 @@ public class Functions {
 
 		return size;
 	}
-	public WebElement getElement(By elementLocator) {
-		
 
-		if (Objects.isNull(elementLocator) ) {
-			return null ;
+	public WebElement getElement(By elementLocator) {
+
+		if (Objects.isNull(elementLocator)) {
+			return null;
 		}
 		return driver.findElement(elementLocator);
+	}
+
+	public List<WebElement> getElements(By elementLocator) {
+
+		if (Objects.isNull(elementLocator)) {
+			return null;
+		}
+		return driver.findElements(elementLocator);
 	}
 
 	public WebElement waitForElementPrescence(WebDriver driver, By elementLocator) {
@@ -588,6 +596,7 @@ public class Functions {
 		}
 		return element;
 	}
+
 	public WebElement highlight(By by) {
 		WebElement element = driver.findElement(by);
 		// draw a border around the found element
@@ -597,7 +606,8 @@ public class Functions {
 
 				Thread.sleep(500);
 
-			//	((JavascriptExecutor) driver).executeScript("arguments[0].style.border=''", element);
+				// ((JavascriptExecutor) driver).executeScript("arguments[0].style.border=''",
+				// element);
 
 			}
 		} catch (Exception e) {
@@ -652,30 +662,30 @@ public class Functions {
 
 	}
 
-	public void clickAt (By locator, String elem) {
+	public void clickAt(By locator, String elem) {
 		WebElement ele = (new WebDriverWait(driver, Duration.ofSeconds(10)))
 				.until(ExpectedConditions.elementToBeClickable(locator));
 		Actions builder = new Actions(driver);
 		highlighElement(locator);
 		builder.moveToElement(ele).pause(1000).build().perform();
-		logger.info("clicked at "+elem);
+		logger.info("clicked at " + elem);
 	}
-	public void pressTabAndEnter (By locator) {
+
+	public void pressTabAndEnter(By locator) {
 		WebElement ele = (new WebDriverWait(driver, Duration.ofSeconds(10)))
 				.until(ExpectedConditions.elementToBeClickable(locator));
 		Actions builder = new Actions(driver);
 		highlighElement(locator);
 		builder.moveToElement(ele).click().pause(1000).sendKeys(Keys.TAB).sendKeys(Keys.ENTER).perform();
-		
-	}
-	public void pressEnter() {
 
+	}
+
+	public void pressEnter() {
 
 		Actions builder = new Actions(driver);
 
 		builder.pause(1000).sendKeys(Keys.ENTER).pause(1000).build().perform();
-		
-	
+
 	}
 
 	public void moveTo(WebDriver driver, By locator) {
@@ -764,12 +774,12 @@ public class Functions {
 		return ele;
 	}
 
-	public WebElement highlighElement(WebDriver driver, WebElement ele) {
+	public WebElement highlighElement(WebElement ele) {
 
 		// draw a border around the found element
 		try {
 			if (driver instanceof JavascriptExecutor) {
-				((JavascriptExecutor) driver).executeScript("arguments[0].style.border='2px solid yellow'", ele);
+				((JavascriptExecutor) driver).executeScript("arguments[0].style.border='2px solid red'", ele);
 
 				Thread.sleep(500);
 

@@ -69,7 +69,13 @@ public class ZimmerHomePage extends BasePage {
 	By globalSearchTextBox = By.id("global-search");
 	By globalSearchButton = By.cssSelector(
 			"div[class='container container--default grid grid__gap--none grid__breakpoint--nobreak global-header__row-bottom'] button[aria-label='Site search']");
+
+	/*
+	 * Search elements
+	 */
 	By searchResultTerm = By.cssSelector("label[for='site-search__term']");
+	//// h3[normalize-space()='No search term provided.']
+	By noSearchResults = By.xpath("//h3[normalize-space()='No search term provided.']");
 
 	By images = By.tagName("img");
 	String playButton = "//*[.='%s']/../../../..//button";
@@ -79,6 +85,8 @@ public class ZimmerHomePage extends BasePage {
 	String countryButtons = "(//div[.='%s'])[1]";
 	By differentCountryPopup = By.xpath("//*[.='We noticed that you are visiting from a different country']/..");
 	By differentCountryPopupMessage = By.xpath("//*[.='We noticed that you are visiting from a different country']");
+
+	By searchCards = By.cssSelector("a[class*='card'] div[class*='link-heading']");
 
 	public ZimmerHomePage load() {
 		load("/");
@@ -362,6 +370,9 @@ public class ZimmerHomePage extends BasePage {
 		}
 		return name;
 	}
+	/*
+	 * This function is to to check if page title matches the text and color 
+	 */
 
 	public void navigateAndVerifyHeaderLinkTitle(String linkName) throws InterruptedException {
 		try {
@@ -581,11 +592,13 @@ public class ZimmerHomePage extends BasePage {
 		}
 
 	}
+
 	@Attachment(value = "Page screenshot", type = "image/png")
 	public byte[] saveScreenshotPNG(WebDriver driver) {
 		return ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
 	}
 
+	// this is the correct no results - No search term provided.
 	@Step("[ {0} ] search with keyword [ {1} ] and verify search term [ {2} ]")
 	public void verifySearch(String type, String serachKeyword, String searchTerm) {
 		try {
@@ -597,24 +610,52 @@ public class ZimmerHomePage extends BasePage {
 					ptr.type(globalSearchTextBox, serachKeyword, "Child Search");
 				}
 			}
-			//ptr.delay(2);
+			// ptr.delay(2);
 			ptr.pressTabAndEnter(globalSearchTextBox);
 			ptr.pressEnter();
-			ptr.waitForElement(searchResultTerm);
-			Assert.assertEquals(ptr.getVisibleText(searchResultTerm), searchTerm,
-					"Failed : " + searchTerm + " is no found");
-			ptr.highlighElement(searchResultTerm);
-			Allure.step("Search Term is visible : " + searchTerm);
-			log.info("Search Term is visible : " + searchTerm);
+			if (searchTerm.length()>0) {
+				ptr.waitForElement(noSearchResults);
+				Assert.assertEquals(ptr.getVisibleText(noSearchResults), searchTerm,
+						"Failed : " + searchTerm + " is no found");
+				ptr.highlighElement(noSearchResults);
+				Allure.step("Search Term is visible : " + searchTerm);
+				log.info("Search Term is visible : " + searchTerm);
+			}
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			throw e;
 		} catch (AssertionError e) {
-			Allure.step("Search Term is not visible : " + searchTerm,Status.FAILED);
-			ptr.highlight(searchResultTerm);
+			Allure.step("Search Term is not visible : " + searchTerm, Status.FAILED);
+			ptr.highlight(noSearchResults);
 			saveScreenshotPNG(driver);
 			log.info("Search Term is not visible : " + searchTerm);
+			throw e;
+		}
+
+	}
+
+	@Step("Verify cards displayed [ {1} ]")
+	public void verifySearchCards(String cardName) {
+		ptr.delay(5);
+		try {
+
+			ptr.getElements(searchCards).stream().forEach(ele -> {
+				Assert.assertTrue(ele.getText().contains(cardName), "Failed : " + cardName + " is no found");
+				ptr.highlighElement(ele);
+				Allure.step(cardName + " is visible in card " + ele.getText());
+				log.info(cardName + " is visible in card " + ele.getText());
+
+			});
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+			throw e;
+		} catch (AssertionError e) {
+			Allure.step("Search Term is not visible : " + cardName, Status.FAILED);
+			ptr.highlight(searchResultTerm);
+			saveScreenshotPNG(driver);
+			log.info("Search Term is not visible : " + cardName);
 			throw e;
 		}
 

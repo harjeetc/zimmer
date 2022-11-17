@@ -17,7 +17,7 @@ public class ZimmerHomePageTest extends BaseTest {
 	 */
 
 	@Test(groups = { "HomePage", "Smoke","sanity" }, enabled = true)
-	@Description("Test to verify HomePage Title")
+	@Description("Test to verify HomePage Title is Welcome to Zimmer Biomet ")
 	@Feature("HomePage Tests")
 	public void verifyHomePageTitle() throws InterruptedException {
 		log.info("============Test started[ verifyHomePageTitle ] =============");
@@ -34,12 +34,14 @@ public class ZimmerHomePageTest extends BaseTest {
 
 	@Test(groups = { "HomePage", "Smoke" }, enabled = false)
 	@Feature("HomePage Tests")
+	@Description("Verify Careers Page by clicking link on HomePage")
+
 	public void verifyCareersPage() throws InterruptedException {
-		log.info("============Test started[ verifyCareersPage ] =============");
+		log.info("============Test started[ verify Careers Page ] =============");
 		zimmerHomePage = new ZimmerHomePage(getDriver()).load();
 		zimmerHomePage.verifyHeaderLink("Careers");
 		zimmerHomePage.navigateAndVerifyHeaderLinkTitle("Careers");
-		log.info("============Test ended[ verifyCareersPage ] =============");
+		log.info("============Test ended[ verify Careers Page ] =============");
 
 	}
 
@@ -48,8 +50,10 @@ public class ZimmerHomePageTest extends BaseTest {
 	 */
 
 	@Test(groups = { "HomePage", "Smoke" }, enabled = false)
+	@Description("Verify Legal Notice Page by clicking link on HomePage")
+
 	public void verifyPrivacyNoticePage() throws InterruptedException {
-		log.info("============Test started[ verifyPrivacyNoticePage ] =============");
+		log.info("============Test started[ verifyPrivacy Notice Page on HomePage ] =============");
 		zimmerHomePage = new ZimmerHomePage(getDriver()).load();
 		zimmerHomePage.verifyFooterLink("Privacy");
 		zimmerHomePage.navigateAndVerifyFooterLinkTitle("Privacy");
@@ -62,6 +66,8 @@ public class ZimmerHomePageTest extends BaseTest {
 	 */
 
 	@Test(groups = { "HomePage", "Smoke" }, enabled = false)
+	@Description("Verify LegalNoticePage by clicking link on HomePage")
+
 	@Feature("HomePage Tests")
 	public void verifyLegalNoticePage() throws InterruptedException {
 		log.info("============Test started[ verifyLegalNoticePage ] =============");
@@ -79,8 +85,9 @@ public class ZimmerHomePageTest extends BaseTest {
 	 */
 
 	@Test(groups = { "HomePage", "Smoke" }, enabled = false)
-	
+	@Description("Verify the Navigations h1 links Expand and Collapse 'Product & Solutions', 'Education & Resources' and 'Abous US'")
 	public void verifyExpandAndCollapseProdSolutionsLink() throws InterruptedException {
+		log.info("============Test started[ Verify the Navigation h1 links Expand and Collapse] =============");
 		zimmerHomePage = new ZimmerHomePage(getDriver()).load();
 
 		zimmerHomePage.openAndCloseNavLinks("Products & Solutions", true);
@@ -94,6 +101,8 @@ public class ZimmerHomePageTest extends BaseTest {
 		zimmerHomePage.openAndCloseNavLinks("About Us", true);
 
 		zimmerHomePage.openAndCloseNavLinks("About Us", false);
+		log.info("============Test Ended[ Verify the Navigation h1 links Expand and Collapse] =============");
+
 
 	}
 
@@ -103,8 +112,9 @@ public class ZimmerHomePageTest extends BaseTest {
 	 */
 
 	@Test(groups = { "HomePage", "Smoke" }, enabled = true)
-	@Description("Verify Broken Images")
+	@Description("Verify Broken Images on HomePage")
 	public void verifyBrokenImages() {
+		log.info("============Test started[ Verify Broken Images on HomePage are not broken] =============");
 		zimmerHomePage = new ZimmerHomePage(getDriver()).load();
 		zimmerHomePage.verifyBrokenLinks("image");
 	}
@@ -118,7 +128,7 @@ public class ZimmerHomePageTest extends BaseTest {
 	@Test(groups = { "HomePage", "Smoke" }, enabled = true)
 	@Description("Test : Verify Header Broken Links")
 	public void verifyHeaderBrokenLinks() {
-		log.info("============Test started[ verifyHeaderLinks ] =============");
+		log.info("============Test started[ verifyHeaderLinks are not Broken ] =============");
 		zimmerHomePage = new ZimmerHomePage(getDriver()).load();
 		zimmerHomePage.verifyBrokenLinks("header");
 	}
@@ -130,33 +140,38 @@ public class ZimmerHomePageTest extends BaseTest {
 	@Test(groups = { "HomePage", "Smoke" }, enabled = true)
 	@Description("Test : Verify Footer Broken Links")
 	public void verifyFooterBrokenLinks() {
+		log.info("============Test started[ Verify Footer Broken Links are working ] =============");
 		zimmerHomePage = new ZimmerHomePage(getDriver()).load();
 		zimmerHomePage.verifyBrokenLinks("footer");
+		log.info("============Test ended[ verifySocial Media Links are present and working ] =============");
+
 	}
 	
 	
 	/*
-	 *  validate socila media links are not broken 
+	 *  validate social media links are not broken 
 	 */
 
 	@Test(groups = { "HomePage", "Smoke" }, enabled = false)
-	@Description("Test : Verify Social Media Broken Links")
+	@Description("Test : Verify Social Media Broken Links are not broken")
 	public void verifySocialMediaBrokenLinks() {
-		log.info("============Test started[ verifySocialMediaLinks ] =============");
+		log.info("============Test started[ verifySocialMediaLink are present and working ] =============");
 		zimmerHomePage = new ZimmerHomePage(getDriver()).load();
 		zimmerHomePage.verifyBrokenLinks("socialmedia");
+		log.info("============Test ended[ verifySocialMediaLinks are present and working ] =============");
 	}
 	/*
 	 * Validate The accept cookies button 
 	 */
 
 	@Test(groups = { "HomePage", "Smoke" }, enabled = false)
+	@Description("Test : Verify the Acept button pop up is displaying ")
 	public void verifyAcceptCookies() throws InterruptedException {
-		log.info("============Test started[ verifyAcceptCookies ] =============");
+		log.info("============Test started[ verify Accept Cookies ] =============");
 		zimmerHomePage = new ZimmerHomePage(getDriver()).load();
 		zimmerHomePage.verifyAcceptAndRejectCookies("Accept Cookies");
 
-		log.info("============Test ended[ verifyAcceptCookies ] =============");
+		log.info("============Test ended[ verify Accept Cookies ] =============");
 
 	}
 	/*
@@ -164,12 +179,14 @@ public class ZimmerHomePageTest extends BaseTest {
 	 */
 
 	@Test(groups = { "HomePage", "Smoke" }, enabled = false)
+	@Description("Test : Verify the Reject button pop up is displaying ")
+
 	public void verifyRejectCookies() throws InterruptedException {
-		log.info("============Test started[ verifyAcceptCookies ] =============");
+		log.info("============Test started[ verifyRejctCookies ] =============");
 		zimmerHomePage = new ZimmerHomePage(getDriver()).load();
 		zimmerHomePage.verifyAcceptAndRejectCookies("Do Not Sell My Personal Information");
 
-		log.info("============Test ended[ verifyAcceptCookies ] =============");
+		log.info("============Test ended[ verify Reject Cookies pop is displaying  ] =============");
 		
 		/*
 		 * Validate Verify Embedded Video Player ZBEdge Video
@@ -180,24 +197,27 @@ public class ZimmerHomePageTest extends BaseTest {
 	@Description("Test : Verify Embedded Video Player")
 
 	public void verifyEmbeddedVideoPlayer() {
+		log.info("============Test started[  Verify Embedded Video Player ] =============");
+
 		zimmerHomePage = new ZimmerHomePage(getDriver()).load();
 		zimmerHomePage.verifyVideoPlayer("Watch the ZBEdge Video", "Close");
 	}
 	
 	/*
-	 * Verify Diffrent Country PopupMessage From Site Navigation")
+	 * Verify Different Country PopupMessage From Site Navigation")
  
 	 */
 	@Test(groups = { "HomePage", "Smoke" }, enabled = false)
 	@Description("Test : Verify Diffrent Country PopupMessage From Site Navigation")
   
 	public void verifyDiffrentCountryPopupMessageFromSiteNavigation() {
+		log.info("============Test started[  Verify Diffrent Country PopupMessage From Site Navigation ] =============");
 		zimmerHomePage = new ZimmerHomePage(getDriver()).load();
 		zimmerHomePage.verifySwitchCountry("Latin America");
 	}
 	
 	/*
-	 * Verify Verify Diffrent Country PopupMessage By Launching Url")
+	 * Verify Verify Different Country PopupMessage By Launching Url")
 ")
 	 */
 	
@@ -205,9 +225,9 @@ public class ZimmerHomePageTest extends BaseTest {
 	@Description("Test : Verify Diffrent Country PopupMessage By Launching Url")
   	public void verifyDiffrentCountryPopupMessage() {
 		/*
-		 * Validate any footer links are broken need to add the 200 status codes 
+		 * V
 		 */
-		log.info("============Test started[ verifyAcceptCookie ] =============");
+		log.info("============Test started[  Verify Diffrent Country PopupMessage By Launching Url ] =============");
 		zimmerHomePage = new ZimmerHomePage(getDriver()).load();
 		zimmerHomePage.verifySwitchCountry("");
 	}
@@ -217,13 +237,24 @@ public class ZimmerHomePageTest extends BaseTest {
 	@Description("Test : Verify Global Search")
   	public void verifyGlobalSearch() {
 		/*
-		 * Validate any footer links are broken need to add the 200 status codes 
+		 * Validate Search filter when passing no values it returns a message on the search page "No Search terms provided "
 		 */
-		log.info("============Test started[ verifyGlobalSearch ] =============");
+		log.info("============Test started[ verifyGlobalSearch with no data and getting message ] =============");
 		zimmerHomePage = new ZimmerHomePage(getDriver()).load();
-		zimmerHomePage.verifySearch("global", "", "Search gesults");
+		zimmerHomePage.verifySearch("global", "", "NoT search term provided.");
 	}
 	
+	@Test(groups = { "HomePage", "Smoke" }, enabled = false)
+	@Description("Test : Verify Global Search")
+  	public void verifyCardSearch() {
+		/*
+		 * Validate Search filter is displayed keywords passed in Search component 
+		 */
+		log.info("============Test started[ verifyCardSearchWithData and display results  ] =============");
+		zimmerHomePage = new ZimmerHomePage(getDriver()).load();
+		zimmerHomePage.verifySearch("global", "Knee", "");
+		zimmerHomePage.verifySearchCards("Knee");
+	}
 	
 	
 }
