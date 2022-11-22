@@ -56,7 +56,8 @@ public class ZimmerHomePage extends BasePage {
 
 	String headerLinks = "(//a[.='%s'])[1]";
 	String footerLinks = "(//a[contains(.,'%s')])[1]";
-	String careerHeader = "div[class*='cmp-container'] div[class*='title']:first-child div h4[class*='white']";
+	By careerHeader = By
+			.cssSelector("div[class*='cmp-container'] div[class*='title']:first-child div h4[class*='white']");
 	String privacyPolicyHeader = "div[class*='cmp-container'] h1";
 	String legalNoticeHeader = "div[class*='cmp-container'] h2";
 	String navLinkHeader = "//span[contains(.,'%s')]/..";
@@ -89,6 +90,9 @@ public class ZimmerHomePage extends BasePage {
 	By searchCards = By.cssSelector("a[class*='card'] div[class*='link-heading']");
 	By patientsTab = By.xpath("//a[.='Patients']");
 	By medicalProfessionalsCards = By.xpath("//a[.='Medical Professionals']");
+	String productLink = "//a[contains(.,'%s')]";
+	By productLinkHeader = By.cssSelector("h1[class*='heading']");
+	By closeCookie = By.cssSelector("div[id*='close'] button[aria-label='Close']");
 
 	public ZimmerHomePage load() {
 		load("/");
@@ -98,6 +102,7 @@ public class ZimmerHomePage extends BasePage {
 	@Step("Verify Page Title")
 	public void verifyPageTitle(String title) {
 		try {
+
 			Assert.assertEquals(driver.getTitle(), title, "Faild : page title not matched");
 			log.info("Title is verifed : " + title);
 		} catch (Exception e) {
@@ -199,9 +204,9 @@ public class ZimmerHomePage extends BasePage {
 
 	}
 
-	@Step("This will add the color to element locator {0}")
-	public String getColorName(String eleLocator) {
-		String hex = Color.fromString(ptr.waitForElement(By.cssSelector(eleLocator)).getCssValue("color")).asHex();
+	//@Step("This will add the color to element locator {0}")
+	public String getColorName(By eleLocator, String attribute) {
+		String hex = Color.fromString(ptr.waitForElement(eleLocator).getCssValue(attribute)).asHex();
 		log.info("Hex code is : " + hex);
 		String name = "";
 		switch (hex.toLowerCase()) {
@@ -383,11 +388,10 @@ public class ZimmerHomePage extends BasePage {
 			ptr.waitforTitlepresent(linkName, 5);
 			log.info("Title is verifed : " + linkName);
 			if (linkName.equalsIgnoreCase("Careers")) {
-				Assert.assertEquals(ptr.getVisibleText(By.cssSelector(careerHeader)), linkName,
-						"Faild : page header not matched");
+				Assert.assertEquals(ptr.getVisibleText(careerHeader), linkName, "Faild : page header not matched");
 				log.info("Header is displayed : " + linkName);
-				Assert.assertEquals(getColorName(careerHeader), "White", "Failed: font color not matched");
-				log.info("Font color is " + getColorName(careerHeader));
+				Assert.assertEquals(getColorName(careerHeader, "color"), "White", "Failed: font color not matched");
+				log.info("Font color is " + getColorName(careerHeader, "color"));
 			}
 
 		} catch (AssertionError e) {
@@ -563,10 +567,11 @@ public class ZimmerHomePage extends BasePage {
 				Assert.assertFalse(
 						ptr.getAttribute(By.xpath(String.format(navLinkHeader, linkName)), "class").contains("opened"),
 						"Failed : " + linkName + " is opened");
-			//	ptr.clickAt(By.xpath(String.format(navLinkHeader, linkName)), "Nav Link Header");
+				// ptr.clickAt(By.xpath(String.format(navLinkHeader, linkName)), "Nav Link
+				// Header");
 				ptr.click(By.xpath(String.format(navLinkHeader, linkName)), "Nav Link Header");
 				ptr.delay(2);
-			//	ptr.waitElementToLoad(closePopup, 0);
+				// ptr.waitElementToLoad(closePopup, 0);
 				Assert.assertTrue(
 						ptr.getAttribute(By.xpath(String.format(navLinkHeader, linkName)), "class").contains("opened"),
 						"Failed : " + linkName + " is closed");
@@ -577,7 +582,8 @@ public class ZimmerHomePage extends BasePage {
 				Assert.assertTrue(
 						ptr.getAttribute(By.xpath(String.format(navLinkHeader, linkName)), "class").contains("opened"),
 						"Failed : " + linkName + " is closed");
-			//	ptr.clickAt(By.xpath(String.format(navLinkHeader, linkName)), "Nav Link Header");
+				// ptr.clickAt(By.xpath(String.format(navLinkHeader, linkName)), "Nav Link
+				// Header");
 				ptr.click(By.xpath(String.format(navLinkHeader, linkName)), "Nav Link Header");
 				ptr.delay(2);
 				Assert.assertFalse(
@@ -610,7 +616,7 @@ public class ZimmerHomePage extends BasePage {
 
 	// this is the correct no results - No search term provided.
 	@Step("[ {0} ] search with keyword [ {1} ] and verify search term [ {2} ]")
-	public void verifySearch(String type,String tab,String serachKeyword, String searchTerm) {
+	public void verifySearch(String type, String tab, String serachKeyword, String searchTerm) {
 		try {
 			if (serachKeyword.length() > 0) {
 				if (type.equalsIgnoreCase("global")) {
@@ -624,7 +630,7 @@ public class ZimmerHomePage extends BasePage {
 			ptr.pressTabAndEnter(globalSearchTextBox);
 			ptr.pressEnter();
 			ptr.delay(2);
-			if(tab.equalsIgnoreCase("patients"))
+			if (tab.equalsIgnoreCase("patients"))
 				naviGateToPatients();
 			if (searchTerm.length() > 0) {
 				ptr.waitForElement(noSearchResults);
@@ -669,6 +675,49 @@ public class ZimmerHomePage extends BasePage {
 			ptr.highlight(searchResultTerm);
 			saveScreenshotPNG(driver);
 			log.info("Search Term is not visible : " + cardName);
+			throw e;
+		}
+
+	}
+
+	@Step("Verify ProductLink [ {0} ] Colors [ {1} ] [ {2} ] And Navigation [ {3} ]")
+	public void verifyProductLinkColorAndNavigation(String productName, String testColor, String backgroundColor,
+			String productHeader) {
+
+		try {
+			ptr.click(closeCookie);
+			Assert.assertEquals(getColorName(ptr.getDynamicLocator("XPATH", productName, productLink), "color"),
+					testColor, "Failed: test color not matched");
+			log.info(
+					"Text color is " + getColorName(ptr.getDynamicLocator("XPATH", productName, productLink), "color"));
+			Allure.step(
+					"Text color is " + getColorName(ptr.getDynamicLocator("XPATH", productName, productLink), "color"));
+			Assert.assertEquals(
+					getColorName(ptr.getDynamicLocator("XPATH", productName, productLink), "background-color"),
+					backgroundColor, "Failed: background color not matched");
+			log.info("Background color is "
+					+ getColorName(ptr.getDynamicLocator("XPATH", productName, productLink), "background-color"));
+			Allure.step("Background color is "
+					+ getColorName(ptr.getDynamicLocator("XPATH", productName, productLink), "background-color"));
+			ptr.click(ptr.getDynamicLocator("XPATH", productName, productLink), productName);
+			ptr.delay(2);
+			log.info(ptr.getVisibleText(productLinkHeader));
+			Assert.assertTrue(ptr.getVisibleText(productLinkHeader).contains(productHeader),
+					"Failed: product header not found");
+			Allure.step("Product header found : " + productHeader + " in " + ptr.getVisibleText(productLinkHeader));
+			Assert.assertTrue(driver.getTitle().contains(productHeader), "Failed: product title not found");
+			Allure.step("Product page title found : " + productHeader + " in " + driver.getTitle());
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+			throw e;
+		} catch (AssertionError e) {
+			e.printStackTrace();
+			Allure.step("Failed to verify product" + productName, Status.FAILED);
+			ptr.highlight(ptr.getDynamicLocator("XPATH", productName, productLink));
+			saveScreenshotPNG(driver);
+			log.info("Failed to verify product : " + productName);
 			throw e;
 		}
 

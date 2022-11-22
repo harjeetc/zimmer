@@ -666,7 +666,7 @@ public class Functions {
 		WebElement ele = (new WebDriverWait(driver, Duration.ofSeconds(10)))
 				.until(ExpectedConditions.elementToBeClickable(locator));
 		Actions builder = new Actions(driver);
-		highlighElement(locator);
+	//	highlighElement(locator);
 		builder.moveToElement(ele).pause(1000).build().perform();
 		logger.info("clicked at " + elem);
 	}
@@ -888,5 +888,9 @@ public class Functions {
 
 		return by;
 	}
+	
+	
+		    
+	}
 
-}
+
