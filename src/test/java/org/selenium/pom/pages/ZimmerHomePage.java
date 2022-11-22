@@ -87,6 +87,8 @@ public class ZimmerHomePage extends BasePage {
 	By differentCountryPopupMessage = By.xpath("//*[.='We noticed that you are visiting from a different country']");
 
 	By searchCards = By.cssSelector("a[class*='card'] div[class*='link-heading']");
+	By patientsTab = By.xpath("//a[.='Patients']");
+	By medicalProfessionalsCards = By.xpath("//a[.='Medical Professionals']");
 
 	public ZimmerHomePage load() {
 		load("/");
@@ -371,7 +373,7 @@ public class ZimmerHomePage extends BasePage {
 		return name;
 	}
 	/*
-	 * This function is to to check if page title matches the text and color 
+	 * This function is to to check if page title matches the text and color
 	 */
 
 	public void navigateAndVerifyHeaderLinkTitle(String linkName) throws InterruptedException {
@@ -561,8 +563,10 @@ public class ZimmerHomePage extends BasePage {
 				Assert.assertFalse(
 						ptr.getAttribute(By.xpath(String.format(navLinkHeader, linkName)), "class").contains("opened"),
 						"Failed : " + linkName + " is opened");
-				ptr.clickAt(By.xpath(String.format(navLinkHeader, linkName)), "Nav Link Header");
-				ptr.delay(3);
+			//	ptr.clickAt(By.xpath(String.format(navLinkHeader, linkName)), "Nav Link Header");
+				ptr.click(By.xpath(String.format(navLinkHeader, linkName)), "Nav Link Header");
+				ptr.delay(2);
+			//	ptr.waitElementToLoad(closePopup, 0);
 				Assert.assertTrue(
 						ptr.getAttribute(By.xpath(String.format(navLinkHeader, linkName)), "class").contains("opened"),
 						"Failed : " + linkName + " is closed");
@@ -573,8 +577,9 @@ public class ZimmerHomePage extends BasePage {
 				Assert.assertTrue(
 						ptr.getAttribute(By.xpath(String.format(navLinkHeader, linkName)), "class").contains("opened"),
 						"Failed : " + linkName + " is closed");
-				ptr.clickAt(By.xpath(String.format(navLinkHeader, linkName)), "Nav Link Header");
-				ptr.delay(3);
+			//	ptr.clickAt(By.xpath(String.format(navLinkHeader, linkName)), "Nav Link Header");
+				ptr.click(By.xpath(String.format(navLinkHeader, linkName)), "Nav Link Header");
+				ptr.delay(2);
 				Assert.assertFalse(
 						ptr.getAttribute(By.xpath(String.format(navLinkHeader, linkName)), "class").contains("opened"),
 						"Failed : " + linkName + " is opened");
@@ -598,9 +603,14 @@ public class ZimmerHomePage extends BasePage {
 		return ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
 	}
 
+	public void naviGateToPatients() {
+		ptr.click(patientsTab, "Patients tab");
+		ptr.delay(2);
+	}
+
 	// this is the correct no results - No search term provided.
 	@Step("[ {0} ] search with keyword [ {1} ] and verify search term [ {2} ]")
-	public void verifySearch(String type, String serachKeyword, String searchTerm) {
+	public void verifySearch(String type,String tab,String serachKeyword, String searchTerm) {
 		try {
 			if (serachKeyword.length() > 0) {
 				if (type.equalsIgnoreCase("global")) {
@@ -613,7 +623,10 @@ public class ZimmerHomePage extends BasePage {
 			// ptr.delay(2);
 			ptr.pressTabAndEnter(globalSearchTextBox);
 			ptr.pressEnter();
-			if (searchTerm.length()>0) {
+			ptr.delay(2);
+			if(tab.equalsIgnoreCase("patients"))
+				naviGateToPatients();
+			if (searchTerm.length() > 0) {
 				ptr.waitForElement(noSearchResults);
 				Assert.assertEquals(ptr.getVisibleText(noSearchResults), searchTerm,
 						"Failed : " + searchTerm + " is no found");

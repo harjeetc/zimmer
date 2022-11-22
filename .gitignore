@@ -1,1 +1,9 @@
+.classpath
+.project
+.settings/
 /target/
+/test-output/
+/logs/
+/target/
+.lock
+.location

@@ -92,7 +92,7 @@ public class BaseTest {
 						+ result.getTestClass().getRealClass().getSimpleName() + "_" + result.getMethod().getMethodName()
 						+ ".png");
 				allureLog("Failed");
-				//saveScreenshotPNG(getDriver());
+				saveScreenshotPNG(getDriver());
 			} else if (result.getStatus() == ITestResult.SUCCESS)
 				allureLog("Sucess");
 			//getDriverManager().getDriver().quit();
@@ -101,7 +101,7 @@ public class BaseTest {
 
 		}
 		finally {
-			getDriverManager().getDriver().quit();
+			if(getDriverManager().getDriver()!=null) getDriverManager().getDriver().quit();
 		}
 	}
 
