@@ -17,8 +17,8 @@ public class ZimmerHomePageTest extends BaseTest {
 	 * Validate the Page Title is correct
 	 */
 
-	@Test(groups = { "HomePage", "Smoke", "sanity" }, enabled = true)
-	@Description("Test to verify HomePage Title is Welcome to Zimmer Biomet ")
+	@Test(groups = { "HomePage", "Smoke", "sanity" }, enabled = false)
+	@Description("Test to verify HomePage Title is Welcome to Zimmer Biomet")
 	@Feature("HomePage Tests")
 	public void verifyHomePageTitle() throws InterruptedException {
 		log.info("============Test started[ verifyHomePageTitle ] =============");
@@ -33,7 +33,7 @@ public class ZimmerHomePageTest extends BaseTest {
 	 * Validate the Careers link is present and Careers title is correct
 	 */
 
-	@Test(groups = { "HomePage", "Smoke" }, enabled = true)
+	@Test(groups = { "HomePage", "Smoke" }, enabled = false)
 	@Feature("HomePage Tests")
 	@Description("Verify Careers Page by clicking link on HomePage")
 
@@ -50,7 +50,7 @@ public class ZimmerHomePageTest extends BaseTest {
 	 * Validate the verifyPrivacyNoticePage is correct
 	 */
 
-	@Test(groups = { "HomePage", "Smoke" }, enabled = true)
+	@Test(groups = { "HomePage", "Smoke" }, enabled = false)
 	@Description("Verify Privacy Notice Page Page by clicking link on HomePage")
 
 	public void verifyPrivacyNoticePage() throws InterruptedException {
@@ -66,7 +66,7 @@ public class ZimmerHomePageTest extends BaseTest {
 	 * Validate the Careers link is present and Careers title is correct
 	 */
 
-	@Test(groups = { "HomePage", "Smoke" }, enabled = true)
+	@Test(groups = { "HomePage", "Smoke" }, enabled = false)
 	@Description("Verify LegalNoticePage by clicking link on HomePage")
 
 	@Feature("HomePage Tests")
@@ -83,7 +83,7 @@ public class ZimmerHomePageTest extends BaseTest {
 	 * Validate The navigational h1 links are opening and closing
 	 */
 
-	@Test(groups = { "HomePage", "Smoke" }, enabled = true)
+	@Test(groups = { "HomePage", "Smoke" }, enabled = false)
 	@Description("Verify the Navigations h1 links Expand and Collapse 'Product & Solutions', 'Education & Resources' and 'Abous US'")
 	public void verifyExpandAndCollapseProdSolutionsLink() throws InterruptedException {
 		log.info("============Test started[ Verify the Navigation h1 links Expand and Collapse] =============");
@@ -108,7 +108,7 @@ public class ZimmerHomePageTest extends BaseTest {
 	 * validate images are not broken on homepage
 	 */
 
-	@Test(groups = { "HomePage", "Smoke" }, enabled = true)
+	@Test(groups = { "HomePage", "Smoke" }, enabled = false)
 	@Description("Verify Broken Images on HomePage")
 	public void verifyBrokenImages() {
 		log.info("============Test started[ Verify Broken Images on HomePage are not broken] =============");
@@ -120,7 +120,7 @@ public class ZimmerHomePageTest extends BaseTest {
 	 * validate header links are not broken
 	 */
 
-	@Test(groups = { "HomePage", "Smoke" }, enabled = true)
+	@Test(groups = { "HomePage", "Smoke" }, enabled = false)
 	@Description("Test : Verify Header Broken Links")
 	public void verifyHeaderBrokenLinks() {
 		log.info("============Test started[ verifyHeaderLinks are not Broken ] =============");
@@ -132,8 +132,8 @@ public class ZimmerHomePageTest extends BaseTest {
 	 * Validate any footer links are broken need to add the 200 status codes
 	 */
 
-	@Test(groups = { "HomePage", "Smoke" }, enabled = true)
-	@Description("Test : Verify Footer Broken Links are workking")
+	@Test(groups = { "HomePage", "Smoke" }, enabled = false)
+	@Description("Test : Verify Footer Broken Links are working")
 	public void verifyFooterBrokenLinks() {
 		log.info("============Test started[ Verify Footer Broken Links are working ] =============");
 		ZimmerHomePage zimmerHomePage = new ZimmerHomePage(getDriver()).load();
@@ -146,7 +146,7 @@ public class ZimmerHomePageTest extends BaseTest {
 	 * validate social media links are not broken
 	 */
 
-	@Test(groups = { "HomePage", "Smoke" }, enabled = true)
+	@Test(groups = { "HomePage", "Smoke" }, enabled = false)
 	@Description("Test : Verify Social Media Broken Links are not broken")
 	public void verifySocialMediaBrokenLinks() {
 		log.info("============Test started[ verifySocialMediaLink are present and working ] =============");
@@ -155,42 +155,39 @@ public class ZimmerHomePageTest extends BaseTest {
 		log.info("============Test ended[ verifySocialMediaLinks are present and working ] =============");
 	}
 	/*
-	 * Validate The accept cookies button
+	 * Validate The accept cookies button is accepted
 	 */
 
-	@Test(groups = { "HomePage", "Smoke" }, enabled = true)
-	@Description("Test : Verify the Acept button pop up is displaying ")
+	@Test(groups = { "HomePage", "Smoke" }, enabled = false)
+	@Description("Test : Verify the 'Accept' cookies button is accepted")
 	public void verifyAcceptCookies() throws InterruptedException {
 		log.info("============Test started[ verify Accept Cookies ] =============");
 		ZimmerHomePage zimmerHomePage = new ZimmerHomePage(getDriver()).load();
+		Allure.step("Verify the 'Accept' cookies button is accepted");
 		zimmerHomePage.verifyAcceptAndRejectCookies("Accept Cookies");
-
 		log.info("============Test ended[ verify Accept Cookies ] =============");
 
 	}
 	/*
-	 * Validate the Reject button
+	 * Validate the Reject cookies button
 	 */
 
-	@Test(groups = { "HomePage", "Smoke" }, enabled = true)
-	@Description("Test : Verify the Reject button pop up is displaying ")
-
+	@Test(groups = { "HomePage", "Smoke" }, enabled = false)
+	@Description("Test : Verify the Reject cookies button pop up is displaying")
 	public void verifyRejectCookies() throws InterruptedException {
 		log.info("============Test started[ verifyRejctCookies ] =============");
 		ZimmerHomePage zimmerHomePage = new ZimmerHomePage(getDriver()).load();
+		Allure.step("Verify the Reject cookies button pop up is displaying");
 		zimmerHomePage.verifyAcceptAndRejectCookies("Do Not Sell My Personal Information");
-
-		log.info("============Test ended[ verify Reject Cookies pop is displaying  ] =============");
+		log.info("============Test ended[ verify Reject Cookies pop up is displaying  ]Test Ended =============");
 
 		/*
 		 * Validate Verify Embedded Video Player ZBEdge Video
 		 */
-
 	}
 
-	@Test(groups = { "HomePage", "Smoke" }, enabled = true)
-	@Description("Test : Verify Embedded Video Player")
-
+	@Test(groups = { "HomePage", "Smoke" }, enabled = false)
+	@Description("Test : Verify Embedded ZBEdge Video Player")
 	public void verifyEmbeddedVideoPlayer() {
 		log.info("============Test started[  Verify Embedded Video Player ] =============");
 
@@ -202,8 +199,8 @@ public class ZimmerHomePageTest extends BaseTest {
 	 * Verify Different Country PopupMessage From Site Navigation")
 	 * 
 	 */
-	@Test(groups = { "HomePage", "Smoke" }, enabled = true)
-	@Description("Test : Verify Diffrent Country PopupMessage From Site Navigation")
+	@Test(groups = { "HomePage", "Smoke" }, enabled = false)
+	@Description("Test : Verify Diffrent Country Popup Message From Site Navigation")
 
 	public void verifyDiffrentCountryPopupMessageFromSiteNavigation() {
 		log.info(
@@ -213,11 +210,11 @@ public class ZimmerHomePageTest extends BaseTest {
 	}
 
 	/*
-	 * Verify Verify Different Country PopupMessage By Launching Url") ")
+	 * Verify Different Country PopupMessage By Launching Url") ")
 	 */
 
-	@Test(groups = { "HomePage", "Smoke" }, enabled = true)
-	@Description("Test : Verify Diffrent Country PopupMessage By Launching Url")
+	@Test(groups = { "HomePage", "Smoke" }, enabled = false)
+	@Description("Test : Verify Diffrent Country Popup Message By Launching Url")
 	public void verifyDiffrentCountryPopupMessage() {
 		/*
 		 * V
@@ -226,10 +223,9 @@ public class ZimmerHomePageTest extends BaseTest {
 		ZimmerHomePage zimmerHomePage = new ZimmerHomePage(getDriver()).load();
 		zimmerHomePage.verifySwitchCountry("");
 	}
-	// value medicall placement
-
-	@Test(groups = { "HomePage", "Smoke" }, enabled = true)
-	@Description("Test : Verify Global Search")
+	// value medical placement
+	@Test(groups = { "HomePage", "Smoke" }, enabled = false)
+	@Description("Test : Verify Global Search when passing no values it displays a message 'No Search terms provided' in Medical Professionals tab")
 	public void verifyGlobalSearchMedicalProfessionals() {
 		/*
 		 * Validate Search filter when passing no values it returns a message on the
@@ -239,12 +235,12 @@ public class ZimmerHomePageTest extends BaseTest {
 				"============Test started[ verifyGlobalSearch with no data and getting message : MedicalProfessionals] =============");
 		ZimmerHomePage zimmerHomePage = new ZimmerHomePage(getDriver()).load();
 		Allure.step("Medical Professionals Global Search");
-		zimmerHomePage.verifySearch("global", "", "", "No search term provided.");
+		zimmerHomePage.verifySearch("global", "", "", "No searchh term provided.");
 
 	}
 
-	@Test(groups = { "HomePage", "Smoke" }, enabled = true)
-	@Description("Test : Verify Global Search")
+	@Test(groups = { "HomePage", "Smoke" }, enabled = false)
+	@Description("Test : Verify Global Search when passing no values it displays a message 'No Search terms provided' in Patients tab")
 	public void verifyGlobalSearchPatients() {
 		/*
 		 * Validate Search filter when passing no values it returns a message on the
@@ -257,12 +253,13 @@ public class ZimmerHomePageTest extends BaseTest {
 		zimmerHomePage.verifySearch("global", "Patients", "", "No search term provided.");
 	}
 
-	@Test(groups = { "HomePage", "Smoke" }, enabled = true)
+	/*
+	 * Validate Search filter is displayed keywords passed in Search component
+	 */
+	@Test(groups = { "HomePage", "Smoke" }, enabled = false)
 	@Description("Test : Verify Card Search with value")
 	public void verifyCardSearchMedicalProfessionals() {
-		/*
-		 * Validate Search filter is displayed keywords passed in Search component
-		 */
+		
 		log.info("============Test started[ verify Card Search with value : MedicalProfessionals ] =============");
 		ZimmerHomePage zimmerHomePage = new ZimmerHomePage(getDriver()).load();
 		zimmerHomePage.verifySearch("global", "", "Knee", "");
@@ -270,7 +267,7 @@ public class ZimmerHomePageTest extends BaseTest {
 		zimmerHomePage.verifySearchCards("Knee");
 	}
 
-	@Test(groups = { "HomePage", "Smoke" }, enabled = true)
+	@Test(groups = { "HomePage", "Smoke" }, enabled = false)
 	@Description("Test : Verify Card Search with value")
 	public void verifyCardSearchPatients() {
 		/*
@@ -285,16 +282,55 @@ public class ZimmerHomePageTest extends BaseTest {
 		zimmerHomePage.verifySearchCards("Knee");
 	}
 	
-	@Test(groups = { "HomePage", "Smoke" }, enabled = true)
+	@Test(groups = { "HomePage", "Smoke" }, enabled = false)
 	@Description("Test : Verify Robotics Link Color And Navigation")
 	public void verifyRoboticsLink() {
 		/*
-		 * Validate Search filter is displayed keywords passed in Search component
+		 * Validate Robotics link color and navigation 
 		 */
 		log.info("============Test started[ verify Robotics Link ] =============");
 		ZimmerHomePage zimmerHomePage = new ZimmerHomePage(getDriver()).load();
 		zimmerHomePage.verifyProductLinkColorAndNavigation("Experience ROSA® Robotics", "Black", "White", "Robotic");
 	
 	}
+	@Test(groups = { "HomePage", "Smoke" }, enabled = false)
+	@Description("Test : Verify Find a Doctor by entering doc type, location and miles and docotors list is visible")
+	public void verifyFindADotor() {
+		/*
+		 * Validate find a doc doctor with area location 
+		 */
+		log.info("============Test started[ verifyFindADotor ] =============");
+		ZimmerHomePage zimmerHomePage = new ZimmerHomePage(getDriver()).load();
+		Allure.step("Find a Doctor by selecting type ,location and radius");
+		zimmerHomePage.findADoctor("Knee", "San Jose", "25");
+		zimmerHomePage.varifyDoctorList();
+	
+	}
+	@Test(groups = { "HomePage", "Smoke" }, enabled = true)
+	@Description("Test :Find a doc page: Verify No DoctorType Selected hit search should throw a error message")
+	public void verifyNoDoctorTypeSelected() {
+		/*
+		 * Validate find a doc doctor with area location 
+		 */
+		log.info("============Test started[ verifyNoDoctorTypeSelected ] =============");
+		ZimmerHomePage zimmerHomePage = new ZimmerHomePage(getDriver()).load();
+
+		//zimmerHomePage.verifyNoDoctorTypeError("Please choose a pain type!");
+		zimmerHomePage.verifyNoDoctorTypeError("Please choose a treatment type.");
+	
+	}
+	@Test(groups = { "HomePage", "Smoke" }, enabled = false)
+	@Description("Test : Find a doc page: Verify No Location or miles Entered should throw a error")
+	public void verifyNoLocationEntered() {
+		/*
+		 * Validate find a doc doctor with area location 
+		 */
+		log.info("============Test started[ verifyNoLocationEntered ] =============");
+		ZimmerHomePage zimmerHomePage = new ZimmerHomePage(getDriver()).load();
+
+		zimmerHomePage.verifyNoLocationError("error");
+	
+	}
+
 
 }

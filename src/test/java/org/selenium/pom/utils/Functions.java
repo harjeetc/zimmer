@@ -349,6 +349,13 @@ public class Functions {
 		element.sendKeys(value);
 		logger.info(value + " typed in " + ele);
 	}
+	
+	public void clear(By locator) {
+		WebElement element = new WebDriverWait(driver, Duration.ofSeconds(10))
+				.until(ExpectedConditions.visibilityOfElementLocated(locator));
+		element.clear();
+
+	}
 
 	// click function that will wait for visibilityOf element
 	public void clickOnElement(WebDriver driver, WebElement element, int timeout) {
@@ -657,7 +664,6 @@ public class Functions {
 	public String getAttribute(By locator, String attr) {
 		WebElement ele = (new WebDriverWait(driver, Duration.ofSeconds(10)))
 				.until(ExpectedConditions.presenceOfElementLocated(locator));
-		logger.info("Text captured :" + ele.getText().trim());
 		return ele.getAttribute(attr).trim();
 
 	}

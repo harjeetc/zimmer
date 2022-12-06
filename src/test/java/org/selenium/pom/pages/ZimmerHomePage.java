@@ -1,5 +1,7 @@
 package org.selenium.pom.pages;
 
+import static org.testng.Assert.*;
+
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -15,7 +17,6 @@ import org.selenium.pom.base.BasePage;
 import org.selenium.pom.utils.ConfigLoader;
 import org.selenium.pom.utils.Functions;
 import org.testng.Assert;
-import org.testng.asserts.SoftAssert;
 
 import io.qameta.allure.Allure;
 import io.qameta.allure.Attachment;
@@ -46,8 +47,11 @@ public class ZimmerHomePage extends BasePage {
 		// TODO Auto-generated constructor stub
 	}
 
-	@FindBy(xpath = "(//a[contains(text(),'Find a Doctor')])[1]")
-	WebElement findADoclink1;
+	By findADoc = By.xpath("//a[@class='link link--blank '][normalize-space()='Find a Doctor']");
+	By locationTextBox = By.cssSelector("#location");
+	By radiusTextBox = By.cssSelector("#radius");
+	By docTypes = By.xpath("//ul[@justify='content-between']/li");
+	By findADocter = By.xpath("//span[.='Find a Doctor']/..");
 
 	/*
 	 * String headerLinks = "(//a[.='%s'])[1]"; String.format(headerLinks, linkName)
@@ -93,17 +97,149 @@ public class ZimmerHomePage extends BasePage {
 	String productLink = "//a[contains(.,'%s')]";
 	By productLinkHeader = By.cssSelector("h1[class*='heading']");
 	By closeCookie = By.cssSelector("div[id*='close'] button[aria-label='Close']");
+	By doctorTagList = By.cssSelector("div[class*='find-a-doctor__list'] footer");
+	By findDoctorSpinner = By
+			.cssSelector("div[class*='results aem']> div[class*='find-a-doctor find-a-doctor--results patients']");
+	By noResult = By.cssSelector("div[class*='find-a-doctor__no-results-message']");
+	By findDoctorTypeError = By.cssSelector("span[color='error']");
+	By locationError = By.xpath("//input[@id='location']/..");
+
+	// Please choose a treatment type.
 
 	public ZimmerHomePage load() {
 		load("/");
 		return this;
 	}
 
+	/*
+	 * Step to validate the find a doc flow with radius and location
+	 */
+
+	private void waitForFindDoctorLoader() {
+
+		while (ptr.getAttribute(findDoctorSpinner, "class").contains("loading")) {
+			log.info("loading");
+			ptr.delay(1);
+
+		}
+	}
+
+	@Step("Verify No Doctor type selected error")
+	public void verifyNoDoctorTypeError(String errorMessage) {
+		try {
+
+			ptr.click(findADoc, "Find a Doctor Tab");
+			ptr.click(findADocter, "Find a Doctor Button");
+			Assert.assertEquals(ptr.getVisibleText(findDoctorTypeError), errorMessage);
+			ptr.highlighElement(findDoctorTypeError);
+			Allure.step("Error message captured : " + errorMessage);
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+			throw e;
+		} catch (AssertionError e) {
+
+			e.printStackTrace();
+			throw e;
+		}
+	}
+
+	@Step("Verify No Location entred error")
+	public void verifyNoLocationError(String errorCode) {
+		try {
+
+			ptr.click(findADoc, "Find a Doctor Tab");
+			// ptr.clear(locationTextBox);
+			ptr.type(locationTextBox, "", "");
+			// ptr.pressTabAndEnter(locationTextBox);
+			ptr.click(findADocter, "Find a Doctor Button");
+			ptr.delay(2);
+			Assert.assertTrue(ptr.getAttribute(locationError, "class").contains("error"));
+
+			Allure.step("Error is visible for blank location");
+			ptr.highlighElement(locationTextBox);
+			// Assert.assertEquals(getColorName(locationError, "color"), errorColor,
+			// "Failed: font color not matched");
+			String script = "return window.getComputedStyle(document.querySelector('.input.field.input-search.input--default.field__error'),':before').getPropertyValue('color')";
+
+			JavascriptExecutor js = (JavascriptExecutor) driver;
+			String content = (String) js.executeScript(script);
+			if (Color.fromString(content).asHex().equals("#dd3f64"))
+				content = "error";
+			Assert.assertEquals(content, errorCode, "Failed: font color not matched");
+			log.info("Error color is " + content);
+			Allure.step("Error color is " + content);
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+			throw e;
+		} catch (AssertionError e) {
+
+			e.printStackTrace();
+			throw e;
+		}
+	}
+
+	@Step("Verify find a doc Types in location and radius")
+	public void findADoctor(String docType, String location, String radius) {
+		try {
+
+			ptr.click(findADoc, "Find a Doctor Tab");
+			log.info("clicked Find a Doctor Tab Link in header");
+
+			ptr.getElements(docTypes).stream().forEach(ele -> {
+
+				if (ele.getText().trim().equalsIgnoreCase(docType)) {
+					ptr.highlighElement(ele);
+					ele.click();
+					Allure.step(docType + " is selected");
+					log.info(docType + " is selected");
+
+				}
+
+			});
+
+			ptr.type(locationTextBox, location, "Location");
+			ptr.type(radiusTextBox, radius, "Radius");
+			ptr.click(findADocter, "Find a Doctor");
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+			throw e;
+		} catch (AssertionError e) {
+
+			e.printStackTrace();
+			throw e;
+		}
+	}
+
+	@Step("Verify doctors list should be more than zero")
+	public void varifyDoctorList() {
+		try {
+			waitForFindDoctorLoader();
+			Assert.assertTrue(ptr.getElementsSize(doctorTagList) > 0);
+			Allure.step("Docters found : " + ptr.getElementsSize(doctorTagList));
+			log.info("Doctors found :  " + ptr.getElementsSize(doctorTagList));
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+			throw e;
+		} catch (AssertionError e) {
+
+			e.printStackTrace();
+			throw e;
+		}
+	}
+
 	@Step("Verify Page Title")
 	public void verifyPageTitle(String title) {
 		try {
 
-			Assert.assertEquals(driver.getTitle(), title, "Faild : page title not matched");
+			Assert.assertEquals(driver.getTitle(), title, "Faild : page title is matchmatched");
 			log.info("Title is verifed : " + title);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -152,10 +288,8 @@ public class ZimmerHomePage extends BasePage {
 					"Failed : " + linkName + " is not displayed");
 			log.info("Link is displayed : " + linkName);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (AssertionError e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			throw e;
 		}
@@ -204,7 +338,7 @@ public class ZimmerHomePage extends BasePage {
 
 	}
 
-	//@Step("This will add the color to element locator {0}")
+	// @Step("This will add the color to element locator {0}")
 	public String getColorName(By eleLocator, String attribute) {
 		String hex = Color.fromString(ptr.waitForElement(eleLocator).getCssValue(attribute)).asHex();
 		log.info("Hex code is : " + hex);
@@ -395,7 +529,6 @@ public class ZimmerHomePage extends BasePage {
 			}
 
 		} catch (AssertionError e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			throw e;
 		}
@@ -616,14 +749,14 @@ public class ZimmerHomePage extends BasePage {
 
 	// this is the correct no results - No search term provided.
 	@Step("[ {0} ] search with keyword [ {1} ] and verify search term [ {2} ]")
-	public void verifySearch(String type, String tab, String serachKeyword, String searchTerm) {
+	public void verifySearch(String type, String tab, String searchKeyword, String searchTerm) {
 		try {
-			if (serachKeyword.length() > 0) {
+			if (searchKeyword.length() > 0) {
 				if (type.equalsIgnoreCase("global")) {
 
-					ptr.type(globalSearchTextBox, serachKeyword, "Global Search");
+					ptr.type(globalSearchTextBox, searchKeyword, "Global Search");
 				} else {
-					ptr.type(globalSearchTextBox, serachKeyword, "Child Search");
+					ptr.type(globalSearchTextBox, searchKeyword, "Child Search");
 				}
 			}
 			// ptr.delay(2);
@@ -648,6 +781,7 @@ public class ZimmerHomePage extends BasePage {
 			ptr.highlight(noSearchResults);
 			saveScreenshotPNG(driver);
 			log.info("Search Term is not visible : " + searchTerm);
+			e.printStackTrace();
 			throw e;
 		}
 
@@ -675,6 +809,7 @@ public class ZimmerHomePage extends BasePage {
 			ptr.highlight(searchResultTerm);
 			saveScreenshotPNG(driver);
 			log.info("Search Term is not visible : " + cardName);
+			e.printStackTrace();
 			throw e;
 		}
 
