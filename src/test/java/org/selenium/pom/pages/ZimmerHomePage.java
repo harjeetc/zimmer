@@ -58,8 +58,13 @@ public class ZimmerHomePage extends BasePage {
 	 * here format function will replace the %s with input string i.e. linkName
 	 */
 
-	String headerLinks = "(//a[.='%s'])[1]";
-	String footerLinks = "(//a[contains(.,'%s')])[1]";
+	// String headerLinks = "(//a[.='%s'])[1]";
+	String headerLinks = "(//a[contains(.,'%s')])[1]";
+
+	// String footerLinks = "(//a[contains(.,'%s')])[1]";
+	String footerLinks = "(//li/a[.='%s'])[1]";
+
+	// String footerLinks = "(//a[contains(.,'%s')])[1]";
 	By careerHeader = By
 			.cssSelector("div[class*='cmp-container'] div[class*='title']:first-child div h4[class*='white']");
 	String privacyPolicyHeader = "div[class*='cmp-container'] h1";
@@ -144,6 +149,11 @@ public class ZimmerHomePage extends BasePage {
 			throw e;
 		}
 	}
+	
+	/*/What does this script variable do? 
+	 * 
+	 */
+	
 
 	@Step("Verify No Location entred error")
 	public void verifyNoLocationError(String errorCode) {
@@ -196,7 +206,9 @@ public class ZimmerHomePage extends BasePage {
 					ele.click();
 					Allure.step(docType + " is selected");
 					log.info(docType + " is selected");
-
+				}else {
+					log.info("NO doc type found");
+					Allure.step("NO doc type found :");
 				}
 
 			});
@@ -204,6 +216,8 @@ public class ZimmerHomePage extends BasePage {
 			ptr.type(locationTextBox, location, "Location");
 			ptr.type(radiusTextBox, radius, "Radius");
 			ptr.click(findADocter, "Find a Doctor");
+		
+			
 
 		} catch (Exception e) {
 
@@ -526,6 +540,12 @@ public class ZimmerHomePage extends BasePage {
 				log.info("Header is displayed : " + linkName);
 				Assert.assertEquals(getColorName(careerHeader, "color"), "White", "Failed: font color not matched");
 				log.info("Font color is " + getColorName(careerHeader, "color"));
+			} else if (linkName.equalsIgnoreCase("Find a Doctor")) {
+				Assert.assertEquals(ptr.getVisibleText(productLinkHeader), "Find a health provider near you",
+						"Faild : page header not matched");
+				log.info("Header is displayed : Find a health provider near you");
+				ptr.highlighElement(productLinkHeader);
+
 			}
 
 		} catch (AssertionError e) {
