@@ -1,7 +1,0 @@
----
-smoke-qa:
-  tags: smoke
-  when: manual
-  stage: qa
-  script:
-    - mvn clean test
