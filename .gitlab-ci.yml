@@ -1,6 +1,6 @@
----
+
 smoke-qa:
-  tags: smoke
-  when: manual
+  tags:
+    - smoke
   script:
     - mvn clean test
