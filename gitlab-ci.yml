@@ -1,0 +1,6 @@
+---
+smoke-qa:
+  when: manual
+  stage: qa
+  script:
+    - mvn clean test
