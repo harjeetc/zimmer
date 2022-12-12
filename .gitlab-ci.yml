@@ -2,6 +2,7 @@
 smoke-qa:
   tags: smoke
   when: manual
-  stage: qa
+  stages:
+    - qa
   script:
     - mvn clean test
