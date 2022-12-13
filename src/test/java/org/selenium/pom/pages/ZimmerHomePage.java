@@ -89,6 +89,8 @@ public class ZimmerHomePage extends BasePage {
 
 	By images = By.tagName("img");
 	String playButton = "//*[.='%s']/../../../..//button";
+	String playLink = "//*[.='%s']/../../../../..//a[@aria-label='Opens video in modal']";
+	
 	String closeVideoPlayer = "//div[contains(@id,'%s')  and contains(@class,'card')]/../../../../..//button[contains(@class,'modal-close')]";
 	String videoPlayer = "div[id*='%s'][class*='card'] video";
 	By siteLink = By.cssSelector("nav[class*='navigation--utility'] a[href*='en/site']");
@@ -267,11 +269,21 @@ public class ZimmerHomePage extends BasePage {
 	}
 
 	@Step("Verify Embedded Video Player [ {0} ] with Action [ {1} ]")
-	public void verifyVideoPlayer(String videoName, String action) {
+	public void verifyVideoPlayer(String videoName, String action,String playType) {
+		String playerId;
 		try {
-			ptr.scrollPage(ptr.getDynamicLocator("XPATH", videoName, playButton));
-			String playerId = ptr.getAttribute(ptr.getDynamicLocator("XPATH", videoName, playButton), "data-modal");
-			ptr.click(ptr.getDynamicLocator("XPATH", videoName, playButton), videoName);
+			if (playType.equals("Button")) {
+				ptr.scrollPage(ptr.getDynamicLocator("XPATH", videoName, playButton));
+				 playerId = ptr.getAttribute(ptr.getDynamicLocator("XPATH", videoName, playButton), "data-modal");
+					ptr.click(ptr.getDynamicLocator("XPATH", videoName, playButton), videoName);
+					log.info("clicked playbutton");
+
+			}else {
+				ptr.scrollPage(ptr.getDynamicLocator("XPATH", videoName, playLink));
+				 playerId = ptr.getAttribute(ptr.getDynamicLocator("XPATH", videoName, playLink), "data-modal");
+					ptr.click(ptr.getDynamicLocator("XPATH", videoName, playLink), videoName);
+			}
+	
 			Assert.assertTrue(ptr.waitForElement(ptr.getDynamicLocator("CSS", playerId, videoPlayer)).isDisplayed(),
 					"Faild : Video Player is not found with name " + videoName);
 			ptr.highlighElement(ptr.getDynamicLocator("CSS", playerId, videoPlayer));
@@ -317,10 +329,10 @@ public class ZimmerHomePage extends BasePage {
 					"Failed : " + linkName + " is not displayed");
 			log.info("Link is displayed : " + linkName);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
+		
 			e.printStackTrace();
 		} catch (AssertionError e) {
-			// TODO Auto-generated catch block
+	
 			e.printStackTrace();
 			throw e;
 		}
@@ -564,13 +576,12 @@ public class ZimmerHomePage extends BasePage {
 			if (linkName.equalsIgnoreCase("Privacy")) {
 				Assert.assertTrue(ptr.getVisibleText(By.cssSelector(privacyPolicyHeader)).contains(linkName),
 						"Faild : page header not matched");
-			} else if (linkName.equalsIgnoreCase("Legal")) {
+			} else if (linkName.equalsIgnoreCase("Legal Notice")) {
 				Assert.assertTrue(ptr.getVisibleText(By.cssSelector(legalNoticeHeader)).contains(linkName),
 						"Faild : page header not matched");
 			}
 
 		} catch (AssertionError e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			throw e;
 		}
@@ -746,11 +757,9 @@ public class ZimmerHomePage extends BasePage {
 
 			}
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+						e.printStackTrace();
 			throw e;
 		} catch (AssertionError e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			throw e;
 		}

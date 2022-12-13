@@ -35,7 +35,7 @@ public class ZimmerHomePageTest extends BaseTest {
 	 * Validate the Careers link is present and Careers title is correct
 	 */
 
-	@Test(groups = { "HomePage", "Smoke" }, enabled = true)
+	@Test(groups = { "HomePage", "Smoke" }, enabled = false)
 	@Feature("HomePage Tests")
 	@Description("Verify Careers Page by clicking link on HomePage")
 
@@ -85,7 +85,7 @@ public class ZimmerHomePageTest extends BaseTest {
 	 * Validate The navigational h1 links are opening and closing
 	 */
 
-	@Test(groups = { "HomePage", "Smoke" }, enabled = true)
+	@Test(groups = { "HomePage", "Smoke" }, enabled = false)
 	@Description("Verify the Navigations h1 links Expand and Collapse 'Product & Solutions', 'Education & Resources' and 'Abous US'")
 	public void verifyExpandAndCollapseProdSolutionsLink() throws InterruptedException {
 		log.info("============Test started[ Verify the Navigation h1 links Expand and Collapse] =============");
@@ -160,7 +160,7 @@ public class ZimmerHomePageTest extends BaseTest {
 	 * Validate The accept cookies button is accepted
 	 */
 
-	@Test(groups = { "HomePage", "Smoke" }, enabled = true)
+	@Test(groups = { "HomePage", "Smoke" }, enabled = false)
 	@Description("TC 1 : Verify the 'Accept' cookies button is accepted on HomePage")
 	@Story("ZB Site - Verification of the cookie pop up")
 	@Link(name="ZBWR-665", url="https://concentrix-catalyst.atlassian.net/browse/ZBWR-665")
@@ -176,7 +176,7 @@ public class ZimmerHomePageTest extends BaseTest {
 	 * Validate the Reject cookies button
 	 */
 
-	@Test(groups = { "HomePage", "Smoke" }, enabled = true)
+	@Test(groups = { "HomePage", "Smoke" }, enabled = false)
 	@Description("TC 2 : Verify the Reject cookies button pop up is displaying on HomePage")
 	@Story("ZB Site - Verification of the cookie pop up")
 	@Link(name="ZBWR-666", url="https://concentrix-catalyst.atlassian.net/browse/ZBWR-666")
@@ -192,20 +192,30 @@ public class ZimmerHomePageTest extends BaseTest {
 		 */
 	}
 
-	@Test(groups = { "HomePage", "Smoke" }, enabled = true)
+	@Test(groups = { "HomePage", "Smoke" }, enabled = false)
 	@Description("Test : Verify Embedded ZBEdge Video Player")
 	public void verifyEmbeddedVideoPlayer() {
 		log.info("============Test started[  Verify Embedded Video Player ] =============");
 
 		ZimmerHomePage zimmerHomePage = new ZimmerHomePage(getDriver()).load();
-		zimmerHomePage.verifyVideoPlayer("Watch the ZBEdge Video", "Close");
+		zimmerHomePage.verifyVideoPlayer("Watch the ZBEdge Video", "Close","Button");
+	}
+	
+
+	@Test(groups = { "HomePage", "Smoke" }, enabled = true)
+	@Description("Test : Verify Embedded ZBEdge Video Player")
+	public void verifyEmbeddedVideoPlayer2() {
+		log.info("============Test started[  Verify Embedded Video Player 2 ] =============");
+
+		ZimmerHomePage zimmerHomePage = new ZimmerHomePage(getDriver()).load();
+		zimmerHomePage.verifyVideoPlayer("Tailored Resources for You", "Close","Link");
 	}
 
 	/*
 	 * Verify Different Country PopupMessage From Site Navigation")
 	 * 
 	 */
-	@Test(groups = { "HomePage", "Smoke" }, enabled = true)
+	@Test(groups = { "HomePage", "Smoke" }, enabled = false)
 	@Description("Test : Verify Diffrent Country Popup Message From Site Navigation")
 
 	public void verifyDiffrentCountryPopupMessageFromSiteNavigation() {
@@ -219,7 +229,7 @@ public class ZimmerHomePageTest extends BaseTest {
 	 * Verify Different Country PopupMessage By Launching Url") ")
 	 */
 
-	@Test(groups = { "HomePage", "Smoke" }, enabled = true)
+	@Test(groups = { "HomePage", "Smoke" }, enabled = false)
 	@Description("Test : Verify Diffrent Country Popup Message By Launching Url")
 	public void verifyDiffrentCountryPopupMessage() {
 		/*
@@ -230,7 +240,7 @@ public class ZimmerHomePageTest extends BaseTest {
 		zimmerHomePage.verifySwitchCountry("");
 	}
 	// value medical placementno search terms 
-	@Test(groups = { "HomePage", "Smoke" }, enabled = true)
+	@Test(groups = { "HomePage", "Smoke" }, enabled = false)
 	@Description("Test : Verify Global Search when passing no values it displays a message 'No Search terms provided' in Medical Professionals tab")
 	public void verifyGlobalSearchMedicalProfessionals() {
 		/*
@@ -245,7 +255,7 @@ public class ZimmerHomePageTest extends BaseTest {
 
 	}
 
-	@Test(groups = { "HomePage", "Smoke" }, enabled = true)
+	@Test(groups = { "HomePage", "Smoke" }, enabled = false)
 	@Description("Test : Verify Global Search when passing no values it displays a message 'No Search terms provided' in Patients tab")
 	public void verifyGlobalSearchPatients() {
 		/*
