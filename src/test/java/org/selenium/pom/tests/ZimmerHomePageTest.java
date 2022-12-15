@@ -196,17 +196,15 @@ public class ZimmerHomePageTest extends BaseTest {
 	@Description("Test : Verify Embedded ZBEdge Video Player")
 	public void verifyEmbeddedVideoPlayer() {
 		log.info("============Test started[  Verify Embedded Video Player ] =============");
-
 		ZimmerHomePage zimmerHomePage = new ZimmerHomePage(getDriver()).load();
 		zimmerHomePage.verifyVideoPlayer("Watch the ZBEdge Video", "Close","Button");
 	}
 	
 
-	@Test(groups = { "HomePage", "Smoke" }, enabled = true)
+	@Test(groups = { "HomePage", "Smoke" }, enabled = false)
 	@Description("Test : Verify Embedded ZBEdge Video Player")
 	public void verifyEmbeddedVideoPlayer2() {
-		log.info("============Test started[  Verify Embedded Video Player 2 ] =============");
-
+		log.info("============Test started[  Verify Embedded Video Player 'Tailored Resources for You'] =============");
 		ZimmerHomePage zimmerHomePage = new ZimmerHomePage(getDriver()).load();
 		zimmerHomePage.verifyVideoPlayer("Tailored Resources for You", "Close","Link");
 	}
@@ -220,7 +218,7 @@ public class ZimmerHomePageTest extends BaseTest {
 
 	public void verifyDiffrentCountryPopupMessageFromSiteNavigation() {
 		log.info(
-				"============Test started[  Verify Diffrent Country PopupMessage From Site Navigation ] =============");
+		"============Test started[  Verify Diffrent Country PopupMessage From Site Navigation ] =============");
 		ZimmerHomePage zimmerHomePage = new ZimmerHomePage(getDriver()).load();
 		zimmerHomePage.verifySwitchCountry("Latin America");
 	}
@@ -232,9 +230,6 @@ public class ZimmerHomePageTest extends BaseTest {
 	@Test(groups = { "HomePage", "Smoke" }, enabled = false)
 	@Description("Test : Verify Diffrent Country Popup Message By Launching Url")
 	public void verifyDiffrentCountryPopupMessage() {
-		/*
-		 * V
-		 */
 		log.info("============Test started[  Verify Diffrent Country PopupMessage By Launching Url ] =============");
 		ZimmerHomePage zimmerHomePage = new ZimmerHomePage(getDriver()).load();
 		zimmerHomePage.verifySwitchCountry("");
@@ -362,6 +357,18 @@ public class ZimmerHomePageTest extends BaseTest {
 		zimmerHomePage.verifyHeaderLink("Find a Doctor");
 		zimmerHomePage.navigateAndVerifyHeaderLinkTitle("Find a Doctor");
 		log.info("============Test ended[ verifyFindADoctorPage ] =============");
+
+	}
+	
+	@Test(groups = { "HomePage", "Smoke" }, enabled = true)
+	@Description("Verify paginations works in GLobal search ")
+	@Story("")
+	@Link(name="")
+	public void verifySearchPagination() throws InterruptedException {
+		log.info("============Test started[ verifySearchPagination] =============");
+		ZimmerHomePage zimmerHomePage = new ZimmerHomePage(getDriver()).load();
+		zimmerHomePage.verifyPagination(1);
+		log.info("============Test ended[ verifySearchPagination ] =============");
 
 	}
 

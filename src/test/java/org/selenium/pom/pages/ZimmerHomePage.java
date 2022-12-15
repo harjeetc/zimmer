@@ -28,8 +28,11 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Base64;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 /*
  * 
@@ -90,7 +93,7 @@ public class ZimmerHomePage extends BasePage {
 	By images = By.tagName("img");
 	String playButton = "//*[.='%s']/../../../..//button";
 	String playLink = "//*[.='%s']/../../../../..//a[@aria-label='Opens video in modal']";
-	
+
 	String closeVideoPlayer = "//div[contains(@id,'%s')  and contains(@class,'card')]/../../../../..//button[contains(@class,'modal-close')]";
 	String videoPlayer = "div[id*='%s'][class*='card'] video";
 	By siteLink = By.cssSelector("nav[class*='navigation--utility'] a[href*='en/site']");
@@ -111,6 +114,12 @@ public class ZimmerHomePage extends BasePage {
 	By findDoctorTypeError = By.cssSelector("span[color='error']");
 	By locationError = By.xpath("//input[@id='location']/..");
 
+	By previousResults = By.cssSelector("button[aria-label='previous results'] > *");
+	By nextResultsButton = By.cssSelector("button[aria-label='next results']");
+	By paginationCount = By.cssSelector(".pagination__count");
+	By activePage = By.cssSelector("div[class*='pagination__navigation'] a[class*='active']");
+	By allPage = By.cssSelector("div[class*='pagination__navigation'] a");
+
 	// Please choose a treatment type.
 
 	public ZimmerHomePage load() {
@@ -128,6 +137,54 @@ public class ZimmerHomePage extends BasePage {
 			log.info("loading");
 			ptr.delay(1);
 
+		}
+	}
+
+	@Step("Verify Pagination")
+	public void verifyPagination(int defaultPageNumber) {
+		try {
+			List<String> expPaginations = List.of("1", "2", "3", "4", "5", "6", "7", "8", "9");
+
+			verifySearch("global", "", "Knee", "");
+
+			ptr.scrollPage(nextResultsButton);
+			Assert.assertTrue(ptr.getVisibleText(paginationCount).contains("1-10 of"));
+			Allure.step("Pagination count contains 1-10 of");
+			// Assert.assertFalse(ptr.getElement(previousResults).isEnabled());
+			Assert.assertTrue(ptr.getElement(nextResultsButton).isEnabled());
+			Allure.step("Next button is enabled");
+			Assert.assertEquals((int) Integer.valueOf(ptr.getVisibleText(activePage)), defaultPageNumber);
+			Allure.step("Default pagination number is 1");
+			/*
+			 * collectors is a class and list is a static function .. takeing all the
+			 * elements storeing in a list
+			 */
+
+			List<String> actPaginations = ptr.getElements(allPage).stream().map(ele -> ele.getText())
+					.collect(Collectors.toList());
+			Assert.assertEquals(actPaginations, expPaginations);
+			Allure.step("Default pagination numbers are "+actPaginations);
+
+			ptr.click(nextResultsButton, "Next Results Button");
+			ptr.delay(5);
+			ptr.scrollPage(nextResultsButton);
+			// taking the active paginations number after next is clicked ( which would be
+			// 2)
+			int activePageNumber = Integer.valueOf(ptr.getVisibleText(activePage));
+			// then subtracting with the number should be 1
+			Assert.assertEquals(activePageNumber - defaultPageNumber, 1);
+			Allure.step("Moved to next page");
+			Assert.assertTrue(ptr.getElement(previousResults).isEnabled());
+			Allure.step("Previous button is enabled");
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+			throw e;
+		} catch (AssertionError e) {
+
+			e.printStackTrace();
+			throw e;
 		}
 	}
 
@@ -151,11 +208,11 @@ public class ZimmerHomePage extends BasePage {
 			throw e;
 		}
 	}
-	
-	/*/What does this script variable do? 
+
+	/*
+	 * /What does this script variable do?
 	 * 
 	 */
-	
 
 	@Step("Verify No Location entred error")
 	public void verifyNoLocationError(String errorCode) {
@@ -208,7 +265,7 @@ public class ZimmerHomePage extends BasePage {
 					ele.click();
 					Allure.step(docType + " is selected");
 					log.info(docType + " is selected");
-				}else {
+				} else {
 					log.info("NO doc type found");
 					Allure.step("NO doc type found :");
 				}
@@ -218,8 +275,6 @@ public class ZimmerHomePage extends BasePage {
 			ptr.type(locationTextBox, location, "Location");
 			ptr.type(radiusTextBox, radius, "Radius");
 			ptr.click(findADocter, "Find a Doctor");
-		
-			
 
 		} catch (Exception e) {
 
@@ -269,21 +324,21 @@ public class ZimmerHomePage extends BasePage {
 	}
 
 	@Step("Verify Embedded Video Player [ {0} ] with Action [ {1} ]")
-	public void verifyVideoPlayer(String videoName, String action,String playType) {
+	public void verifyVideoPlayer(String videoName, String action, String playType) {
 		String playerId;
 		try {
 			if (playType.equals("Button")) {
 				ptr.scrollPage(ptr.getDynamicLocator("XPATH", videoName, playButton));
-				 playerId = ptr.getAttribute(ptr.getDynamicLocator("XPATH", videoName, playButton), "data-modal");
-					ptr.click(ptr.getDynamicLocator("XPATH", videoName, playButton), videoName);
-					log.info("clicked playbutton");
+				playerId = ptr.getAttribute(ptr.getDynamicLocator("XPATH", videoName, playButton), "data-modal");
+				ptr.click(ptr.getDynamicLocator("XPATH", videoName, playButton), videoName);
+				log.info("clicked playbutton");
 
-			}else {
+			} else {
 				ptr.scrollPage(ptr.getDynamicLocator("XPATH", videoName, playLink));
-				 playerId = ptr.getAttribute(ptr.getDynamicLocator("XPATH", videoName, playLink), "data-modal");
-					ptr.click(ptr.getDynamicLocator("XPATH", videoName, playLink), videoName);
+				playerId = ptr.getAttribute(ptr.getDynamicLocator("XPATH", videoName, playLink), "data-modal");
+				ptr.click(ptr.getDynamicLocator("XPATH", videoName, playLink), videoName);
 			}
-	
+
 			Assert.assertTrue(ptr.waitForElement(ptr.getDynamicLocator("CSS", playerId, videoPlayer)).isDisplayed(),
 					"Faild : Video Player is not found with name " + videoName);
 			ptr.highlighElement(ptr.getDynamicLocator("CSS", playerId, videoPlayer));
@@ -329,10 +384,10 @@ public class ZimmerHomePage extends BasePage {
 					"Failed : " + linkName + " is not displayed");
 			log.info("Link is displayed : " + linkName);
 		} catch (Exception e) {
-		
+
 			e.printStackTrace();
 		} catch (AssertionError e) {
-	
+
 			e.printStackTrace();
 			throw e;
 		}
@@ -757,7 +812,7 @@ public class ZimmerHomePage extends BasePage {
 
 			}
 		} catch (Exception e) {
-						e.printStackTrace();
+			e.printStackTrace();
 			throw e;
 		} catch (AssertionError e) {
 			e.printStackTrace();
