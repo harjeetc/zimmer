@@ -69,7 +69,7 @@ public class ZimmerHomePage extends BasePage {
 
 	// String footerLinks = "(//a[contains(.,'%s')])[1]";
 	By careerHeader = By
-			.cssSelector("div[class*='cmp-container'] div[class*='title']:first-child div h4[class*='white']");
+			.cssSelector("div[class*='cmp-container'] div[class*='title']:first-child div h1[class*='white']");
 	String privacyPolicyHeader = "div[class*='cmp-container'] h1";
 	String legalNoticeHeader = "div[class*='cmp-container'] h2";
 	String navLinkHeader = "//span[contains(.,'%s')]/..";
@@ -603,7 +603,7 @@ public class ZimmerHomePage extends BasePage {
 			ptr.waitforTitlepresent(linkName, 5);
 			log.info("Title is verifed : " + linkName);
 			if (linkName.equalsIgnoreCase("Careers")) {
-				Assert.assertEquals(ptr.getVisibleText(careerHeader), linkName, "Faild : page header not matched");
+				Assert.assertEquals(ptr.getVisibleText(careerHeader), linkName, "FailEd : page header not matched");
 				log.info("Header is displayed : " + linkName);
 				Assert.assertEquals(getColorName(careerHeader, "color"), "White", "Failed: font color not matched");
 				log.info("Font color is " + getColorName(careerHeader, "color"));
@@ -623,6 +623,8 @@ public class ZimmerHomePage extends BasePage {
 
 	public void navigateAndVerifyFooterLinkTitle(String linkName) throws InterruptedException {
 		try {
+			ptr.delay(2);
+
 			ptr.click(By.xpath(String.format(footerLinks, linkName)));
 			log.info("Footer is clicked : " + linkName);
 //			ptr.waitforTitlepresent(linkName, 5);
