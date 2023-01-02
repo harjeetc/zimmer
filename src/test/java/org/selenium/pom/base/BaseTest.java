@@ -67,9 +67,10 @@ public class BaseTest {
 //	    }
 
 	@Parameters("browser")
-	@BeforeMethod
+	@BeforeMethod(alwaysRun = true)
 	public synchronized void startDriver(@Optional String browser) {
 		browser = System.getProperty("browser", browser);
+		System.out.println("============"+browser);
 		
 //        if(browser == null) browser = "CHROME";
 //        setDriver(new DriverManagerOriginal().initializeDriver(browser));
@@ -81,7 +82,7 @@ public class BaseTest {
 	}
 
 	@Parameters("browser")
-	@AfterMethod
+	@AfterMethod(alwaysRun = true)
 	public synchronized void quitDriver(@Optional String browser, ITestResult result)
 			throws InterruptedException, IOException {
 		try {
@@ -95,9 +96,11 @@ public class BaseTest {
 				saveScreenshotPNG(getDriver());
 			} else if (result.getStatus() == ITestResult.SUCCESS)
 				allureLog("Sucess");
-			//getDriverManager().getDriver().quit();
+			getDriverManager().getDriver().quit();
 
 		} catch (Exception e) {
+			//e.printStackTrace();
+			//throw e;
 
 		}
 		finally {
