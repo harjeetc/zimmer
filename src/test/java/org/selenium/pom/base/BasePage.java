@@ -19,19 +19,22 @@ public class BasePage {
 	protected WebDriverWait wait;
 	private Logger log = Logger.getLogger(ZimmerHomePageTest.class);
 
-
 	public BasePage(WebDriver driver) {
 		this.driver = driver;
 		wait = new WebDriverWait(driver, Duration.ofSeconds(30));
 	}
 
 	@Step("Login with user credentials")
-	public void load(String endPoint) {
+	public void load(String urlType) {
 		log.info("============entered userName + passwrd[User is logged into QA Zimmer Website] =============");
-	String cred = "zimmer:zmrbmt01!@";
-		System.out.println("========="+ConfigLoader.getInstance().getBaseUrl());
-		driver.get(ConfigLoader.getInstance().getBaseUrl().replace("CRED", cred));
-		//driver.get("https://"+cred+"qa-www.zimmerbiomet.com/en/");
+		String cred = "zimmer:zmrbmt01!@";
+		System.out.println("=========" + ConfigLoader.getInstance().getBaseUrl());
+		if (urlType.equalsIgnoreCase("switch")) {
+			driver.get(ConfigLoader.getInstance().getSwitchUrl().replace("CRED", cred));
+			// driver.get("https://"+cred+"qa-www.zimmerbiomet.com/en/");
+		}else {
+			driver.get(ConfigLoader.getInstance().getBaseUrl().replace("CRED", cred));
+		}
 	}
 
 	public void waitForOverlaysToDisappear(By overlay) {
