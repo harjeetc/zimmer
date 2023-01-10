@@ -1,6 +1,11 @@
 package org.selenium.pom.base;
 
 import org.apache.log4j.Logger;
+
+/**
+
+ */
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -23,28 +28,25 @@ public class BasePage {
 		this.driver = driver;
 		wait = new WebDriverWait(driver, Duration.ofSeconds(30));
 	}
-
+	
+	/**
+	 * Navigate to the ZimmerBiomet.com website
+	 * This step will log into env and pass the user name/ password upon log in 
+	 * 
+	 */
+//need to move the user log in information to constant class.
 	@Step("Login with user credentials")
 	public void load(String urlType) {
 		log.info("============entered userName + passwrd[User is logged into QA Zimmer Website] =============");
-		String cred = "zimmer:zmrbmt01!@";
 		System.out.println("=========" + ConfigLoader.getInstance().getBaseUrl());
 		if (urlType.equalsIgnoreCase("switch")) {
-			driver.get(ConfigLoader.getInstance().getSwitchUrl().replace("CRED", cred));
-			// driver.get("https://"+cred+"qa-www.zimmerbiomet.com/en/");
+			driver.get(ConfigLoader.getInstance().getSwitchUrl());
+	
 		}else {
-			driver.get(ConfigLoader.getInstance().getBaseUrl().replace("CRED", cred));
+			driver.get(ConfigLoader.getInstance().getBaseUrl());
 		}
+	}
+	
+	
 	}
 
-	public void waitForOverlaysToDisappear(By overlay) {
-		List<WebElement> overlays = driver.findElements(overlay);
-		System.out.println("OVERLAY SIZE" + overlays.size());
-		if (overlays.size() > 0) {
-			wait.until(ExpectedConditions.invisibilityOfAllElements(overlays));
-			System.out.println("OVERLAYS INVISIBLE");
-		} else {
-			System.out.println("OVERLAY NOT FOUND");
-		}
-	}
-}

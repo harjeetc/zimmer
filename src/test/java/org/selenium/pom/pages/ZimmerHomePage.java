@@ -10,12 +10,15 @@ import java.util.stream.Collectors;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.OutputType;
+import org.openqa.selenium.Rectangle;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.Color;
 import org.selenium.pom.base.BasePage;
+import org.selenium.pom.constants.ZimmerLogInCredentails;
 import org.selenium.pom.utils.ConfigLoader;
 import org.selenium.pom.utils.Functions;
 import org.testng.Assert;
@@ -38,7 +41,7 @@ public class ZimmerHomePage extends BasePage {
 
 		super(driver);
 		ptr = new Functions(driver);
-		// TODO Auto-generated constructor stub
+
 	}
 
 	By findADoc = By.xpath("//a[@class='link link--blank '][normalize-space()='Find a Doctor']");
@@ -52,19 +55,22 @@ public class ZimmerHomePage extends BasePage {
 	 * here format function will replace the %s with input string i.e. linkName
 	 */
 
-	// String headerLinks = "(//a[.='%s'])[1]";
+	// Dynamic locators
 	String headerLinks = "//div[contains(@class,'header')]//a[contains(.,'%s')]";
-
-	// String footerLinks = "(//a[contains(.,'%s')])[1]";
 	String footerLinks = "//div[contains(@class,'footer')]//a[contains(.,'%s')]";
-
-	// String footerLinks = "(//a[contains(.,'%s')])[1]";
-	By careerHeader = By
-			.cssSelector("div[class*='cmp-container'] div[class*='title']:first-child div h1[class*='white']");
 	String privacyPolicyHeader = "div[class*='cmp-container'] h1";
 	String legalNoticeHeader = "div[class*='cmp-container'] h2";
 	String navLinkHeader = "//span[contains(.,'%s')]/..";
 	String buttons = "//button[.='%s']";
+	String playButton = "//*[.='%s']/../../../..//button";
+	String playLink = "//*[.='%s']/../../../../..//a[@aria-label='Opens video in modal']";
+	String closeVideoPlayer = "//div[contains(@id,'%s')  and contains(@class,'card')]/../../../../..//button[contains(@class,'modal-close')]";
+	String videoPlayer = "div[id*='%s'][class*='card'] video";
+	String countryButtons = "(//div[.='%s'])[1]";
+
+	// Static locators
+	By careerHeader = By
+			.cssSelector("div[class*='cmp-container'] div[class*='title']:first-child div h1[class*='white']");
 	By closePopup = By.cssSelector("div[aria-label='Company Logo']+button[class*='close']");
 	By openPreferencesButton = By.cssSelector("button[aria-label='Open Preferences']");
 	By headerLinkes = By.cssSelector("nav[class*='navigation--utility'] a");
@@ -73,25 +79,12 @@ public class ZimmerHomePage extends BasePage {
 	By globalSearchTextBox = By.id("global-search");
 	By globalSearchButton = By.cssSelector(
 			"div[class='container container--default grid grid__gap--none grid__breakpoint--nobreak global-header__row-bottom'] button[aria-label='Site search']");
-
-	/*
-	 * Search elements
-	 */
 	By searchResultTerm = By.cssSelector("label[for='site-search__term']");
-	//// h3[normalize-space()='No search term provided.']
 	By noSearchResults = By.xpath("//h3[normalize-space()='No search term provided.']");
-
 	By images = By.tagName("img");
-	String playButton = "//*[.='%s']/../../../..//button";
-	String playLink = "//*[.='%s']/../../../../..//a[@aria-label='Opens video in modal']";
-
-	String closeVideoPlayer = "//div[contains(@id,'%s')  and contains(@class,'card')]/../../../../..//button[contains(@class,'modal-close')]";
-	String videoPlayer = "div[id*='%s'][class*='card'] video";
 	By siteLink = By.cssSelector("nav[class*='navigation--utility'] a[href*='en/site']");
-	String countryButtons = "(//div[.='%s'])[1]";
 	By differentCountryPopup = By.xpath("//*[.='We noticed that you are visiting from a different country']/..");
 	By differentCountryPopupMessage = By.xpath("//*[.='We noticed that you are visiting from a different country']");
-
 	By searchCards = By.cssSelector("a[class*='card'] div[class*='link-heading']");
 	By patientsTab = By.xpath("//a[.='Patients']");
 	By medicalProfessionalsCards = By.xpath("//a[.='Medical Professionals']");
@@ -104,7 +97,6 @@ public class ZimmerHomePage extends BasePage {
 	By noResult = By.cssSelector("div[class*='find-a-doctor__no-results-message']");
 	By findDoctorTypeError = By.cssSelector("span[color='error']");
 	By locationError = By.xpath("//input[@id='location']/..");
-
 	By previousResults = By.cssSelector("button[aria-label='previous results'] > *");
 	By nextResultsButton = By.cssSelector("button[aria-label='next results']");
 	By paginationCount = By.cssSelector(".pagination__count");
@@ -112,34 +104,22 @@ public class ZimmerHomePage extends BasePage {
 	By allPage = By.cssSelector("div[class*='pagination__navigation'] a");
 	By backLink = By.cssSelector("a[class*='back']");
 
-	// Please choose a treatment type.
-
 	public ZimmerHomePage load() {
 		load(" ");
 		return this;
 	}
-	
+
 	public ZimmerHomePage loadSwitch() {
 		load("switch");
 		return this;
 	}
+	
 
-	/*
-	 * Step to validate the find a doc flow with radius and location
-	 */
-
-	private void waitForFindDoctorLoader() {
-
-		while (ptr.getAttribute(findDoctorSpinner, "class").contains("loading")) {
-			log.info("loading");
-			ptr.delay(1);
-
-		}
-	}
-
+	
 	@Step("Verify Pagination")
 	public void verifyPagination(int defaultPageNumber) {
 		try {
+			//KNOWN data from the search results pagination. 
 			List<String> expPaginations = List.of("1", "2", "3", "4", "5", "6", "7", "8", "9");
 
 			verifySearch("global", "", "Knee", "");
@@ -185,21 +165,15 @@ public class ZimmerHomePage extends BasePage {
 		}
 	}
 
-	
-
-
 	@Step("Verify Page Title")
 	public void verifyPageTitle(String title) {
 		try {
-
 			Assert.assertEquals(driver.getTitle(), title, "Faild : page title is matchmatched");
 			log.info("Title is verifed : " + title);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			throw e;
 		} catch (AssertionError e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			throw e;
 		}
@@ -282,11 +256,8 @@ public class ZimmerHomePage extends BasePage {
 			if (countryName.length() > 1) {
 				ptr.click(siteLink, "EN Site Link");
 				ptr.click(ptr.getDynamicLocator("XPATH", countryName, countryButtons), countryName);
-			} 
-			
-//			else {
-//				ptr.navigateTo(ConfigLoader.getInstance().getSwitchUrl());
-//			}
+			}
+
 			Assert.assertEquals(ptr.waitForElement(differentCountryPopup).isDisplayed(), true,
 					"Failed : popup is not displayed");
 			ptr.highlighElement(differentCountryPopup);
@@ -487,13 +458,13 @@ public class ZimmerHomePage extends BasePage {
 			ptr.waitforTitlepresent(linkName, 5);
 			log.info("Title is verifed : " + linkName);
 			if (linkName.equalsIgnoreCase("Careers")) {
-				Assert.assertEquals(ptr.getVisibleText(careerHeader), linkName, "FailEd : page header not matched");
+				Assert.assertEquals(ptr.getVisibleText(careerHeader), linkName, "Failed : page header not matched");
 				log.info("Header is displayed : " + linkName);
 				Assert.assertEquals(getColorName(careerHeader, "color"), "White", "Failed: font color not matched");
 				log.info("Font color is " + getColorName(careerHeader, "color"));
 			} else if (linkName.equalsIgnoreCase("Find a Doctor")) {
 				Assert.assertEquals(ptr.getVisibleText(productLinkHeader), "Find a health provider near you",
-						"Faild : page header not matched");
+						"Failed : page header not matched");
 				log.info("Header is displayed : Find a health provider near you");
 				ptr.highlighElement(productLinkHeader);
 
@@ -521,8 +492,6 @@ public class ZimmerHomePage extends BasePage {
 
 			ptr.click(By.xpath(String.format(footerLinks, linkName)));
 			log.info("Footer is clicked : " + linkName);
-//			ptr.waitforTitlepresent(linkName, 5);
-//			log.info("Title is verifed : " + linkName);
 
 			if (linkName.equalsIgnoreCase("Privacy")) {
 				Assert.assertTrue(ptr.getVisibleText(By.cssSelector(privacyPolicyHeader)).contains(linkName),
@@ -547,27 +516,25 @@ public class ZimmerHomePage extends BasePage {
 		try {
 			if (buttonName.equalsIgnoreCase("Accept Cookies")) {
 
-				// is for accept
+				// is for accept flow 
 
 				Assert.assertTrue(ptr.waitForElement(By.xpath(String.format(buttons, buttonName))).isDisplayed(),
 						"Failed : " + buttonName + " is not displayed");
-				// ptr.highlighElement(By.xpath(String.format(buttons, buttonName)));
 				log.info("Button is displayed : " + buttonName);
 				ptr.click(By.xpath(String.format(buttons, buttonName)), "Button is clicked : " + buttonName);
-
 				Assert.assertEquals(ptr.getElementsSize(By.xpath(String.format(buttons, "Confirm My Choices"))), 0,
 						"Failed : " + buttonName + " is displayed");
-
 				log.info("Popup is not displayed for : " + buttonName);
 				Assert.assertTrue(ptr.waitForElement(openPreferencesButton).isDisplayed(),
 						"Failed : " + buttonName + " is not displayed");
 				log.info("Open Preferences Button is displayed");
 			} else if (buttonName.equalsIgnoreCase("Do Not Sell My Personal Information")) {
-
-				// is for reject
+				/**
+				 * // is for reject flow 
+				 */
 				Assert.assertTrue(ptr.waitForElement(By.xpath(String.format(buttons, buttonName))).isDisplayed(),
 						"Failed : " + buttonName + " is not displayed");
-				// ptr.highlighElement(By.xpath(String.format(buttons, buttonName)));
+		
 				log.info("Link is displayed : " + buttonName);
 				ptr.click(By.xpath(String.format(buttons, buttonName)), "Button is clicked : " + buttonName);
 				Assert.assertTrue(
@@ -648,15 +615,10 @@ public class ZimmerHomePage extends BasePage {
 			URL url = new URL(linkUrl);
 
 			httpURLConnect = (HttpURLConnection) url.openConnection();
-			String userpass = "zimmer" + ":" + "zmrbmt01!";
-			String basicAuth = "Basic " + new String(Base64.getEncoder().encode(userpass.getBytes()));
+			String basicAuth = "Basic " + new String(Base64.getEncoder().encode(ZimmerLogInCredentails.getCred().getBytes()));
 
 			httpURLConnect.setRequestProperty("Authorization", basicAuth);
 			httpURLConnect.setConnectTimeout(3000);
-			// httpURLConnect.setRequestProperty("User-Agent", "Mozilla/5.0 (X11; Linux
-			// x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.71
-			// Safari/537.36");
-
 			httpURLConnect.connect();
 
 			if (httpURLConnect.getResponseCode() == 200 || httpURLConnect.getResponseCode() == 301
@@ -665,14 +627,9 @@ public class ZimmerHomePage extends BasePage {
 				log.info("[ " + type.toUpperCase() + " ] : " + linkUrl + " - " + httpURLConnect.getResponseMessage()
 						+ " : " + httpURLConnect.getResponseCode() + " : NOT BROKEN");
 				Allure.step("[ " + type.toUpperCase() + " ] : " + linkUrl + " - " + httpURLConnect.getResponseMessage()
-						+ " : " + httpURLConnect.getResponseCode() + " : NOT BROKEN",Status.PASSED);
-//				ptr.verifyEquals(httpURLConnect.getResponseCode(), 200,
-//						"Failed : BROKEN : " + httpURLConnect.getResponseCode());
+						+ " : " + httpURLConnect.getResponseCode() + " : NOT BROKEN", Status.PASSED);
 
-			}
-
-			// if (httpURLConnect.getResponseCode() == HttpURLConnection.HTTP_NOT_FOUND) {
-			else {
+			} else {
 
 				ptr.verifyTrue(false, "Failed : BROKEN : " + httpURLConnect.getResponseCode());
 
@@ -696,11 +653,8 @@ public class ZimmerHomePage extends BasePage {
 				Assert.assertFalse(
 						ptr.getAttribute(By.xpath(String.format(navLinkHeader, linkName)), "class").contains("opened"),
 						"Failed : " + linkName + " is opened");
-				// ptr.clickAt(By.xpath(String.format(navLinkHeader, linkName)), "Nav Link
-				// Header");
 				ptr.click(By.xpath(String.format(navLinkHeader, linkName)), "Nav Link Header");
 				ptr.delay(2);
-				// ptr.waitElementToLoad(closePopup, 0);
 				Assert.assertTrue(
 						ptr.getAttribute(By.xpath(String.format(navLinkHeader, linkName)), "class").contains("opened"),
 						"Failed : " + linkName + " is closed");
@@ -711,8 +665,6 @@ public class ZimmerHomePage extends BasePage {
 				Assert.assertTrue(
 						ptr.getAttribute(By.xpath(String.format(navLinkHeader, linkName)), "class").contains("opened"),
 						"Failed : " + linkName + " is closed");
-				// ptr.clickAt(By.xpath(String.format(navLinkHeader, linkName)), "Nav Link
-				// Header");
 				ptr.click(By.xpath(String.format(navLinkHeader, linkName)), "Nav Link Header");
 				ptr.delay(2);
 				Assert.assertFalse(
@@ -741,8 +693,8 @@ public class ZimmerHomePage extends BasePage {
 		ptr.delay(2);
 	}
 
-	// this is the correct no results - No search term provided.
 	@Step("[ {0} ] search with keyword [ {1} ] and verify search term [ {2} ]")
+
 	public void verifySearch(String type, String tab, String searchKeyword, String searchTerm) {
 		try {
 			if (searchKeyword.length() > 0) {
@@ -851,5 +803,59 @@ public class ZimmerHomePage extends BasePage {
 		}
 
 	}
+	
+	/**
+	 * check height and width of the search box 
+	 * @throws Exception 
+	 */
+				public void checkHeightAndWidht() throws Exception {
+					try {
+						ptr.waitElementToLoad(globalSearchTextBox, 2);
+						ptr.click(globalSearchTextBox);
+						
+						WebElement globalSearchBox =			driver.findElement(globalSearchTextBox);
+			
+		Rectangle SearchBox=	globalSearchBox.getRect();
+
+		//SearchBox.getHeight();
+		//SearchBox.getWidth();
+		//System.err.println(SearchBox.getHeight());
+
+		// Get the height and width of the element
+			int actualHeight =				SearchBox.getHeight();
+			int actualWidth  =				SearchBox.getWidth();
+		;log.info("coordinatres of the width of SearchBox");
+		System.err.println(SearchBox.getWidth());
+		log.info("coordinatres of the Height of SearchBox");
+
+		// Set the expected height and width
+		int expectedHeight = 75;
+		int expectedWidth = 375;
+
+		// Assert that the actual height and width match the expected values
+		Assert.assertEquals(actualHeight, expectedHeight);
+		Assert.assertEquals(actualWidth, expectedWidth);
+					} catch (NoSuchElementException | InterruptedException  e) {
+						e.printStackTrace();
+						throw e;
+					}
+
+
+
+
+	/**
+	 * 75
+	9138 pages.ZimmerHomePage|checkHeightAndWidht| - 823 - coordinates of the width of SearchBox
+	375
+	9140 pages.ZimmerHomePage|checkHeightAndWidht| - 825 - coordinates of the Height of SearchBox
+	 */
+
+		
+					
+					
+					
+					
+				}
+
 
 }
