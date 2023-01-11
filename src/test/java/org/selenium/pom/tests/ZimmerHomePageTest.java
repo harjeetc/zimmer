@@ -369,7 +369,7 @@ public void verifyBackToHomePage() throws InterruptedException {
 
 }
 
-@Test(groups = { "HomePage", "phase1" }, enabled = true)
+@Test(groups = { "HomePage", "phase1" }, enabled = false)
 @Description("Verify Height & Width Co-ordinates on GLobal Search On HomePage")
 @Story("")
 @Link(name = "", url = "")
@@ -426,6 +426,17 @@ public void verifyDiffrentCountryPopupMessage() {
   log.info("============Test started[  Verify Diffrent Country PopupMessage By Launching Url ] =============");
   ZimmerHomePage zimmerHomePage = new ZimmerHomePage(getDriver()).loadSwitch();
   zimmerHomePage.verifySwitchCountry("");
+}
+
+@Test(groups = { "HomePage", "phase1" }, enabled = true)
+@Description("Test : Verify Diffrent Country Popup Message By Launching Url")
+public void verifyFindADOCFilterCheckbox() {
+  log.info("============Test started[  verifyFindADOCFilterCheckbox ] =============");
+  //ZimmerHomePage zimmerHomePage = new ZimmerHomePage(getDriver()).loadSwitch();
+  ZimmerFindADocPage zimmerFindADocPage = new ZimmerFindADocPage(getDriver()).load();
+  zimmerFindADocPage.findADoctor("Robotic Surgery", "San Ramon", "25");
+  Allure.step("Find a Doctor by selecting Filter type checkbox");
+  zimmerFindADocPage.filterDoc("Minimally Invasive Surgery (MIS)");
 }
 
 }
