@@ -8,10 +8,13 @@ import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WindowType;
 import org.openqa.selenium.support.Color;
 import org.selenium.pom.base.BasePage;
+import org.selenium.pom.utils.ConfigLoader;
 import org.selenium.pom.utils.Functions;
 import org.testng.Assert;
+import org.testng.TestException;
 
 import io.qameta.allure.Allure;
 import io.qameta.allure.Step;
@@ -99,6 +102,17 @@ public class ZimmerFindADocPage extends BasePage {
 	By activePage = By.cssSelector("div[class*='pagination__navigation'] a[class*='active']");
 	By allPage = By.cssSelector("div[class*='pagination__navigation'] a");
 	By backLink = By.cssSelector("a[class*='back']");
+
+	/**
+	 * Locators for Filter
+	 */
+
+	String filterCheckBox = "//label[contains(.,'%s')]/..";
+	String filterLabel = "//label[contains(.,'%s')]";
+	String filterButton = "//button[contains(.,'%s')]";
+	By docterListFooter = By.xpath("//div[contains(@class,'find-a-doctor__list')]//footer");
+	String docterListFooterTags = "//span[contains(.,'%s')]";
+	String docListFooterTags = "//div[contains(@class,'find-a-doctor__list')]//footer//span[contains(.,'%s')]";
 
 	// Please choose a treatment type.
 	public ZimmerFindADocPage load() {
@@ -241,19 +255,20 @@ public class ZimmerFindADocPage extends BasePage {
 			ptr.click(findADoc, "Find a Doctor Tab");
 			log.info("clicked Find a Doctor Tab Link in header");
 
-			ptr.getElements(docTypes).stream().forEach(ele -> {
+			ptr.getElements(docTypes).stream().filter(ele -> ele.getText().trim().equalsIgnoreCase(docType)).findFirst()
+					.ifPresentOrElse(ele -> {
 
-				if (ele.getText().trim().equalsIgnoreCase(docType)) {
-					ptr.highlighElement(ele);
-					ele.click();
-					Allure.step(docType + " is selected");
-					log.info(docType + " is selected");
-				} else {
-					log.info("NO doc type found");
-					Allure.step("NO doc type found :");
-				}
+						ptr.highlighElement(ele);
+						ele.click();
+						Allure.step(docType + " is selected");
+						log.info(docType + " is selected");
 
-			});
+					}, () -> {
+						log.info("NO doc type found");
+						Allure.step("NO doc type found :");
+						throw new TestException("No Docter Type Found");
+
+					});
 
 			ptr.type(locationTextBox, location, "Location");
 			ptr.type(radiusTextBox, radius, "Radius");
@@ -268,6 +283,7 @@ public class ZimmerFindADocPage extends BasePage {
 			e.printStackTrace();
 			throw e;
 		}
+
 	}
 
 	@Step("Verify doctors list should be more than zero")
@@ -290,13 +306,6 @@ public class ZimmerFindADocPage extends BasePage {
 		}
 	}
 
-	String filterCheckBox = "//label[contains(.,'%s')]/..";
-	String filterLabel = "//label[contains(.,'%s')]";
-	String filterButton = "//button[contains(.,'%s')]";
-	By docterListFooter = By.xpath("//div[contains(@class,'find-a-doctor__list')]//footer");
-	String docterListFooterTags = "//span[contains(.,'%s')]";
-	String docListFooterTags = "//div[contains(@class,'find-a-doctor__list')]//footer//span[contains(.,'%s')]";
-
 	// System.out.println(Integer.parseInt(str.replaceAll("[\\D]", "")))
 	@Step("Verify Find a doc with filter")
 	public void filterDoc(String docFilter) {
@@ -304,13 +313,17 @@ public class ZimmerFindADocPage extends BasePage {
 			ptr.delay(5);
 			int tagCount = Integer.parseInt(
 					ptr.getVisibleText(ptr.getDynamicLocator("XPATH", docFilter, filterLabel)).replaceAll("[\\D]", ""));
+			System.out.println(tagCount);
 			ptr.click(ptr.getDynamicLocator("XPATH", docFilter, filterCheckBox), "Doctor Procedure");
+			log.info("Selected a filter type checkbox" + docFilter);
 			ptr.click(ptr.getDynamicLocator("XPATH", "Apply Filter", filterButton), "Apply Filter");
 			ptr.delay(5);
 
+			log.info("clicked 'Apply Filter' button " + filterButton);
+
 			Assert.assertEquals(ptr.getElements(docterListFooter).size(), tagCount,
-					"Failed: docter filter count mismatched");
-			Allure.step("Docters found with the filter : " + tagCount);
+					"Failed: doctor filter count mismatched");
+			Allure.step("Doctors found with the filter : " + tagCount);
 
 			Assert.assertEquals(ptr.getElementsSize(ptr.getDynamicLocator("XPATH", docFilter, docListFooterTags)),
 					tagCount, "Failed: Filter tags count mismatched");
@@ -323,6 +336,39 @@ public class ZimmerFindADocPage extends BasePage {
 						ptr.getElements(ptr.getDynamicLocator("XPATH", docFilter, docListFooterTags)).get(i));
 
 			});
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+			throw e;
+		} catch (AssertionError e) {
+
+			e.printStackTrace();
+			throw e;
+			// test
+		}
+
+	}
+
+	By termsAndConditionsLink = By.linkText("Terms and Conditions");
+	By termsAndconditionsHeader = By.cssSelector("h1[class*='heading']");
+	
+	
+
+	@Step("Navigate and verify term and conditions link")
+	public void clickAndVerifyFindDocLink(String linkName) {
+		try {
+			ptr.click(findADoc, "Find a Doctor Tab");
+			log.info("clicked Find a Doctor Tab Link in header");
+			ptr.delay(5);
+			ptr.scrollPage(termsAndConditionsLink);
+			ptr.click(termsAndConditionsLink, linkName);
+			
+			ptr.switchWindowAndNavigateTo(ConfigLoader.getInstance().getTermsUrl());
+			Assert.assertEquals(ptr.getVisibleText(termsAndconditionsHeader), linkName,
+					"Failed: to verify the link header");
+			
+			
 
 		} catch (Exception e) {
 

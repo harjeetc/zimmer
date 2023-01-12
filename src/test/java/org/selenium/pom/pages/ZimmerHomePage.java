@@ -103,6 +103,8 @@ public class ZimmerHomePage extends BasePage {
 	By activePage = By.cssSelector("div[class*='pagination__navigation'] a[class*='active']");
 	By allPage = By.cssSelector("div[class*='pagination__navigation'] a");
 	By backLink = By.cssSelector("a[class*='back']");
+	
+	//div[class*='loading--indicator'] *[class*='loading']
 
 	public ZimmerHomePage load() {
 		load(" ");

@@ -35,6 +35,7 @@ import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.WindowType;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
@@ -78,11 +79,6 @@ public class Functions {
 		return inputStream;
 	}
 
-	/**
-	 *
-	 * @author SreeMoore
-	 *
-	 */
 //Function to get time stamp in YYYY-MM-DD format
 	public void verifyEquals(Object actual, Object expected, String failedLog) {
 		verify.assertEquals(actual, expected, failedLog);
@@ -100,11 +96,6 @@ public class Functions {
 
 	}
 
-	/**
-	 *
-	 * @author SreeMoore
-	 *
-	 */
 //Function to get time stamp in YYYY-MM-DD format
 	public String dateYearStamp() {
 
@@ -114,11 +105,6 @@ public class Functions {
 		return reportDate;
 	}
 
-	/**
-	 *
-	 * @author SreeMoore
-	 *
-	 */
 	// Function to get Last day in Next Month
 	public String getNextDate() {
 		Calendar cal = Calendar.getInstance();
@@ -264,7 +250,6 @@ public class Functions {
 		// get the header and size
 		int Cols = driver.findElements(By.xpath("//div[1]/table/tbody/tr[2]/td")).size();
 
-		// System.out.println(Cols);
 		// verify header for "search" in header columns
 		for (int x = 2; x < Cols; x++) {
 			String ColumnTxt = driver.findElement(By.xpath("//div[1]/table/tbody/tr[2]/td[" + x + "]")).getText();
@@ -286,7 +271,6 @@ public class Functions {
 		String[] sPortalDate1 = sPortalDate.split("day, ");
 
 		sPortalDate = sPortalDate1[1].substring(0, sPortalDate1[1].length() - 4);
-		// System.out.println("\n*****sPortalDate: "+sPortalDate+ " *****\n");
 		SimpleDateFormat sdf = new SimpleDateFormat("MMMMMMMM dd, yyyy hh:mm aa");
 		Date parsedDate = sdf.parse(sPortalDate);
 		long launchTime = parsedDate.getTime();
@@ -304,12 +288,7 @@ public class Functions {
 			logger.info("VBS file path = " + folderPath + "/" + fileName + "_xml.vbs");
 			String cmd = "wscript " + folderPath + "/" + fileName + "_xml.vbs  \"" + folderPath + "\" ";
 			Process p = Runtime.getRuntime().exec(cmd);
-			// int exitValue =p.exitValue();
-			// if (exitValue==1){
-			// cmd= "wscript
-			// "+"src/test/resources/TestData/UploadBatchDatan/"+fileName+"_xml.vbs";
-			// Runtime.getRuntime().exec(cmd);
-			// }
+
 		} catch (IOException e) {
 			System.exit(0);
 		}
@@ -320,7 +299,6 @@ public class Functions {
 		try {
 			logger.info(path);
 			String cmd = "wscript " + path;
-			// String cmd= "wscript "+"TestData/UploadBatchData/Inline-Minutes_xml.vbs";
 			Runtime.getRuntime().exec(cmd);
 		} catch (IOException e) {
 			System.exit(0);
@@ -349,7 +327,7 @@ public class Functions {
 		element.sendKeys(value);
 		logger.info(value + " typed in " + ele);
 	}
-	
+
 	public void clear(By locator) {
 		WebElement element = new WebDriverWait(driver, Duration.ofSeconds(10))
 				.until(ExpectedConditions.visibilityOfElementLocated(locator));
@@ -390,7 +368,6 @@ public class Functions {
 				try {
 					Thread.sleep(i * 1000);
 				} catch (InterruptedException e2) {
-					// TODO Auto-generated catch block
 					e2.printStackTrace();
 				}
 				try {
@@ -439,6 +416,15 @@ public class Functions {
 		highlighElement(by);
 		ele.click();
 		logger.info("Clicked at : " + eleName);
+	}
+
+	public void switchWindowAndNavigateTo(String url) {
+
+		switchToWindow(driver, 1);
+		driver.get(url);
+		delay(5);
+		System.out.println(driver.getCurrentUrl());
+
 	}
 
 	/**
@@ -672,7 +658,7 @@ public class Functions {
 		WebElement ele = (new WebDriverWait(driver, Duration.ofSeconds(10)))
 				.until(ExpectedConditions.elementToBeClickable(locator));
 		Actions builder = new Actions(driver);
-	//	highlighElement(locator);
+		// highlighElement(locator);
 		builder.moveToElement(ele).pause(1000).build().perform();
 		logger.info("clicked at " + elem);
 	}
@@ -894,9 +880,5 @@ public class Functions {
 
 		return by;
 	}
-	
-	
-		    
-	}
 
-
+}

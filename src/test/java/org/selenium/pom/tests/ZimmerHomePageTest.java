@@ -428,17 +428,26 @@ public void verifyDiffrentCountryPopupMessage() {
   zimmerHomePage.verifySwitchCountry("");
 }
 
-@Test(groups = { "HomePage", "phase1" }, enabled = true)
-@Description("Test : Verify Diffrent Country Popup Message By Launching Url")
+@Test(groups = { "HomePage", "phase1" }, enabled = false)
+@Description("Test : Verify in Find a doc page user can filter by checkbox ")
 public void verifyFindADOCFilterCheckbox() {
   log.info("============Test started[  verifyFindADOCFilterCheckbox ] =============");
-  //ZimmerHomePage zimmerHomePage = new ZimmerHomePage(getDriver()).loadSwitch();
   ZimmerFindADocPage zimmerFindADocPage = new ZimmerFindADocPage(getDriver()).load();
   zimmerFindADocPage.findADoctor("Robotic Surgery", "San Ramon", "25");
   Allure.step("Find a Doctor by selecting Filter type checkbox");
   zimmerFindADocPage.filterDoc("Minimally Invasive Surgery (MIS)");
 }
 
+
+@Test(groups = { "HomePage", "phase1" }, enabled = true)
+@Description("Test : Verify in Find a doc page 'Terms and condtions link opens in a new window'")
+public void navigateAndVerifyTermsAndConditionsLink() {
+  log.info("============Test started[  navigateAndVerifyTermsAndConditionsLink ] =============");
+  ZimmerFindADocPage zimmerFindADocPage = new ZimmerFindADocPage(getDriver()).load();
+  Allure.step("Find a Doctor by selecting 'Terms and condtions link opens in a new window");
+  zimmerFindADocPage.clickAndVerifyFindDocLink("Terms and Conditions");
+
+}
 }
 
 
