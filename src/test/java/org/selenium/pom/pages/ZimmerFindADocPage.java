@@ -1,5 +1,6 @@
 package org.selenium.pom.pages;
 
+import java.time.Duration;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -49,38 +50,12 @@ public class ZimmerFindADocPage extends BasePage {
 	String headerLinks = "//div[contains(@class,'header')]//a[contains(.,'%s')]";
 	String footerLinks = "//div[contains(@class,'footer')]//a[contains(.,'%s')]";
 
-	By careerHeader = By
-			.cssSelector("div[class*='cmp-container'] div[class*='title']:first-child div h1[class*='white']");
-	String privacyPolicyHeader = "div[class*='cmp-container'] h1";
-	String legalNoticeHeader = "div[class*='cmp-container'] h2";
-	String navLinkHeader = "//span[contains(.,'%s')]/..";
 	String buttons = "//button[.='%s']";
-	By closePopup = By.cssSelector("div[aria-label='Company Logo']+button[class*='close']");
-	By openPreferencesButton = By.cssSelector("button[aria-label='Open Preferences']");
-	By headerLinkes = By.cssSelector("nav[class*='navigation--utility'] a");
-	By footerLinkes = By.cssSelector("div[class*='global-footer--primary-container'] ul[label='footer'] a");
-	By socialMediaLinkes = By.cssSelector("div[class*='global-footer--primary-container'] ul[class*='social-media'] a");
-	By globalSearchTextBox = By.id("global-search");
+
 	By globalSearchButton = By.cssSelector(
 			"div[class='container container--default grid grid__gap--none grid__breakpoint--nobreak global-header__row-bottom'] button[aria-label='Site search']");
 
-	/*
-	 * Search elements
-	 */
-	By searchResultTerm = By.cssSelector("label[for='site-search__term']");
-	//// h3[normalize-space()='No search term provided.']
-	By noSearchResults = By.xpath("//h3[normalize-space()='No search term provided.']");
-
 	By images = By.tagName("img");
-	String playButton = "//*[.='%s']/../../../..//button";
-	String playLink = "//*[.='%s']/../../../../..//a[@aria-label='Opens video in modal']";
-
-	String closeVideoPlayer = "//div[contains(@id,'%s')  and contains(@class,'card')]/../../../../..//button[contains(@class,'modal-close')]";
-	String videoPlayer = "div[id*='%s'][class*='card'] video";
-	By siteLink = By.cssSelector("nav[class*='navigation--utility'] a[href*='en/site']");
-	String countryButtons = "(//div[.='%s'])[1]";
-	By differentCountryPopup = By.xpath("//*[.='We noticed that you are visiting from a different country']/..");
-	By differentCountryPopupMessage = By.xpath("//*[.='We noticed that you are visiting from a different country']");
 
 	By searchCards = By.cssSelector("a[class*='card'] div[class*='link-heading']");
 	By patientsTab = By.xpath("//a[.='Patients']");
@@ -89,6 +64,10 @@ public class ZimmerFindADocPage extends BasePage {
 	By productLinkHeader = By.xpath("(//h1[contains(@class,'heading')])[last()]");
 	By closeCookie = By.cssSelector("div[id*='close'] button[aria-label='Close']");
 	By doctorTagList = By.cssSelector("div[class*='find-a-doctor__list'] footer");
+
+	By doctorList = By.cssSelector("div[class*='find-a-doctor__list'] header a[class*='doctor']");
+
+	By doctorLanguage = By.xpath("//h6[contains(.,'Languages')]/..//p");
 
 	By findDoctorSpinner = By
 			.cssSelector("div[class*='results aem']> div[class*='find-a-doctor find-a-doctor--results patients']");
@@ -108,11 +87,21 @@ public class ZimmerFindADocPage extends BasePage {
 	 */
 
 	String filterCheckBox = "//label[contains(.,'%s')]/..";
+
+	String filterChkBox = "//label[contains(.,'%s')]/..//input";
 	String filterLabel = "//label[contains(.,'%s')]";
 	String filterButton = "//button[contains(.,'%s')]";
 	By docterListFooter = By.xpath("//div[contains(@class,'find-a-doctor__list')]//footer");
 	String docterListFooterTags = "//span[contains(.,'%s')]";
 	String docListFooterTags = "//div[contains(@class,'find-a-doctor__list')]//footer//span[contains(.,'%s')]";
+	By docPagination = By.cssSelector(".pagination__count");
+	By docFilterSearchCountMessage = By.cssSelector("h4[class*='find-a-doctor__term-count']");
+
+	By findADocTagsDisplayedLabel = By.xpath("(//div[contains(.,'Displaying')])[last()]//span[@class='tag__content']");
+
+	By displayedDoctorLabel = By.cssSelector("div[class*='find-a-doctor__pain-type-label__container']");
+
+	// Clear All Filters
 
 	// Please choose a treatment type.
 	public ZimmerFindADocPage load() {
@@ -308,34 +297,61 @@ public class ZimmerFindADocPage extends BasePage {
 
 	// System.out.println(Integer.parseInt(str.replaceAll("[\\D]", "")))
 	@Step("Verify Find a doc with filter")
-	public void filterDoc(String docFilter) {
+	public void filterDoc(String docFilter, String filterType) {
 		try {
 			ptr.delay(5);
 			int tagCount = Integer.parseInt(
 					ptr.getVisibleText(ptr.getDynamicLocator("XPATH", docFilter, filterLabel)).replaceAll("[\\D]", ""));
+
 			System.out.println(tagCount);
-			ptr.click(ptr.getDynamicLocator("XPATH", docFilter, filterCheckBox), "Doctor Procedure");
+			ptr.click(ptr.getDynamicLocator("XPATH", docFilter, filterCheckBox), docFilter);
 			log.info("Selected a filter type checkbox" + docFilter);
 			ptr.click(ptr.getDynamicLocator("XPATH", "Apply Filter", filterButton), "Apply Filter");
 			ptr.delay(5);
 
 			log.info("clicked 'Apply Filter' button " + filterButton);
+			int searchCountFromMessage = Integer
+					.parseInt(ptr.getVisibleText(docFilterSearchCountMessage).replaceAll("[\\D]", ""));
+			Assert.assertEquals(searchCountFromMessage, tagCount, "Failed: doctor filter count mismatched");
+			log.info("The filter count macthed with the search message count");
 
-			Assert.assertEquals(ptr.getElements(docterListFooter).size(), tagCount,
-					"Failed: doctor filter count mismatched");
-			Allure.step("Doctors found with the filter : " + tagCount);
+			if (filterType.equalsIgnoreCase("procedure")) {
+				Assert.assertEquals(ptr.getElements(docterListFooter).size(), tagCount,
+						"Failed: doctor filter count mismatched");
+				Allure.step("Doctors found with the filter : " + tagCount);
+				Assert.assertEquals(ptr.getElementsSize(ptr.getDynamicLocator("XPATH", docFilter, docListFooterTags)),
+						tagCount, "Failed: Filter tags count mismatched");
+				Allure.step("Doctors found with the filter : " + docFilter + " - " + tagCount);
+				IntStream.range(0, ptr.getElements(docterListFooter).size()).forEach(i -> {
 
-			Assert.assertEquals(ptr.getElementsSize(ptr.getDynamicLocator("XPATH", docFilter, docListFooterTags)),
-					tagCount, "Failed: Filter tags count mismatched");
-			Allure.step("Tags found with docter : " + tagCount);
+					ptr.scrollPage(
+							ptr.getElements(ptr.getDynamicLocator("XPATH", docFilter, docListFooterTags)).get(i));
+					ptr.highlighElement(
+							ptr.getElements(ptr.getDynamicLocator("XPATH", docFilter, docListFooterTags)).get(i));
 
-			IntStream.range(0, ptr.getElements(docterListFooter).size()).forEach(i -> {
+				});
+			} else {
 
-				ptr.scrollPage(ptr.getElements(ptr.getDynamicLocator("XPATH", docFilter, docListFooterTags)).get(i));
-				ptr.highlighElement(
-						ptr.getElements(ptr.getDynamicLocator("XPATH", docFilter, docListFooterTags)).get(i));
+				ptr.scrollPage(ptr.getElement(docPagination));
+				int paginationCount = Integer.valueOf(ptr.getElement(docPagination).getText()
+						.substring(ptr.getElement(docPagination).getText().indexOf("of") + 2).trim());
 
-			});
+				Assert.assertEquals(paginationCount, tagCount, "Failed: doctor filter count mismatched");
+				log.info("The filter count macthed with the pagination count");
+
+				Allure.step("Doctors found with the filter : " + docFilter + " - " + tagCount);
+				ptr.scrollPage(ptr.getElements(doctorList).get(0));
+				ptr.getElements(doctorList).get(0).click();
+
+				ptr.delay(5);
+
+				Assert.assertEquals(ptr.getVisibleText(doctorLanguage).trim(), docFilter,
+						"Failed: doctor language filter mismatched");
+				log.info("The filter language is visible on doc link ");
+
+				ptr.highlighElement(doctorLanguage);
+
+			}
 
 		} catch (Exception e) {
 
@@ -352,8 +368,6 @@ public class ZimmerFindADocPage extends BasePage {
 
 	By termsAndConditionsLink = By.linkText("Terms and Conditions");
 	By termsAndconditionsHeader = By.cssSelector("h1[class*='heading']");
-	
-	
 
 	@Step("Navigate and verify term and conditions link")
 	public void clickAndVerifyFindDocLink(String linkName) {
@@ -363,12 +377,73 @@ public class ZimmerFindADocPage extends BasePage {
 			ptr.delay(5);
 			ptr.scrollPage(termsAndConditionsLink);
 			ptr.click(termsAndConditionsLink, linkName);
-			
+
 			ptr.switchWindowAndNavigateTo(ConfigLoader.getInstance().getTermsUrl());
 			Assert.assertEquals(ptr.getVisibleText(termsAndconditionsHeader), linkName,
 					"Failed: to verify the link header");
-			
-			
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+			throw e;
+		} catch (AssertionError e) {
+
+			e.printStackTrace();
+			throw e;
+			// test
+		}
+
+	}
+
+	@Step("Verify the find a doc clear all filters")
+	public void verifyClearFilter(String docFilter, String filterType) {
+		try {
+			ptr.delay(5);
+
+			ptr.click(ptr.getDynamicLocator("XPATH", docFilter, filterCheckBox), docFilter);
+			log.info("Selected a filter type checkbox" + docFilter);
+			ptr.click(ptr.getDynamicLocator("XPATH", "Apply Filter", filterButton), "Apply Filter");
+			ptr.delay(5);
+			log.info("clicked 'Apply Filter' button " + filterButton);
+
+			if (filterType.equalsIgnoreCase("procedure")) {
+
+				Assert.assertEquals(
+						ptr.getElement(ptr.getDynamicLocator("XPATH", docFilter, filterChkBox)).isSelected(), true,
+						"Failed: filter is not checked");
+
+				ptr.scrollPage(ptr.getElement(displayedDoctorLabel));
+				Assert.assertTrue(ptr.getElements(findADocTagsDisplayedLabel).size() > 0, "Failed: filter count is 0");
+				IntStream.range(0, ptr.getElements(findADocTagsDisplayedLabel).size()).forEach(i -> {
+
+					Assert.assertEquals(ptr.getElements(findADocTagsDisplayedLabel).get(i).getText().trim(), docFilter,
+							"Failed: filter is not displayed on the label");
+					ptr.highlighElement(ptr.getElements(findADocTagsDisplayedLabel).get(i));
+
+				});
+				ptr.scrollPage(ptr.getElement(ptr.getDynamicLocator("XPATH", "Clear All Filters", filterButton)));
+				ptr.click(ptr.getDynamicLocator("XPATH", "Clear All Filters", filterButton), "Clear All Filters");
+				ptr.delay(2);
+
+				Assert.assertEquals(
+						ptr.getElement(ptr.getDynamicLocator("XPATH", docFilter, filterChkBox)).isSelected(), false,
+						"Failed: filter is checked");
+
+
+				ptr.scrollPage(ptr.getElement(docFilterSearchCountMessage));
+				Assert.assertFalse(driver.findElement(displayedDoctorLabel).isDisplayed(),
+						"Failed: the doctor filter label is displayed");
+				log.info("The doctor filter label is not displayed");
+				IntStream.range(0, ptr.getElements(findADocTagsDisplayedLabel).size()).forEach(i -> {
+
+					Assert.assertNotEquals(ptr.getElements(findADocTagsDisplayedLabel).get(i).getText().trim(),
+							docFilter, "Failed: filter is displayed on the label");
+
+				});
+
+			} else {
+
+			}
 
 		} catch (Exception e) {
 
