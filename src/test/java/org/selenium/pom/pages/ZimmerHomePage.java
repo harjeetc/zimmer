@@ -104,7 +104,23 @@ public class ZimmerHomePage extends BasePage {
 	By allPage = By.cssSelector("div[class*='pagination__navigation'] a");
 	By backLink = By.cssSelector("a[class*='back']");
 	
-	//div[class*='loading--indicator'] *[class*='loading']
+	/**
+	 * Search Filter Format locators 
+	 */
+	
+	String filterCheckBox = "//label[contains(.,'%s')]/..";
+
+	String filterChkBox = "//label[contains(.,'%s')]/..//input";
+
+	String filterButton = "//button[contains(.,'%s')]";
+
+	By filterTags = By.xpath("//h6[.='Filters']/..//span");
+
+	By searchedFilterCards = By.cssSelector("a[class~='card'] div:first-child span[class*='button']");
+
+	By mediaDownloadIcons = By.cssSelector("a[class~='card'] div:last-child span[class*='button']");
+
+	// div[class*='loading--indicator'] *[class*='loading']
 
 	public ZimmerHomePage load() {
 		load(" ");
@@ -115,13 +131,11 @@ public class ZimmerHomePage extends BasePage {
 		load("switch");
 		return this;
 	}
-	
 
-	
 	@Step("Verify Pagination")
 	public void verifyPagination(int defaultPageNumber) {
 		try {
-			//KNOWN data from the search results pagination. 
+			// KNOWN data from the search results pagination.
 			List<String> expPaginations = List.of("1", "2", "3", "4", "5", "6", "7", "8", "9");
 
 			verifySearch("global", "", "Knee", "");
@@ -518,7 +532,7 @@ public class ZimmerHomePage extends BasePage {
 		try {
 			if (buttonName.equalsIgnoreCase("Accept Cookies")) {
 
-				// is for accept flow 
+				// is for accept flow
 
 				Assert.assertTrue(ptr.waitForElement(By.xpath(String.format(buttons, buttonName))).isDisplayed(),
 						"Failed : " + buttonName + " is not displayed");
@@ -532,11 +546,11 @@ public class ZimmerHomePage extends BasePage {
 				log.info("Open Preferences Button is displayed");
 			} else if (buttonName.equalsIgnoreCase("Do Not Sell My Personal Information")) {
 				/**
-				 * // is for reject flow 
+				 * // is for reject flow
 				 */
 				Assert.assertTrue(ptr.waitForElement(By.xpath(String.format(buttons, buttonName))).isDisplayed(),
 						"Failed : " + buttonName + " is not displayed");
-		
+
 				log.info("Link is displayed : " + buttonName);
 				ptr.click(By.xpath(String.format(buttons, buttonName)), "Button is clicked : " + buttonName);
 				Assert.assertTrue(
@@ -617,7 +631,8 @@ public class ZimmerHomePage extends BasePage {
 			URL url = new URL(linkUrl);
 
 			httpURLConnect = (HttpURLConnection) url.openConnection();
-			String basicAuth = "Basic " + new String(Base64.getEncoder().encode(ZimmerLogInCredentails.getCred().getBytes()));
+			String basicAuth = "Basic "
+					+ new String(Base64.getEncoder().encode(ZimmerLogInCredentails.getCred().getBytes()));
 
 			httpURLConnect.setRequestProperty("Authorization", basicAuth);
 			httpURLConnect.setConnectTimeout(3000);
@@ -735,6 +750,67 @@ public class ZimmerHomePage extends BasePage {
 
 	}
 
+	/**
+	 * 
+	 * @param filterTypeFormat is used when user searc keyword. User then selects Format type. 
+	 */
+		//TODO missing allure report step. 
+	public void verifySearchFilter(String filterType) {
+
+		ptr.delay(2);
+		try {
+
+			ptr.click(ptr.getDynamicLocator("XPATH", filterType, filterCheckBox), filterType);
+			log.info("Selected a filter type checkbox" + filterType);
+			ptr.click(ptr.getDynamicLocator("XPATH", "Apply Filters", filterButton), "Apply Filters");
+			ptr.delay(5);
+			log.info("clicked 'Apply Filter' button " + filterButton);
+
+			Assert.assertEquals(ptr.getElementsSize(filterTags), 1, "Failed: search filter count mismatched");
+			Allure.step("search filter count matched");
+			Assert.assertEquals(ptr.getElement(filterTags).getText().trim(), filterType,
+					"Failed: search filter value mismatched");
+			ptr.highlighElement(filterTags);
+			Allure.step("The filter value macthed with the searched tag");
+			log.info("The filter count macthed with the search message count");
+
+			Assert.assertTrue(ptr.getElementsSize(searchedFilterCards) > 0,
+					"Failed: card count based on filter mismatched");
+
+			ptr.getElements(searchedFilterCards).stream().forEach(ele -> {
+				ptr.scrollPage(ele);
+				if (filterType.equalsIgnoreCase("Videos")) {
+					Assert.assertEquals(ele.getAttribute("aria-label").trim(), "open video in new window",
+							"Failed: card type mismacthed");
+					ptr.highlighElement(ele);
+				} else if (filterType.equalsIgnoreCase("Documents")) {
+					Assert.assertTrue(ele.getAttribute("class").trim().contains("media"),
+							"Failed: card type mismacthed");
+					ptr.highlighElement(ele);
+				}
+
+			});
+
+			if (filterType.equalsIgnoreCase("Documents")) {
+				ptr.getElements(mediaDownloadIcons).stream().forEach(ele -> {
+					ptr.scrollPage(ele);
+					Assert.assertEquals(ele.getAttribute("aria-label").trim(), "download pdf",
+							"Failed: card type mismacthed");
+					ptr.highlighElement(ele);
+
+				});
+			}
+		} catch (Exception e) {
+
+			e.printStackTrace();
+			throw e;
+		} catch (AssertionError e) {
+
+			e.printStackTrace();
+			throw e;
+		}
+	}
+
 	@Step("Verify cards displayed [ {1} ]")
 	public void verifySearchCards(String cardName) {
 		ptr.delay(5);
@@ -805,59 +881,51 @@ public class ZimmerHomePage extends BasePage {
 		}
 
 	}
-	
-	/**
-	 * check height and width of the search box 
-	 * @throws Exception 
-	 */
-				public void checkHeightAndWidht() throws Exception {
-					try {
-						ptr.waitElementToLoad(globalSearchTextBox, 2);
-						ptr.click(globalSearchTextBox);
-						
-						WebElement globalSearchBox =			driver.findElement(globalSearchTextBox);
-			
-		Rectangle SearchBox=	globalSearchBox.getRect();
-
-		//SearchBox.getHeight();
-		//SearchBox.getWidth();
-		//System.err.println(SearchBox.getHeight());
-
-		// Get the height and width of the element
-			int actualHeight =				SearchBox.getHeight();
-			int actualWidth  =				SearchBox.getWidth();
-		;log.info("coordinatres of the width of SearchBox");
-		System.err.println(SearchBox.getWidth());
-		log.info("coordinatres of the Height of SearchBox");
-
-		// Set the expected height and width
-		int expectedHeight = 75;
-		int expectedWidth = 375;
-
-		// Assert that the actual height and width match the expected values
-		Assert.assertEquals(actualHeight, expectedHeight);
-		Assert.assertEquals(actualWidth, expectedWidth);
-					} catch (NoSuchElementException | InterruptedException  e) {
-						e.printStackTrace();
-						throw e;
-					}
-
-
-
 
 	/**
-	 * 75
-	9138 pages.ZimmerHomePage|checkHeightAndWidht| - 823 - coordinates of the width of SearchBox
-	375
-	9140 pages.ZimmerHomePage|checkHeightAndWidht| - 825 - coordinates of the Height of SearchBox
+	 * check height and width of the search box (Refactoring is needed). 
+	 * 
+	 * @throws Exception
 	 */
+	public void checkHeightAndWidht() throws Exception {
+		try {
+			ptr.waitElementToLoad(globalSearchTextBox, 2);
+			ptr.click(globalSearchTextBox);
 
-		
-					
-					
-					
-					
-				}
+			WebElement globalSearchBox = driver.findElement(globalSearchTextBox);
 
+			Rectangle SearchBox = globalSearchBox.getRect();
+
+			// SearchBox.getHeight();
+			// SearchBox.getWidth();
+			// System.err.println(SearchBox.getHeight());
+
+			// Get the height and width of the element
+			int actualHeight = SearchBox.getHeight();
+			int actualWidth = SearchBox.getWidth();
+			;
+			log.info("coordinatres of the width of SearchBox");
+			System.err.println(SearchBox.getWidth());
+			log.info("coordinatres of the Height of SearchBox");
+
+			// Set the expected height and width
+			int expectedHeight = 75;
+			int expectedWidth = 375;
+
+			// Assert that the actual height and width match the expected values
+			Assert.assertEquals(actualHeight, expectedHeight);
+			Assert.assertEquals(actualWidth, expectedWidth);
+		} catch (NoSuchElementException | InterruptedException e) {
+			e.printStackTrace();
+			throw e;
+		}
+
+		/**
+		 * 75 9138 pages.ZimmerHomePage|checkHeightAndWidht| - 823 - coordinates of the
+		 * width of SearchBox 375 9140 pages.ZimmerHomePage|checkHeightAndWidht| - 825 -
+		 * coordinates of the Height of SearchBox
+		 */
+
+	}
 
 }
