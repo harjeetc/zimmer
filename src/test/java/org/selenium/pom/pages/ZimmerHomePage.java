@@ -6,6 +6,7 @@ import java.util.Base64;
 import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
@@ -103,12 +104,15 @@ public class ZimmerHomePage extends BasePage {
 	By activePage = By.cssSelector("div[class*='pagination__navigation'] a[class*='active']");
 	By allPage = By.cssSelector("div[class*='pagination__navigation'] a");
 	By backLink = By.cssSelector("a[class*='back']");
-	
+
 	/**
-	 * Search Filter Format locators 
+	 * Search Filter Format locators
 	 */
-	
+
 	String filterCheckBox = "//label[contains(.,'%s')]/..";
+	By searchCount = By.cssSelector("span[class*='term-count'] strong");
+	
+	
 
 	String filterChkBox = "//label[contains(.,'%s')]/..//input";
 
@@ -249,6 +253,7 @@ public class ZimmerHomePage extends BasePage {
 
 	}
 
+	@Step("Verify Footer Link")
 	public void verifyFooterLink(String linkName) {
 		try {
 			ptr.scrollPage(By.xpath(String.format(footerLinks, linkName)));
@@ -752,14 +757,17 @@ public class ZimmerHomePage extends BasePage {
 
 	/**
 	 * 
-	 * @param filterTypeFormat is used when user searc keyword. User then selects Format type. 
+	 * @param filterTypeFormat is used when user searc keyword. User then selects
+	 *                         Format type.
 	 */
-		//TODO missing allure report step. 
+	// TODO missing allure report step.
+	@Step("Verify Global Search Filter Format")
 	public void verifySearchFilter(String filterType) {
 
 		ptr.delay(2);
 		try {
 
+		
 			ptr.click(ptr.getDynamicLocator("XPATH", filterType, filterCheckBox), filterType);
 			log.info("Selected a filter type checkbox" + filterType);
 			ptr.click(ptr.getDynamicLocator("XPATH", "Apply Filters", filterButton), "Apply Filters");
@@ -883,7 +891,7 @@ public class ZimmerHomePage extends BasePage {
 	}
 
 	/**
-	 * check height and width of the search box (Refactoring is needed). 
+	 * check height and width of the search box (Refactoring is needed).
 	 * 
 	 * @throws Exception
 	 */
@@ -925,6 +933,96 @@ public class ZimmerHomePage extends BasePage {
 		 * width of SearchBox 375 9140 pages.ZimmerHomePage|checkHeightAndWidht| - 825 -
 		 * coordinates of the Height of SearchBox
 		 */
+
+	}
+
+	@Step("Verify the find a doc clear all filters")
+	public void verifySearchClearFilter(String searchFilter, String filterType) {
+		try {
+			ptr.delay(5);
+			int filterLabelCount = Integer.parseInt(
+					ptr.getVisibleText(ptr.getDynamicLocator("XPATH", searchFilter, filterCheckBox)).replaceAll("[\\D]", ""));
+			
+			int searchTermCount = Integer.parseInt(
+					ptr.getVisibleText(searchCount).trim());
+			
+			
+			Assert.assertNotEquals(
+					filterLabelCount, searchTermCount,
+					"Failed: total search term count is equal to filter label count before apply filter");
+			
+			Allure.step(
+					"Before apply filter Total Search Term Count is [ "+searchTermCount+" ] and Filter Count is [ "+filterLabelCount+" ]");
+			
+			ptr.click(ptr.getDynamicLocator("XPATH", searchFilter, filterCheckBox), searchFilter);
+			log.info("Selected a filter type checkbox" + searchFilter);
+			ptr.click(ptr.getDynamicLocator("XPATH", "Apply Filters", filterButton), "Apply Filters");
+			ptr.delay(5);
+			log.info("clicked 'Apply Filters' button " + filterButton);
+			 filterLabelCount = Integer.parseInt(
+					ptr.getVisibleText(ptr.getDynamicLocator("XPATH", searchFilter, filterCheckBox)).replaceAll("[\\D]", ""));
+			
+			 searchTermCount = Integer.parseInt(
+					ptr.getVisibleText(searchCount).trim());
+			 
+			 Assert.assertEquals(
+						filterLabelCount, searchTermCount,
+						"Failed: total search term count is not equal to filter label count after apply filter");
+			 Allure.step(
+						"After apply filter Total Search Term Count is [ "+searchTermCount+" ] and Filter Count is [ "+filterLabelCount+" ]");
+
+			if (filterType.equalsIgnoreCase("medical")) {
+
+				Assert.assertEquals(
+						ptr.getElement(ptr.getDynamicLocator("XPATH", searchFilter, filterChkBox)).isSelected(), true,
+						"Failed: filter is not checked");
+
+				ptr.scrollPage(ptr.getElement(filterTags));
+				Assert.assertTrue(ptr.getElements(filterTags).size() > 0, "Failed: filter count is 0");
+				IntStream.range(0, ptr.getElements(filterTags).size()).forEach(i -> {
+
+					Assert.assertEquals(ptr.getElements(filterTags).get(i).getText().trim(), searchFilter,
+							"Failed: filter is not displayed on the label");
+					ptr.highlighElement(ptr.getElements(filterTags).get(i));
+
+				});
+				ptr.scrollPage(ptr.getElement(ptr.getDynamicLocator("XPATH", "Clear Filters", filterButton)));
+				ptr.click(ptr.getDynamicLocator("XPATH", "Clear Filters", filterButton), "Clear Filters");
+				ptr.delay(2);
+				filterLabelCount = Integer.parseInt(
+						ptr.getVisibleText(ptr.getDynamicLocator("XPATH", searchFilter, filterCheckBox)).replaceAll("[\\D]", ""));
+				
+				 searchTermCount = Integer.parseInt(
+						ptr.getVisibleText(searchCount).trim());
+				
+				Assert.assertNotEquals(
+						filterLabelCount, searchTermCount,
+						"Failed: total search term count is equal to filter label count after clear filter");
+				
+				 Allure.step(
+							"After clear filter Total Search Term Count is [ "+searchTermCount+" ] and Filter Count is [ "+filterLabelCount+" ]");
+				Assert.assertEquals(
+						ptr.getElement(ptr.getDynamicLocator("XPATH", searchFilter, filterChkBox)).isSelected(), false,
+						"Failed: filter is checked");
+
+				Assert.assertTrue(driver.findElements(filterTags).size()==0,
+						"Failed: the doctor filter label is displayed");
+				log.info("The search filter label is not displayed");
+
+			} else {
+
+			}
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+			throw e;
+		} catch (AssertionError e) {
+
+			e.printStackTrace();
+			throw e;
+			// test
+		}
 
 	}
 

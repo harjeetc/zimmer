@@ -262,8 +262,8 @@ public class ZimmerHomePageTest extends BaseTest {
 
 	}
 
-	@Test(groups = { "HomePage", "Smoke", "phase1"  }, enabled = false)
-	@Description("Test : Verify Robotics Link Color And Navigation")
+	@Test(groups = { "HomePage", "Smoke", "Idea"  }, enabled = false)
+	@Description("Test : Verify Robotics Link Color And Navigation ( This test case might retire ")
 	public void verifyRoboticsLink() {
 		/*
 		 * Validate Robotics link color and navigation
@@ -271,27 +271,27 @@ public class ZimmerHomePageTest extends BaseTest {
 		log.info("============Test started[ verify Robotics Link with color ] =============");
 		ZimmerHomePage zimmerHomePage = new ZimmerHomePage(getDriver()).load();
 		zimmerHomePage.verifyProductLinkColorAndNavigation("Experience ROSA® Robotics", "Black", "White", "Robotic");
-		log.info("============Test started[ verify Robotics Link color ] =============");
+		log.info("============Test ended[ verify Robotics Link color ] =============");
 
 	}
 
 // find a doc test cases start from here
-	@Test(groups = { "HomePage", "Smoke", "phase1" }, enabled = false)
+	@Test(groups = { "HomePage", "Smoke", "phase1" }, enabled = true)
 	@Description("Test : Verify Find a Doctor by entering doc type, location and miles and docotors list is visible")
 	public void verifyFindADotor() {
 		/*
 		 * Validate find a doc doctor with area location
 		 */
-		log.info("============Test started[ verifyFindADotor end2end ] =============");
+		log.info("============Test started[ verifyFindADotor with results end2end ] =============");
 		ZimmerFindADocPage zimmerFindADocPage = new ZimmerFindADocPage(getDriver()).load();
 		Allure.step("Find a Doctor by selecting type ,location and radius");
 		zimmerFindADocPage.findADoctor("Knee", "San Jose", "25");
 		zimmerFindADocPage.varifyDoctorList();
-		log.info("============Test started[ verifyFindADotor end2ensd ] =============");
+		log.info("============Test ended[ verifyFindADotor end2ensd ] =============");
 
 	}
 
-	@Test(groups = { "HomePage", "Smoke", "phase1"  }, enabled = false)
+	@Test(groups = { "HomePage", "Smoke", "phase1"  }, enabled = true)
 	@Description("Test :Find a doc page: Verify No DoctorType Selected hit search should throw a error message")
 
 	public void verifyNoDoctorTypeSelectedinFindADocPage() {
@@ -306,7 +306,7 @@ public class ZimmerHomePageTest extends BaseTest {
 
 	}
 
-	@Test(groups = { "HomePage", "Smoke", "phase1"  }, enabled = false)
+	@Test(groups = { "HomePage", "Smoke", "phase1"  }, enabled = true)
 	@Description("Test : Find a doc page: Verify No Location or miles Entered should throw a error")
 	public void verifyNoLocationEnteredInFindADOCpage() {
 		/*
@@ -323,7 +323,7 @@ public class ZimmerHomePageTest extends BaseTest {
 	 * Validate the verifyPrivacyNoticePage is correct
 	 */
 // demo 4 
-	@Test(groups = { "HomePage", "Smoke", "phase1"  }, enabled = false)
+	@Test(groups = { "HomePage", "Smoke", "phase1"  }, enabled = true)
 	@Description("Verify Find a Doctor Page by clicking link on HomePage")
 	@Story("ZBWR-646")
 	@Link(name = "ZBWR-646", url = "https://concentrix-catalyst.atlassian.net/browse/ZBWR-646")
@@ -353,7 +353,7 @@ public class ZimmerHomePageTest extends BaseTest {
 	 * find a doc page
 	 */
 // demo 4 
-	@Test(groups = { "HomePage", "Smoke", "phase1"  }, enabled = false)
+	@Test(groups = { "HomePage", "Smoke", "phase1"  }, enabled = true)
 	@Description("Verify verifyBackToHomePage on Find a Doc Page")
 	@Story("")
 	@Link(name = "", url = "")
@@ -368,7 +368,7 @@ public class ZimmerHomePageTest extends BaseTest {
 	}
 
 	@Test(groups = { "HomePage", "phase1" }, enabled = false)
-	@Description("Verify Height & Width Co-ordinates on GLobal Search On HomePage")
+	@Description("Verify Height & Width ( this is a idea test case) ")
 	@Story("")
 	@Link(name = "", url = "")
 	public void verifyWidthHeightOfGLobalSearch() throws Exception {
@@ -379,17 +379,17 @@ public class ZimmerHomePageTest extends BaseTest {
 
 	}
 
-	@Test(groups = { "HomePage", "Smoke", "phase1"  }, enabled = false)
+	@Test(groups = { "HomePage", "Smoke", "phase1"  }, enabled = true)
 	@Description("Test : Verify Embedded ZBEdge Video Player")
 	public void verifyEmbeddedVideoPlayer() {
-		log.info("============Test started[  Verify Embedded Video Player ] =============");
+		log.info("============Test started[  Verify Embedded Video Player 'ZBEdge Video Player' ] =============");
 		ZimmerHomePage zimmerHomePage = new ZimmerHomePage(getDriver()).load();
 		zimmerHomePage.verifyVideoPlayer("Watch the ZBEdge Video", "Close", "Button");
 		log.info("============Test Ended[  Verify Embedded Video Player ] =============");
 
 	}
 
-	@Test(groups = { "HomePage", "Smoke","phase1"  }, enabled = false)
+	@Test(groups = { "HomePage", "Smoke","phase1"  }, enabled = true)
 	@Description("Test : Verify Embedded Tailored Resources for You Video Player")
 	public void verifyEmbeddedVideoPlayer2() {
 		log.info("============Test started[  Verify Embedded Video Player 'Tailored Resources for You'] =============");
@@ -407,19 +407,17 @@ public class ZimmerHomePageTest extends BaseTest {
 	@Description("Test : Verify Diffrent Country Popup Message From Site Navigation")
 
 	public void verifyDiffrentCountryPopupMessageFromSiteNavigation() {
-		log.info(
-				"============Test started[  Verify Diffrent Country PopupMessage From Site Navigation ] =============");
+		log.info("============Test started[  Verify Diffrent Country PopupMessage From Site Navigation ] =============");
 		ZimmerHomePage zimmerHomePage = new ZimmerHomePage(getDriver()).load();
 		zimmerHomePage.verifySwitchCountry("Latin America");
-		log.info(
-				"============Test ended[  Verify Diffrent Country PopupMessage From Site Navigation ] =============");
+		log.info("============Test ended[  Verify Diffrent Country PopupMessage From Site Navigation ] =============");
 	}
 
 	/*
 	 * Verify Different Country PopupMessage By Launching Url") ")
 	 */
 
-	@Test(groups = { "HomePage", "Smoke" }, enabled = false)
+	@Test(groups = { "Retired", "" }, enabled = false)
 	@Description("Test : Verify Diffrent Country Popup Message By Launching Url (This tc can be retired")
 	public void verifyDiffrentCountryPopupMessage() {
 		log.info("============Test started[  Verify Diffrent Country PopupMessage By Launching Url ] =============");
@@ -429,7 +427,7 @@ public class ZimmerHomePageTest extends BaseTest {
 
 	}
 
-	@Test(groups = { "HomePage", "phase1" }, enabled = false)
+	@Test(groups = { "HomePage", "phase1" }, enabled = true)
 	@Description("Test : Verify in Find a doc page user can filter by checkbox ")
 	public void verifyFindADOCFilterCheckbox() {
 		log.info("============Test started[  verifyFindADOCFilterCheckbox ] =============");
@@ -439,7 +437,7 @@ public class ZimmerHomePageTest extends BaseTest {
 		zimmerFindADocPage.filterDoc("Minimally Invasive Surgery (MIS)", "procedure");
 	}
 
-	@Test(groups = { "HomePage", "phase1" }, enabled = false)
+	@Test(groups = { "HomePage", "phase1" }, enabled = true)
 	@Description("Test : Verify in Find a doc page 'Terms and condtions link opens in a new window'")
 	public void navigateAndVerifyTermsAndConditionsLink() {
 		log.info("============Test started[  navigateAndVerifyTermsAndConditionsLink ] =============");
@@ -451,39 +449,54 @@ public class ZimmerHomePageTest extends BaseTest {
 /*
  * This test case will check with checkbox procedure and checkbox language flow and validate the language is english 
  */
-	@Test(groups = { "HomePage", "phase1" }, enabled = false)
-	@Description("Test : Verify in Find a doc page user can filter by checkbox ")
+	@Test(groups = { "HomePage", "phase1" }, enabled = true)
+	@Description("Test : Verify in Find a doc page user can filter by Language")
 	public void verifyFindADOCLanguageFilterCheckbox() {
-		log.info("============Test started[  verifyFindADOCLanguageFilterCheckbox ] =============");
+		log.info("============Test started[  verifyFindADOCLanguageFilterLanguage ] =============");
 		ZimmerFindADocPage zimmerFindADocPage = new ZimmerFindADocPage(getDriver()).load();
 		zimmerFindADocPage.findADoctor("Robotic Surgery", "San Ramon", "25");
 		Allure.step("Find a Doctor by selecting Filter type checkbox");
 		zimmerFindADocPage.filterDoc("English", "language");
+		log.info("============Test ended[  verifyFindADOCLanguageFilterLanguage ] =============");
+
 	}
 	
-	@Test(groups = { "HomePage", "phase1" }, enabled = false)
-	@Description("Test : Verify in Find a doc page user can clear filter by checkbox  filter by checkbox ")
+	@Test(groups = { "HomePage", "phase1" }, enabled = true)
+	@Description("Test : Verify in Find a doc page user can clear filter checkbox filter tags")
 	public void verifyFindADocClearFilter() {
 		log.info("============Test started[  verifyFindADocClearFilter ] =============");
 		ZimmerFindADocPage zimmerFindADocPage = new ZimmerFindADocPage(getDriver()).load();
 		zimmerFindADocPage.findADoctor("Robotic Surgery", "San Ramon", "25");
 		Allure.step("Find a Doctor by selecting Filter type checkbox");
 		zimmerFindADocPage.verifyClearFilter("Anterior Hip Replacement", "procedure");
+		log.info("============Test ended[  verifyFindADocClearFilter ] =============");
+
 	}
 	
-	@Test(groups = { "HomePage", "phase1", "Search" }, enabled = true)
+	@Test(groups = { "HomePage", "phase1", "Search" }, enabled = false)
 	@Description("Test : Verify Global Search Card by filters Formats ( move the document into seperate test case.s")
 	public void verifyCardSearchFilterByFormat() {
 		/*
-		 * Validate Search filter is displayed keywords passed in Search component
+		 * Validate 
 		 */
 		log.info("============Test started[ verify Card Search by Filter  : Medical Professionals ] =============");
 		ZimmerHomePage zimmerHomePage = new ZimmerHomePage(getDriver()).load();
 		zimmerHomePage.verifySearch("global", "", "Knee", "");
-		
 		//zimmerHomePage.verifySearchFilter("Videos");
 		zimmerHomePage.verifySearchFilter("Documents");
-		log.info("============Test started[ verify Card Search by Filter  : Medical Professionals ] =============");
+		log.info("============Test ended[ verify Card Search by Filter  : Medical Professionals ] =============");
+
+	}
+	
+	@Test(groups = { "HomePage", "phase1" }, enabled = false)
+	@Description("Test : Verify in Find a doc page user can clear filter checkbox filter tags")
+	public void verifySearchClearFilter() {
+		log.info("============Test started[  verifySearchClearFilter ] =============");
+		ZimmerHomePage zimmerHomePage = new ZimmerHomePage(getDriver()).load();
+		zimmerHomePage.verifySearch("global", "", "Knee", "");
+		zimmerHomePage.verifySearchClearFilter("Documents","Medical");
+
+		log.info("============Test ended[  verifySearchClearFilter ] =============");
 
 	}
 
