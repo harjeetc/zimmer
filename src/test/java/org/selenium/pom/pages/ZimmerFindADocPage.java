@@ -180,6 +180,9 @@ public class ZimmerFindADocPage extends BasePage {
 
 			ptr.click(findADoc, "Find a Doctor Tab");
 			ptr.click(findADocter, "Find a Doctor Button");
+			/*
+			 * this 
+			 */
 			Assert.assertEquals(ptr.getVisibleText(findDoctorTypeError), errorMessage);
 			ptr.highlighElement(findDoctorTypeError);
 			Allure.step("Error message captured : " + errorMessage);

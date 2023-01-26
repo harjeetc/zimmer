@@ -206,6 +206,7 @@ public class ZimmerHomePage extends BasePage {
 			if (playType.equals("Button")) {
 				ptr.scrollPage(ptr.getDynamicLocator("XPATH", videoName, playButton));
 				playerId = ptr.getAttribute(ptr.getDynamicLocator("XPATH", videoName, playButton), "data-modal");
+				ptr.scrollPage(ptr.getDynamicLocator("XPATH", videoName, playButton));
 				ptr.click(ptr.getDynamicLocator("XPATH", videoName, playButton), videoName);
 				log.info("clicked playbutton");
 
