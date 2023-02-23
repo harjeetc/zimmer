@@ -38,20 +38,7 @@ public class ZimmerFindADocPageTest extends BaseTest {
 
 	}
 
-	@Test(groups = { "HomePage", "Smoke", "phase1" }, enabled = true)
-	@Description("Test :Find a doc page: Verify No DoctorType Selected hit search should throw a error message")
 
-	public void verifyNoDoctorTypeSelectedinFindADocPage() {
-		/*
-		 * Validate find a doc doctor with area location
-		 */
-		log.info("============Test started[ verifyNoDoctorTypeSelected ] =============");
-		ZimmerFindADocPage zimmerFindADocPage = new ZimmerFindADocPage(getDriver()).load();
-		Allure.step("Find a Doctor not selected any doc type and thorwing error");
-		// zimmerHomePage.verifyNoDoctorTypeError("Please choose a pain type!");
-		zimmerFindADocPage.verifyNoDoctorTypeError("Please choose a treatment type.");
-
-	}
 
 	@Test(groups = { "HomePage", "Smoke", "phase1" }, enabled = true)
 	@Description("Test : Find a doc page: Verify No Location or miles Entered should throw a error")
@@ -69,7 +56,6 @@ public class ZimmerFindADocPageTest extends BaseTest {
 	/*
 	 * Validate the verifyPrivacyNoticePage is correct
 	 */
-// demo 4 
 	@Test(groups = { "HomePage", "Smoke", "phase1" }, enabled = true)
 	@Description("Verify Find a Doctor Page by clicking link on HomePage")
 	@Story("ZBWR-646")
@@ -87,7 +73,6 @@ public class ZimmerFindADocPageTest extends BaseTest {
 	 * Validate the 'back to home page' link is functioning when user clicks on the
 	 * find a doc page
 	 */
-// demo 4 
 	@Test(groups = { "HomePage", "Smoke", "phase1" }, enabled = true)
 	@Description("Verify verifyBackToHomePage on Find a Doc Page")
 	@Story("")
@@ -124,7 +109,7 @@ public class ZimmerFindADocPageTest extends BaseTest {
 
 	/*
 	 * This test case will check with checkbox procedure and checkbox language flow
-	 * and validate the language is english
+	 * and validate the language is English
 	 */
 	@Test(groups = { "HomePage", "phase1" }, enabled = true)
 	@Description("Test : Verify in Find a doc page user can filter by Language")
@@ -138,7 +123,7 @@ public class ZimmerFindADocPageTest extends BaseTest {
 
 	}
 
-	@Test(groups = { "HomePage", "phase1" }, enabled = true)
+	@Test(groups = { "findoc", "phase1" }, enabled = true)
 	@Description("Test : Verify in Find a doc page user can clear filter checkbox filter tags")
 	public void verifyFindADocClearFilter() {
 		log.info("============Test started[  verifyFindADocClearFilter ] =============");

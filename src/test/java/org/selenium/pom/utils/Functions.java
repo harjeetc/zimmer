@@ -317,7 +317,9 @@ public class Functions {
 
 	/*
 	 * Created by Harjeet
+	 * 
 	 */
+	 
 
 	// send keys and get visibilityOf of Element
 	public void type(By locator, String value, String ele) {
@@ -329,6 +331,7 @@ public class Functions {
 	}
 
 	public void clear(By locator) {
+		//
 		WebElement element = new WebDriverWait(driver, Duration.ofSeconds(10))
 				.until(ExpectedConditions.visibilityOfElementLocated(locator));
 		element.clear();
@@ -368,6 +371,10 @@ public class Functions {
 				try {
 					Thread.sleep(i * 1000);
 				} catch (InterruptedException e2) {
+					/*
+					 * Thrown when a thread is waiting, sleeping, or otherwise occupied, and the thread is interrupted, either before or during the activity. 
+					 * Occasionally a method may wish to test whether the current thread has been interrupted, and if so, to immediately throw this exception.
+					 */
 					e2.printStackTrace();
 				}
 				try {
@@ -713,7 +720,7 @@ public class Functions {
 				return windowHandle;
 
 			}
-
+//
 		}
 		return getActiveWindowHandle;
 
@@ -867,6 +874,9 @@ public class Functions {
 			e.printStackTrace();
 		}
 	}
+	/*
+	 * dynmaic value will save in %s format from String class
+	 */
 
 	public By getDynamicLocator(String type, String dynamicValue, String locator) {
 

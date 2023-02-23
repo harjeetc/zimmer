@@ -29,6 +29,13 @@ public class ConfigLoader {
         if(prop != null) return prop;
         else throw new RuntimeException("property baseUrl is not specified in the stg_config.properties file");
     }
+    public String getTermsUrl(){
+        String prop = properties.getProperty("termsUrl");
+        if(prop != null) return prop;
+        else throw new RuntimeException("property termsUrl is not specified in the stg_config.properties file");
+    }
+    
+    
     public String getSwitchUrl(){
         String prop = properties.getProperty("switchUrl");
         if(prop != null) return prop;

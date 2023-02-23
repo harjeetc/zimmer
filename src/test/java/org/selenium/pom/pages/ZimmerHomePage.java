@@ -124,8 +124,7 @@ public class ZimmerHomePage extends BasePage {
 
 	By mediaDownloadIcons = By.cssSelector("a[class~='card'] div:last-child span[class*='button']");
 
-	// div[class*='loading--indicator'] *[class*='loading']
-
+	
 	public ZimmerHomePage load() {
 		load(" ");
 		return this;
@@ -147,14 +146,13 @@ public class ZimmerHomePage extends BasePage {
 			ptr.scrollPage(nextResultsButton);
 			Assert.assertTrue(ptr.getVisibleText(paginationCount).contains("1-10 of"));
 			Allure.step("Pagination count contains 1-10 of");
-			// Assert.assertFalse(ptr.getElement(previousResults).isEnabled());
-			Assert.assertTrue(ptr.getElement(nextResultsButton).isEnabled());
+						Assert.assertTrue(ptr.getElement(nextResultsButton).isEnabled());
 			Allure.step("Next button is enabled");
 			Assert.assertEquals((int) Integer.valueOf(ptr.getVisibleText(activePage)), defaultPageNumber);
 			Allure.step("Default pagination number is 1");
 			/*
-			 * collectors is a class and list is a static function .. takeing all the
-			 * elements storeing in a list
+			 * collectors is a class and list is a static function .. taking all the
+			 * elements storing in a list
 			 */
 
 			List<String> actPaginations = ptr.getElements(allPage).stream().map(ele -> ele.getText())
@@ -538,7 +536,7 @@ public class ZimmerHomePage extends BasePage {
 		try {
 			if (buttonName.equalsIgnoreCase("Accept Cookies")) {
 
-				// is for accept flow
+				// is for accept flow for cookies
 
 				Assert.assertTrue(ptr.waitForElement(By.xpath(String.format(buttons, buttonName))).isDisplayed(),
 						"Failed : " + buttonName + " is not displayed");
@@ -612,8 +610,7 @@ public class ZimmerHomePage extends BasePage {
 			String url;
 			if (!type.equalsIgnoreCase("image")) {
 				url = iterator.next().getAttribute("href");
-				// log.info("======" + url);
-			} else {
+							} else {
 				url = iterator.next().getAttribute("src");
 			}
 			verifyLinkActive(url, type);
@@ -728,8 +725,7 @@ public class ZimmerHomePage extends BasePage {
 					ptr.type(globalSearchTextBox, searchKeyword, "Child Search");
 				}
 			}
-			// ptr.delay(2);
-			ptr.pressTabAndEnter(globalSearchTextBox);
+						ptr.pressTabAndEnter(globalSearchTextBox);
 			ptr.pressEnter();
 			ptr.delay(2);
 			if (tab.equalsIgnoreCase("patients"))
@@ -758,11 +754,10 @@ public class ZimmerHomePage extends BasePage {
 
 	/**
 	 * 
-	 * @param filterTypeFormat is used when user searc keyword. User then selects
+	 * @param filterTypeFormat is used when user search keyword. User then selects
 	 *                         Format type.
 	 */
-	// TODO missing allure report step.
-	@Step("Verify Global Search Filter Format")
+		@Step("Verify Global Search Filter Format")
 	public void verifySearchFilter(String filterType) {
 
 		ptr.delay(2);
@@ -891,51 +886,9 @@ public class ZimmerHomePage extends BasePage {
 
 	}
 
-	/**
-	 * check height and width of the search box (Refactoring is needed).
-	 * 
-	 * @throws Exception
-	 */
-	public void checkHeightAndWidht() throws Exception {
-		try {
-			ptr.waitElementToLoad(globalSearchTextBox, 2);
-			ptr.click(globalSearchTextBox);
+	
 
-			WebElement globalSearchBox = driver.findElement(globalSearchTextBox);
-
-			Rectangle SearchBox = globalSearchBox.getRect();
-
-			// SearchBox.getHeight();
-			// SearchBox.getWidth();
-			// System.err.println(SearchBox.getHeight());
-
-			// Get the height and width of the element
-			int actualHeight = SearchBox.getHeight();
-			int actualWidth = SearchBox.getWidth();
-			;
-			log.info("coordinatres of the width of SearchBox");
-			System.err.println(SearchBox.getWidth());
-			log.info("coordinatres of the Height of SearchBox");
-
-			// Set the expected height and width
-			int expectedHeight = 75;
-			int expectedWidth = 375;
-
-			// Assert that the actual height and width match the expected values
-			Assert.assertEquals(actualHeight, expectedHeight);
-			Assert.assertEquals(actualWidth, expectedWidth);
-		} catch (NoSuchElementException | InterruptedException e) {
-			e.printStackTrace();
-			throw e;
-		}
-
-		/**
-		 * 75 9138 pages.ZimmerHomePage|checkHeightAndWidht| - 823 - coordinates of the
-		 * width of SearchBox 375 9140 pages.ZimmerHomePage|checkHeightAndWidht| - 825 -
-		 * coordinates of the Height of SearchBox
-		 */
-
-	}
+	
 
 	@Step("Verify the find a doc clear all filters")
 	public void verifySearchClearFilter(String searchFilter, String filterType) {
@@ -1022,8 +975,7 @@ public class ZimmerHomePage extends BasePage {
 
 			e.printStackTrace();
 			throw e;
-			// test
-		}
+					}
 
 	}
 

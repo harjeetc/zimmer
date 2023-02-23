@@ -9,6 +9,7 @@ import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.WindowType;
 import org.openqa.selenium.support.Color;
 import org.selenium.pom.base.BasePage;
@@ -33,16 +34,13 @@ public class ZimmerCareersPage extends BasePage {
 
 		super(driver);
 		ptr = new Functions(driver);
-		
-		
+
 	}
 
 	String buttons = "//button[.='%s']";
 
 	// 2 differnt video types
 	private String playVideo = "(//p[contains(.,'%s')]/../../../..//*[contains(.,'play video')])[last()]";
-	// (//p[contains(.,'Alleviate pain and improve the quality of life for
-	// peopl')]/../../../..//*[contains(.,'play video')])[last()]
 	private String closeVideoPlayer = "//div[contains(@id,'%s')  and contains(@class,'card')]/../../../../..//button[contains(@class,'modal-close')]";
 	private String videoPlayer = "div[id*='%s'][class*='card'] video";
 
@@ -70,7 +68,6 @@ public class ZimmerCareersPage extends BasePage {
 
 			ptr.scrollPage(ptr.getDynamicLocator("XPATH", videoName, playVideo));
 			playerId = ptr.getAttribute(ptr.getDynamicLocator("XPATH", videoName, playVideo), "data-modal");
-			// ptr.scrollPage(ptr.getDynamicLocator("XPATH", videoName, playVideo));
 			ptr.click(ptr.getDynamicLocator("XPATH", videoName, playVideo), videoName);
 			log.info("clicked playbutton");
 
@@ -111,7 +108,7 @@ public class ZimmerCareersPage extends BasePage {
 
 	@Step("Verify Tabs in Careers Page [ {0} ] with Action [ {1} ]")
 	public void verifyCareerTabs(String tabName, String text) {
-	
+
 		try {
 			/*
 			 * in this step if the video button has button tag.
@@ -148,6 +145,49 @@ public class ZimmerCareersPage extends BasePage {
 				log.info("Tab [ " + tabName + " ] is verified ");
 			}
 			}
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+			throw e;
+		} catch (AssertionError e) {
+
+			e.printStackTrace();
+			throw e;
+		}
+	}
+
+	private By countryDropdown = By.xpath("//span[.='Country']/..");
+
+	private By cityDropdown = By.xpath("//span[.='City']/..");
+
+	private By tagContent = By.className("tag__content");
+
+	@Step("Verify Tabs in Careers Page")
+	public void verifyExploreCareer() {
+
+		try {
+
+			Assert.assertTrue(ptr.getElement(countryDropdown).isEnabled(), "Faild : Country dropdown is disabled");
+			Assert.assertTrue(ptr.getElement(cityDropdown).getAttribute("class").contains("disabled"),
+					"Faild : City dropdown is enabled");
+			if (ptr.getElementsSize(tagContent) > 0) {
+
+				ptr.getElements(tagContent).stream().forEach(ele -> {
+
+					ptr.scrollPage(ele);
+					ptr.highlighElement(ele);
+					Allure.step("Tags captured : " + ele.getText());
+
+				});
+
+			} else {
+				Allure.step("Faild: No tag list found");
+				throw new TestException("Faild: No tag list found");
+
+			}
+
+			log.info("clicked tab");
 
 		} catch (Exception e) {
 

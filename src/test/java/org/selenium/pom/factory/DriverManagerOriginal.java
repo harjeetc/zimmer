@@ -22,7 +22,6 @@ public class DriverManagerOriginal {
             default -> throw new IllegalStateException("Invalid browser name: " + browser);
         }
         driver.manage().window().maximize();
-//        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(15));
         return driver;
     }
 }

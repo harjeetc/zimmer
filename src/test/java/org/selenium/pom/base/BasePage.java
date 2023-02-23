@@ -34,10 +34,9 @@ public class BasePage {
 	 * This step will log into env and pass the user name/ password upon log in 
 	 * 
 	 */
-//need to move the user log in information to constant class.
 	@Step("Login with user credentials")
 	public void load(String urlType) {
-		log.info("============entered userName + passwrd[User is logged into QA Zimmer Website] =============");
+		log.info("============entered userName + passwrd[User is logged into Zimmer Website] =============");
 		System.out.println("=========" + ConfigLoader.getInstance().getBaseUrl());
 		if (urlType.equalsIgnoreCase("switch")) {
 			driver.get(ConfigLoader.getInstance().getSwitchUrl());

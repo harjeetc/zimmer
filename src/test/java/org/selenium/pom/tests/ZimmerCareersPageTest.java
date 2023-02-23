@@ -34,7 +34,7 @@ public class ZimmerCareersPageTest extends BaseTest {
 		// Careers
 		zimmerHomePage.navigateAndVerifyHeaderLinkTitle("Careers");
 		log.info(
-				"============Test ended[  verify Careers Page when clicking on the Careers link on Homepage  ] =============");
+				"============Test ended[verify Careers Page when clicking on the Careers link on Homepage  ] =============");
 
 	}
 
@@ -51,9 +51,9 @@ public class ZimmerCareersPageTest extends BaseTest {
 	}
 
 	@Test(groups = { "HomePage", "careersTab", "phase1" }, enabled = true)
-	@Description("Test : Verify Embedded ZBEdge Video Player")
+	@Description("Test : Verify Career tabs open when clicked")
 	public void verifyTabs() throws InterruptedException {
-		log.info("============Test started[  Verify Embedded Video Player 'Careers Video Player' ] =============");
+		log.info("============Test started[  Verify Career tabs open when clicked' ] =============");
 		ZimmerCareersPage cp = new ZimmerCareersPage(getDriver()).load();
 		ZimmerHomePage zimmerHomePage = new ZimmerHomePage(getDriver());
 		zimmerHomePage.navigateAndVerifyHeaderLinkTitle("Careers");
@@ -61,7 +61,21 @@ public class ZimmerCareersPageTest extends BaseTest {
 		cp.verifyCareerTabs("Explore Careers", "Search by title or job number");
 		cp.verifyCareerTabs("Living Our Mission", "Living Our Mission");
 		cp.verifyCareerTabs("Diversity, Equity & Inclusion","Diversity, Equity and Inclusion come to life through our culture promises and in our environment.");
-		log.info("============Test Ended[  Verify Embedded Video Player on careers ] =============");
+		log.info("============Test Ended[Verify Career tabs open when clicked ] =============");
+
+	}
+	
+	@Test(groups = { "HomePage", "careersTablist", "phase1" }, enabled = true)
+	@Description("Test : Verify Explore Careers tab")
+	public void verifyExploreCareersTab() throws InterruptedException {
+		log.info("============Test started[  Verify Explore Careers tab ] =============");
+		ZimmerCareersPage cp = new ZimmerCareersPage(getDriver()).load();
+		ZimmerHomePage zimmerHomePage = new ZimmerHomePage(getDriver());
+		zimmerHomePage.navigateAndVerifyHeaderLinkTitle("Careers");
+		cp.verifyCareerTabs("Explore Careers", "Search by title or job number");
+		cp.verifyExploreCareer();
+
+		log.info("============Test Ended[ Verify Explore Careers tab ] =============");
 
 	}
 

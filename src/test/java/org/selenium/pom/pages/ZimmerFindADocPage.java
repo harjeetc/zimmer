@@ -7,6 +7,7 @@ import java.util.stream.IntStream;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
+import org.openqa.selenium.ElementClickInterceptedException;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WindowType;
@@ -33,7 +34,6 @@ public class ZimmerFindADocPage extends BasePage {
 
 		super(driver);
 		ptr = new Functions(driver);
-		// TODO Auto-generated constructor stub
 	}
 
 	By findADoc = By.xpath("//a[@class='link link--blank '][normalize-space()='Find a Doctor']");
@@ -136,7 +136,6 @@ public class ZimmerFindADocPage extends BasePage {
 			ptr.scrollPage(nextResultsButton);
 			Assert.assertTrue(ptr.getVisibleText(paginationCount).contains("1-10 of"));
 			Allure.step("Pagination count contains 1-10 of");
-			// Assert.assertFalse(ptr.getElement(previousResults).isEnabled());
 			Assert.assertTrue(ptr.getElement(nextResultsButton).isEnabled());
 			Allure.step("Next button is enabled");
 			Assert.assertEquals((int) Integer.valueOf(ptr.getVisibleText(activePage)), defaultPageNumber);
@@ -180,9 +179,7 @@ public class ZimmerFindADocPage extends BasePage {
 
 			ptr.click(findADoc, "Find a Doctor Tab");
 			ptr.click(findADocter, "Find a Doctor Button");
-			/*
-			 * this 
-			 */
+
 			Assert.assertEquals(ptr.getVisibleText(findDoctorTypeError), errorMessage);
 			ptr.highlighElement(findDoctorTypeError);
 			Allure.step("Error message captured : " + errorMessage);
@@ -198,27 +195,18 @@ public class ZimmerFindADocPage extends BasePage {
 		}
 	}
 
-	/*
-	 * /What does this script variable do?
-	 * 
-	 */
-
 	@Step("Verify No Location entred error")
 	public void verifyNoLocationError(String errorCode) {
 		try {
 
 			ptr.click(findADoc, "Find a Doctor Tab");
-			// ptr.clear(locationTextBox);
 			ptr.type(locationTextBox, "", "");
-			// ptr.pressTabAndEnter(locationTextBox);
 			ptr.click(findADocter, "Find a Doctor Button");
 			ptr.delay(2);
 			Assert.assertTrue(ptr.getAttribute(locationError, "class").contains("error"));
 
 			Allure.step("Error is visible for blank location");
 			ptr.highlighElement(locationTextBox);
-			// Assert.assertEquals(getColorName(locationError, "color"), errorColor,
-			// "Failed: font color not matched");
 			String script = "return window.getComputedStyle(document.querySelector('.input.field.input-search.input--default.field__error'),':before').getPropertyValue('color')";
 
 			JavascriptExecutor js = (JavascriptExecutor) driver;
@@ -298,7 +286,6 @@ public class ZimmerFindADocPage extends BasePage {
 		}
 	}
 
-	// System.out.println(Integer.parseInt(str.replaceAll("[\\D]", "")))
 	@Step("Verify Find a doc with filter")
 	public void filterDoc(String docFilter, String filterType) {
 		try {
@@ -364,7 +351,7 @@ public class ZimmerFindADocPage extends BasePage {
 
 			e.printStackTrace();
 			throw e;
-			// test
+
 		}
 
 	}
@@ -403,7 +390,14 @@ public class ZimmerFindADocPage extends BasePage {
 		try {
 			ptr.delay(5);
 
-			ptr.click(ptr.getDynamicLocator("XPATH", docFilter, filterCheckBox), docFilter);
+			try {
+				ptr.click(ptr.getDynamicLocator("XPATH", docFilter, filterCheckBox), docFilter);
+			} catch (ElementClickInterceptedException e) {
+
+				ptr.delay(10);
+				ptr.click(ptr.getDynamicLocator("XPATH", docFilter, filterCheckBox), docFilter);
+			}
+
 			log.info("Selected a filter type checkbox" + docFilter);
 			ptr.click(ptr.getDynamicLocator("XPATH", "Apply Filter", filterButton), "Apply Filter");
 			ptr.delay(5);
@@ -432,7 +426,6 @@ public class ZimmerFindADocPage extends BasePage {
 						ptr.getElement(ptr.getDynamicLocator("XPATH", docFilter, filterChkBox)).isSelected(), false,
 						"Failed: filter is checked");
 
-
 				ptr.scrollPage(ptr.getElement(docFilterSearchCountMessage));
 				Assert.assertFalse(driver.findElement(displayedDoctorLabel).isDisplayed(),
 						"Failed: the doctor filter label is displayed");
@@ -456,7 +449,7 @@ public class ZimmerFindADocPage extends BasePage {
 
 			e.printStackTrace();
 			throw e;
-			// test
+
 		}
 
 	}

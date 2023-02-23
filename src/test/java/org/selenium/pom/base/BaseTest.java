@@ -1,6 +1,7 @@
 package org.selenium.pom.base;
 
 import io.qameta.allure.Attachment;
+
 import io.qameta.allure.Step;
 import io.restassured.http.Cookies;
 import org.apache.commons.io.FileUtils;
@@ -36,6 +37,26 @@ import java.io.IOException;
 import java.util.List;
 import static com.github.automatedowl.tools.AllureEnvironmentWriter.allureEnvironmentWriter;
 
+/**
+ * 
+ * 
+ * * Base Test is the main class which takes care of Browser setup, loading
+ * configuration file and other reusable methods like screenshot, handling sync
+ * issues and many more. With base class you can avoid code duplication and can
+ * reuse the code as much you want. Base Test works with Selenium in following
+ * manner:
+ * 
+ * When we create base Test and if TestCases extends BaseTest then we can use
+ * all the methods of BaseTest.
+ * 
+ * Before calling actual @Test, Base Test methods will get executed and Depends
+ * on annotations it will call the respective methods.
+ * 
+ * We can extend this class in all test cases and we can call custom methods as
+ * well directly.
+ *
+ */
+
 public class BaseTest {
 	private final ThreadLocal<DriverManagerAbstract> driverManager = new ThreadLocal<>();
 	private final ThreadLocal<WebDriver> driver = new ThreadLocal<>();
@@ -55,26 +76,13 @@ public class BaseTest {
 	protected WebDriver getDriver() {
 		return this.driver.get();
 	}
-//	
-//	 @BeforeSuite
-//	    void setAllureEnvironment() {
-//	        allureEnvironmentWriter(
-//	                ImmutableMap.<String, String> builder()
-//	                        .put("Browser", "chrome")
-//	                        .put("Env", System.getProperty("ENV"))
-//	                        .put("URL", "https://qa-www.zimmerbiomet.com/en")
-//	                        .build());
-//	    }
 
 	@Parameters("browser")
 	@BeforeMethod(alwaysRun = true)
 	public synchronized void startDriver(@Optional String browser) {
 		browser = System.getProperty("browser", browser);
-		System.out.println("============"+browser);
-		
-//        if(browser == null) browser = "CHROME";
-//        setDriver(new DriverManagerOriginal().initializeDriver(browser));
-//        setDriver(DriverManagerFactory.getManager(DriverType.valueOf(browser)).createDriver());
+		System.out.println("============" + browser);
+		;
 		setDriverManager(DriverManagerFactoryAbstract.getManager(DriverType.valueOf(browser)));
 		setDriver(getDriverManager().getDriver());
 
@@ -90,21 +98,20 @@ public class BaseTest {
 			System.out.println("CURRENT THREAD: " + Thread.currentThread().getId() + ", " + "DRIVER = " + getDriver());
 			if (result.getStatus() == ITestResult.FAILURE) {
 				File destFile = new File("scr" + File.separator + browser + File.separator
-						+ result.getTestClass().getRealClass().getSimpleName() + "_" + result.getMethod().getMethodName()
-						+ ".png");
+						+ result.getTestClass().getRealClass().getSimpleName() + "_"
+						+ result.getMethod().getMethodName() + ".png");
 				allureLog("Failed");
 				saveScreenshotPNG(getDriver());
 			} else if (result.getStatus() == ITestResult.SUCCESS)
 				allureLog("Sucess");
 			getDriverManager().getDriver().quit();
-
 		} catch (Exception e) {
-			//e.printStackTrace();
-			//throw e;
 
 		}
+
 		finally {
-			if(getDriverManager().getDriver()!=null) getDriverManager().getDriver().quit();
+			if (getDriverManager().getDriver() != null)
+				getDriver().quit();
 		}
 	}
 
@@ -119,27 +126,4 @@ public class BaseTest {
 		return message;
 	}
 
-	public void injectCookiesToBrowser(Cookies cookies) {
-		List<Cookie> seleniumCookies = new CookieUtils().convertRestAssuredCookiesToSeleniumCookies(cookies);
-		for (Cookie cookie : seleniumCookies) {
-			System.out.println(cookie.toString());
-			getDriver().manage().addCookie(cookie);
-		}
-	}
-
-	private void takeScreenshot(File destFile) throws IOException {
-		TakesScreenshot takesScreenshot = (TakesScreenshot) getDriver();
-		File srcFile = takesScreenshot.getScreenshotAs(OutputType.FILE);
-		FileUtils.copyFile(srcFile, destFile);
-	}
-
-	private void takeScreenshotUsingAShot(File destFile) {
-		Screenshot screenshot = new AShot().shootingStrategy(ShootingStrategies.viewportPasting(100))
-				.takeScreenshot(getDriver());
-		try {
-			ImageIO.write(screenshot.getImage(), "PNG", destFile);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
 }

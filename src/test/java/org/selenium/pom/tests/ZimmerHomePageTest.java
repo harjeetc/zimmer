@@ -68,7 +68,7 @@ public class ZimmerHomePageTest extends BaseTest {
 	}
 
 	/*
-	 * Validate The navigational h1 links are opening and closing
+	 * Validate The Navigations h1 links are opening and closing
 	 */
 
 	@Test(groups = { "HomePage", "Smoke" }, enabled = true)
@@ -97,6 +97,7 @@ public class ZimmerHomePageTest extends BaseTest {
 	 */
 
 	@Test(groups = { "HomePage", "phase1" }, enabled = true)
+
 	@Description("Verify Broken Images on HomePage")
 	public void verifyBrokenImages() {
 		log.info("============Test started[ Verify Broken Images on HomePage are not broken] =============");
@@ -123,10 +124,10 @@ public class ZimmerHomePageTest extends BaseTest {
 	@Test(groups = { "HomePage", "phase1" }, enabled = true)
 	@Description("Test : Verify Footer Broken Links are working")
 	public void verifyFooterBrokenLinks() {
-		log.info("============Test started[ Verify Footer Broken Links are working ] =============");
+		log.info("============Test started[ Verify Footer Links are working ] =============");
 		ZimmerHomePage zimmerHomePage = new ZimmerHomePage(getDriver()).load();
 		zimmerHomePage.verifyBrokenLinks("footer");
-		log.info("============Test ended[ Verify Footer Broken Links are working ] =============");
+		log.info("============Test ended[ Verify Footer links are working ] =============");
 
 	}
 
@@ -196,7 +197,8 @@ public class ZimmerHomePageTest extends BaseTest {
 	public void verifyGlobalSearchPatients() {
 		/*
 		 * Validate Search filter when passing no values it returns a message on the
-		 * search page "No Search terms provided "
+		 * search page "No Search terms provided " Please choose a pain type! is showing
+		 * in stage business is aware and will move this test case to false
 		 */
 		log.info(
 				"============Test started[ verifyGlobalSearch with no data and getting message : Patients] =============");
@@ -207,7 +209,6 @@ public class ZimmerHomePageTest extends BaseTest {
 				"============Test Ended[ verifyGlobalSearch with no data and getting message : Patients] =============");
 	}
 
-// sprint 4 demo 
 	/*
 	 * Validate Search filter is displayed keywords passed in Search component
 	 *
@@ -234,7 +235,6 @@ public class ZimmerHomePageTest extends BaseTest {
 		log.info("============Test started[ verify Card Search with value : Patients ] =============");
 		ZimmerHomePage zimmerHomePage = new ZimmerHomePage(getDriver()).load();
 		zimmerHomePage.verifySearch("global", "", "Knee", "");
-
 		zimmerHomePage.naviGateToPatients();
 		Allure.step("Patients Card Search");
 		zimmerHomePage.verifySearchCards("Knee");
@@ -245,11 +245,10 @@ public class ZimmerHomePageTest extends BaseTest {
 	/*
 	 * Validate the verifyPrivacyNoticePage is correct
 	 */
-// demo 4 
 	@Test(groups = { "HomePage", "Smoke", "phase1" }, enabled = true)
 	@Description("Verify Find a Doctor Page by clicking link on HomePage")
 	@Story("ZBWR-646")
-	@Link(name = "ZBWR-646", url = "https://concentrix-catalyst.atlassian.net/browse/ZBWR-646")
+	@Link(name = "")
 	public void verifyFindADoctorPage() throws InterruptedException {
 		log.info("============Test started[ verifyFindADoctorPage] =============");
 		ZimmerHomePage zimmerHomePage = new ZimmerHomePage(getDriver()).load();
@@ -268,18 +267,6 @@ public class ZimmerHomePageTest extends BaseTest {
 		ZimmerHomePage zimmerHomePage = new ZimmerHomePage(getDriver()).load();
 		zimmerHomePage.verifyPagination(1);
 		log.info("============Test ended[ verifySearchPagination ] =============");
-
-	}
-
-	@Test(groups = { "HomePage", "phase1" }, enabled = true)
-	@Description("Verify Height & Width ( this is a idea test case) ")
-	@Story("")
-	@Link(name = "", url = "")
-	public void verifyWidthHeightOfGLobalSearch() throws Exception {
-		log.info("============Test started[ verifyBackToHomePage] =============");
-		ZimmerHomePage zimmerHomePage = new ZimmerHomePage(getDriver()).load();
-		zimmerHomePage.checkHeightAndWidht();
-		log.info("============Test ended[ verifyBackToHomePage ] =============");
 
 	}
 
@@ -334,7 +321,7 @@ public class ZimmerHomePageTest extends BaseTest {
 	}
 
 	@Test(groups = { "HomePage", "phase1" }, enabled = true)
-	@Description("Test : Verify in  Global sSearch  clear filter buttono can clear  tags in Medical Professionals flow  ")
+	@Description("Test : Verify in  Global Search  clear filter button can clear  tags in Medical Professionals flow  ")
 	public void verifySearchClearFilter() {
 		log.info("============Test started[  verifySearchClearFilter ] =============");
 		ZimmerHomePage zimmerHomePage = new ZimmerHomePage(getDriver()).load();
