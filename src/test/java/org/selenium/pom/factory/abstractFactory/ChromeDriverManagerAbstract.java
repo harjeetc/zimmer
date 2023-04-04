@@ -16,6 +16,8 @@ public class ChromeDriverManagerAbstract extends DriverManagerAbstract {
         opt.addArguments("--headless");
         opt.addArguments("--disable-dev-shm-usage"); // overcome limited resource problems
         opt.addArguments("--no-sandbox"); // Bypass OS security model
+        opt.addArguments("--disable-gpu"); // applicable to windows os only
+        opt.addArguments("display=:99");
         driver = new ChromeDriver(opt);
         driver.manage().window().maximize();
         
