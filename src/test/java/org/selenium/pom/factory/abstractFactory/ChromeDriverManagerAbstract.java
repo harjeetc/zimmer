@@ -14,6 +14,8 @@ public class ChromeDriverManagerAbstract extends DriverManagerAbstract {
         ChromeOptions opt = new ChromeOptions();
         opt.addArguments("--remote-allow-origins=*");
         opt.addArguments("--headless");
+        opt.addArguments("--disable-dev-shm-usage"); // overcome limited resource problems
+        opt.addArguments("--no-sandbox"); // Bypass OS security model
         driver = new ChromeDriver(opt);
         driver.manage().window().maximize();
         
