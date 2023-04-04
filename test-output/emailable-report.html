@@ -8,38 +8,16 @@
 <body>
 <table>
 <tr><th>Test</th><th># Passed</th><th># Skipped</th><th># Retried</th><th># Failed</th><th>Time (ms)</th><th>Included Groups</th><th>Excluded Groups</th></tr>
-<tr><th colspan="8">Suite1</th></tr>
-<tr><td><a href="#t0">Chrome</a></td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num attn">1</td><td class="num">22,952</td><td></td><td></td></tr>
+<tr><th colspan="8">ZimmerSmokeSuite</th></tr>
+<tr><td><a href="#t0">HomePageTests</a></td><td class="num">1</td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">10,921</td><td>tester</td><td></td></tr>
+<tr class="stripe"><td><a href="#t1">FindADocPageTests</a></td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">1</td><td>tester</td><td></td></tr>
+<tr><td><a href="#t2">CareersPageTests</a></td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">2</td><td>tester</td><td></td></tr>
+<tr><th>Total</th><th class="num">1</th><th class="num">0</th><th class="num">0</th><th class="num">0</th><th class="num">10,924</th><th colspan="2"></th></tr>
 </table>
-<table id='summary'><thead><tr><th>Class</th><th>Method</th><th>Start</th><th>Time (ms)</th></tr></thead><tbody><tr><th colspan="4">Suite1</th></tr></tbody><tbody id="t0"><tr><th colspan="4">Chrome &#8212; failed</th></tr><tr class="failedeven"><td rowspan="1">org.selenium.pom.tests.ZimmerHomePageTest</td><td><a href="#m0">homePageTest</a></td><td rowspan="1">1666067845323</td><td rowspan="1">1477</td></tr></tbody>
+<table id='summary'><thead><tr><th>Class</th><th>Method</th><th>Start</th><th>Time (ms)</th></tr></thead><tbody><tr><th colspan="4">ZimmerSmokeSuite</th></tr></tbody><tbody id="t0"><tr><th colspan="4">HomePageTests &#8212; passed</th></tr><tr class="passedeven"><td rowspan="1">org.selenium.pom.tests.ZimmerHomePageTest</td><td><a href="#m0">verifyPrivacyNoticePage</a></td><td rowspan="1">1680633583024</td><td rowspan="1">6908</td></tr></tbody>
+<tbody id="t1"><tr><th colspan="4" class="invisible"/></tr></tbody>
+<tbody id="t2"><tr><th colspan="4" class="invisible"/></tr></tbody>
 </table>
-<h2>Chrome</h2><h3 id="m0">org.selenium.pom.tests.ZimmerHomePageTest#homePageTest</h3><table class="result"><tr><th>Exception</th></tr><tr><td><div class="stacktrace">org.openqa.selenium.NoSuchElementException: no such element: Unable to locate element: {&quot;method&quot;:&quot;xpath&quot;,&quot;selector&quot;:&quot;(//a[contains(text(),&apos;Find a Doctor&apos;)])[1]&quot;}
-  (Session info: chrome=106.0.5249.119)
-For documentation on this error, please visit: https://selenium.dev/exceptions/#no_such_element
-Build info: version: &apos;4.0.0-beta-4&apos;, revision: &apos;29f46d02dd&apos;
-System info: host: &apos;CT-C02D52MCMD6P&apos;, ip: &apos;10.0.0.21&apos;, os.name: &apos;Mac OS X&apos;, os.arch: &apos;x86_64&apos;, os.version: &apos;12.5&apos;, java.version: &apos;17.0.3&apos;
-Driver info: org.openqa.selenium.chrome.ChromeDriver
-Command: [082d6ddf657900b7f492b4d3144f06e0, findElement {using=xpath, value=(//a[contains(text(),&apos;Find a Doctor&apos;)])[1]}]
-Capabilities {acceptInsecureCerts: false, browserName: chrome, browserVersion: 106.0.5249.119, chrome: {chromedriverVersion: 106.0.5249.61 (511755355844..., userDataDir: /var/folders/zh/vncfdnb5595...}, goog:chromeOptions: {debuggerAddress: localhost:59638}, javascriptEnabled: true, networkConnectionEnabled: false, pageLoadStrategy: normal, platform: MAC, platformName: MAC, proxy: Proxy(), se:cdp: ws://localhost:59638/devtoo..., se:cdpVersion: 106.0.5249.119, setWindowRect: true, strictFileInteractability: false, timeouts: {implicit: 0, pageLoad: 300000, script: 30000}, unhandledPromptBehavior: dismiss and notify, webauthn:extension:credBlob: true, webauthn:extension:largeBlob: true, webauthn:virtualAuthenticators: true}
-Session ID: 082d6ddf657900b7f492b4d3144f06e0
-	at org.openqa.selenium.remote.codec.w3c.W3CHttpResponseCodec.createException(W3CHttpResponseCodec.java:200)
-	at org.openqa.selenium.remote.codec.w3c.W3CHttpResponseCodec.decode(W3CHttpResponseCodec.java:133)
-	at org.openqa.selenium.remote.codec.w3c.W3CHttpResponseCodec.decode(W3CHttpResponseCodec.java:53)
-	at org.openqa.selenium.remote.HttpCommandExecutor.execute(HttpCommandExecutor.java:184)
-	at org.openqa.selenium.remote.service.DriverCommandExecutor.invokeExecute(DriverCommandExecutor.java:162)
-	at org.openqa.selenium.remote.service.DriverCommandExecutor.execute(DriverCommandExecutor.java:137)
-	at org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:612)
-	at org.openqa.selenium.remote.RemoteWebDriver$Mechanism$2.findElement(RemoteWebDriver.java:1251)
-	at org.openqa.selenium.remote.RemoteWebDriver.findElement(RemoteWebDriver.java:379)
-	at org.openqa.selenium.remote.RemoteWebDriver.findElement(RemoteWebDriver.java:373)
-	at org.openqa.selenium.support.pagefactory.DefaultElementLocator.findElement(DefaultElementLocator.java:70)
-	at org.openqa.selenium.support.pagefactory.internal.LocatingElementHandler.invoke(LocatingElementHandler.java:39)
-	at jdk.proxy2/jdk.proxy2.$Proxy18.click(Unknown Source)
-	at org.selenium.pom.pages.ZimmerHomePage.clickFindDoc(ZimmerHomePage.java:57)
-	at org.selenium.pom.tests.ZimmerHomePageTest.homePageTest(ZimmerHomePageTest.java:18)
-	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
-	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
-	at java.base/java.lang.Thread.run(Thread.java:833)
-... Removed 17 stack frames</div></td></tr></table><p class="totop"><a href="#summary">back to summary</a></p>
-</body>
+<h2>HomePageTests</h2><h3 id="m0">org.selenium.pom.tests.ZimmerHomePageTest#verifyPrivacyNoticePage</h3><table class="result"><tr><th class="invisible"/></tr></table><p class="totop"><a href="#summary">back to summary</a></p>
+<h2>FindADocPageTests</h2><h2>CareersPageTests</h2></body>
 </html>
