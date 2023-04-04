@@ -13,6 +13,7 @@ public class ChromeDriverManagerAbstract extends DriverManagerAbstract {
         WebDriverManager.chromedriver().cachePath("Drivers").setup();
         ChromeOptions opt = new ChromeOptions();
         opt.addArguments("--remote-allow-origins=*");
+        opt.addArguments("--headless");
         driver = new ChromeDriver(opt);
         driver.manage().window().maximize();
         
