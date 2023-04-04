@@ -443,8 +443,8 @@ public class Functions {
 //adding step
 	public WebElement waitForElement(By elementLocator) {
 		WebElement webElement = null;
-		int timeout = 10; // in seconds
-		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+		int timeout = 20; // in seconds
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(timeout));
 		try {
 			System.err.println(elementLocator);
 			webElement = wait.until(ExpectedConditions.visibilityOfElementLocated(elementLocator));
