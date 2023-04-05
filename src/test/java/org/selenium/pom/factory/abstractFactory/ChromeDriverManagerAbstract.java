@@ -1,5 +1,6 @@
 package org.selenium.pom.factory.abstractFactory;
 
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
@@ -13,7 +14,7 @@ public class ChromeDriverManagerAbstract extends DriverManagerAbstract {
 		System.out.println("*** startDriver for ChromeDriver ***");
 		WebDriverManager.chromedriver().setup();
 		ChromeOptions opt = new ChromeOptions();
-		opt.addArguments("--start-maximized");
+		//opt.addArguments("--start-maximized");
 		opt.addArguments("--remote-allow-origins=*");
 		//opt.addArguments("--headless=new");
 		//opt.addArguments("--disable-dev-shm-usage"); // overcome limited resource
@@ -37,7 +38,8 @@ public class ChromeDriverManagerAbstract extends DriverManagerAbstract {
 		opt.addArguments("--remote-debugging-port=9222");
 
 		driver = new ChromeDriver(opt);
-		//driver.manage().window().maximize();
+		driver.manage().window().setSize(new Dimension(1024, 768));
+		//driver.manage().window().maximize().;
 
 	}
 
