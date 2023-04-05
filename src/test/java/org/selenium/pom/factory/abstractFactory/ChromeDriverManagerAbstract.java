@@ -26,13 +26,12 @@ public class ChromeDriverManagerAbstract extends DriverManagerAbstract {
 		opt.addArguments("--disable-notifications");
 		
 		//2
-		opt.addArguments("--no-sandbox"); // Bypass OS security model
-		opt.addArguments("--disable-setuid-sandbox");
-		opt.addArguments("--no-sandbox");
-		opt.addArguments("--remote-debugging-port=9222");
+		//opt.addArguments("--no-sandbox"); // Bypass OS security model
+		//opt.addArguments("--disable-setuid-sandbox");
+		//opt.addArguments("--remote-debugging-port=9222");
 
 		driver = new ChromeDriver(opt);
-		//driver.manage().window().maximize();
+		driver.manage().window().maximize();
 
 	}
 
