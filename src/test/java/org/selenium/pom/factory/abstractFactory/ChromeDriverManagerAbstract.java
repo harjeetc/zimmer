@@ -12,6 +12,7 @@ public class ChromeDriverManagerAbstract extends DriverManagerAbstract {
 
 	@Override
 	protected void startDriver() {
+	String	WINDOW_SIZE = "1920,1080";
 		// WebDriverManager.chromedriver().cachePath("Drivers").setup();
 		System.out.println("*** startDriver for ChromeDriver ***");
 		WebDriverManager.chromedriver().setup();
@@ -19,7 +20,8 @@ public class ChromeDriverManagerAbstract extends DriverManagerAbstract {
 		//opt.addArguments("--start-maximized");
 		opt.addArguments("--remote-allow-origins=*");
 		opt.addArguments("--headless=new");
-		opt.addArguments("--disable-dev-shm-usage"); // overcome limited resource
+		opt.addArguments("--window-size=%s" + WINDOW_SIZE);
+	//	opt.addArguments("--disable-dev-shm-usage"); // overcome limited resource
 		//opt.addArguments("--window-size=1920x1200");
 		//opt.addArguments("--window-position=0x0");
 		//opt.addArguments("--proxy-server='direct://'");
@@ -29,7 +31,7 @@ public class ChromeDriverManagerAbstract extends DriverManagerAbstract {
 	//	opt.addArguments("--screenshot");
 	//	opt.addArguments("--enable-screenshot-testing-with-mode");
 	//	opt.addArguments("--hide-scrollbars");
-		opt.addArguments("--disable-gpu");
+	//	opt.addArguments("--disable-gpu");
 	//	opt.addArguments("--disable-infobars");
 	//	opt.addArguments("--enable-automation");
 	//	opt.addArguments("--disable-notifications");
@@ -41,7 +43,7 @@ public class ChromeDriverManagerAbstract extends DriverManagerAbstract {
 
 		driver = new ChromeDriver(opt);
 		driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(30));
-		driver.manage().window().setSize(new Dimension(1920, 1080));
+		//driver.manage().window().setSize(new Dimension(1920, 1080));
 		//driver.manage().window().maximize().;
 
 	}
