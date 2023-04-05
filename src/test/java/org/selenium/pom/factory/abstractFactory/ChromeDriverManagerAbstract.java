@@ -52,7 +52,7 @@ public class ChromeDriverManagerAbstract extends DriverManagerAbstract {
 
 		driver = new ChromeDriver(opt);
 	//	driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(30));
-		//driver.manage().window().setSize(new Dimension(1920, 1080));
+		driver.manage().window().setSize(new Dimension(1920, 1080));
 		//driver.manage().window().maximize().;
 
 	}

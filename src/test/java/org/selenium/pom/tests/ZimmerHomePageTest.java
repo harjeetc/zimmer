@@ -37,7 +37,7 @@ public class ZimmerHomePageTest extends BaseTest {
 	 * Validate the verifyPrivacyNoticePage is correct
 	 */
 
-	@Test(groups = { "testme", "phase1" }, enabled = true)
+	@Test(groups = { "", "phase1" }, enabled = true)
 	@Description("Verify Privacy Notice Page by clicking link on HomePage")
 
 	public void verifyPrivacyNoticePage() throws InterruptedException {
