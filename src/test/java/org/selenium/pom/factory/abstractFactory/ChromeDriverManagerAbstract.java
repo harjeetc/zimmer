@@ -15,20 +15,20 @@ public class ChromeDriverManagerAbstract extends DriverManagerAbstract {
 		ChromeOptions opt = new ChromeOptions();
 		opt.addArguments("--remote-allow-origins=*");
 		opt.addArguments("--headless=new");
-		opt.addArguments("--disable-dev-shm-usage"); // overcome limited resource
-		opt.addArguments("--window-size=1920x1200");
+		//opt.addArguments("--disable-dev-shm-usage"); // overcome limited resource
+		//opt.addArguments("--window-size=1920x1200");
 		opt.addArguments("--screenshot");
 		opt.addArguments("--enable-screenshot-testing-with-mode");
-		opt.addArguments("--hide-scrollbars");
-		opt.addArguments("--disable-gpu");
-		opt.addArguments("--disable-infobars");
+		//opt.addArguments("--hide-scrollbars");
+		//opt.addArguments("--disable-gpu");
+		//opt.addArguments("--disable-infobars");
 		opt.addArguments("--enable-automation");
 		opt.addArguments("--disable-notifications");
-		
+		opt.addArguments("--disable-gpu", "--window-size=1920,1080","--ignore-certificate-errors","--no-sandbox", "--disable-dev-shm-usage");
 		//2
 		//opt.addArguments("--no-sandbox"); // Bypass OS security model
-		//opt.addArguments("--disable-setuid-sandbox");
-		//opt.addArguments("--remote-debugging-port=9222");
+		opt.addArguments("--disable-setuid-sandbox");
+		opt.addArguments("--remote-debugging-port=9222");
 
 		driver = new ChromeDriver(opt);
 		driver.manage().window().maximize();
