@@ -361,7 +361,7 @@ public class Functions {
 	// click and wait
 
 	public void click(By by) {
-		WebElement ele = (new WebDriverWait(driver, Duration.ofSeconds(10)))
+		WebElement ele = (new WebDriverWait(driver, Duration.ofSeconds(30)))
 				.until(ExpectedConditions.elementToBeClickable(by));
 		highlighElement(by);
 		int timeout=20;
