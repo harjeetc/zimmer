@@ -62,6 +62,7 @@ public class ZimmerFindADocPageTest extends BaseTest {
 	@Link(name = "ZBWR-646", url = "https://concentrix-catalyst.atlassian.net/browse/ZBWR-646")
 	public void verifyFindADoctorPage() throws InterruptedException {
 		log.info("============Test started[ verifyFindADoctorPage] =============");
+		System.out.println("-----*****------");
 		ZimmerHomePage zimmerHomePage = new ZimmerHomePage(getDriver()).load();
 		zimmerHomePage.verifyHeaderLink("Find a Doctor");
 		zimmerHomePage.navigateAndVerifyHeaderLinkTitle("Find a Doctor");

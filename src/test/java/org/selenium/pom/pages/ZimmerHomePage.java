@@ -59,7 +59,7 @@ public class ZimmerHomePage extends BasePage {
 	 */
 
 	// Dynamic locators
-	String headerLinks = "//div[contains(@class,'header')]//a[contains(.,'%s')]";
+	String headerLinks = "//div[contains(@class,'header')]//a[contains(normalize-space(.),'%s')]";
 	String footerLinks = "//div[contains(@class,'footer')]//a[contains(.,'%s')]";
 	String privacyPolicyHeader = "div[class*='cmp-container'] h1";
 	String legalNoticeHeader = "div[class*='cmp-container'] h2";
