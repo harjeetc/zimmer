@@ -38,7 +38,7 @@ public class ChromeDriverManagerAbstract extends DriverManagerAbstract {
 		opt.addArguments("--remote-debugging-port=9222");
 
 		driver = new ChromeDriver(opt);
-		driver.manage().window().setSize(new Dimension(1024, 768));
+		driver.manage().window().setSize(new Dimension(1920, 1200));
 		//driver.manage().window().maximize().;
 
 	}
