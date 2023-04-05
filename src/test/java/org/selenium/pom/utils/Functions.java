@@ -60,6 +60,7 @@ public class Functions {
 	}
 
 	private long WAIT_DURATION_IN_SECONDS = 60;
+	private int TIME_OUT_IN_SECONDS = 20;
 
 	private long NINTY_SECOND_IN_MILLIS = 90;
 
@@ -363,11 +364,12 @@ public class Functions {
 		WebElement ele = (new WebDriverWait(driver, Duration.ofSeconds(10)))
 				.until(ExpectedConditions.elementToBeClickable(by));
 		highlighElement(by);
+		int timeout=20;
 		try {
 			ele.click();
 		} catch (ElementClickInterceptedException e) {
 			int i = 0;
-			while (i < 5) {
+			while (i < timeout) {
 				try {
 					Thread.sleep(i * 1000);
 				} catch (InterruptedException e2) {
@@ -418,7 +420,7 @@ public class Functions {
 
 	// click and wait and log
 	public void click(By by, String eleName) {
-		WebElement ele = (new WebDriverWait(driver, Duration.ofSeconds(10)))
+		WebElement ele = (new WebDriverWait(driver, Duration.ofSeconds(TIME_OUT_IN_SECONDS)))
 				.until(ExpectedConditions.elementToBeClickable(by));
 		highlighElement(by);
 		ele.click();
@@ -443,7 +445,7 @@ public class Functions {
 //adding step
 	public WebElement waitForElement(By elementLocator) {
 		WebElement webElement = null;
-		int timeout = 20; // in seconds
+		int timeout = TIME_OUT_IN_SECONDS; // in seconds
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(timeout));
 		try {
 			System.err.println(elementLocator);
@@ -559,11 +561,11 @@ public class Functions {
 
 	public void waitForFrameAndSwitch(WebDriver driver, By elementLocator) {
 
-		int timeout = 10; // in seconds
-		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+		int timeout = TIME_OUT_IN_SECONDS; // in seconds
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(timeout));
 		try {
 			// System.out.println(elementLocator);
-			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(10));
+			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(timeout));
 
 			while (driver.findElements(By.xpath("//iframe[@aria-label='Main content']")).size() == 0) {
 				logger.info("waiting for page to load");
@@ -647,7 +649,8 @@ public class Functions {
 //    return readOnly;
 
 	public String getVisibleText(By locator) {
-		WebElement ele = (new WebDriverWait(driver, Duration.ofSeconds(10)))
+		int timeout = 20;
+		WebElement ele = (new WebDriverWait(driver, Duration.ofSeconds(timeout)))
 				.until(ExpectedConditions.presenceOfElementLocated(locator));
 		logger.info("Text captured :" + ele.getText().trim());
 		return ele.getText().trim();

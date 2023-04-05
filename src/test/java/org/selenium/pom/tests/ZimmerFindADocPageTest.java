@@ -56,7 +56,7 @@ public class ZimmerFindADocPageTest extends BaseTest {
 	/*
 	 * Validate the verifyPrivacyNoticePage is correct
 	 */
-	@Test(groups = { "HomePage", "Smoke", "phase1" }, enabled = true)
+	@Test(groups = { "HomePage", "find", "phase1" }, enabled = true)
 	@Description("Verify Find a Doctor Page by clicking link on HomePage")
 	@Story("ZBWR-646")
 	@Link(name = "ZBWR-646", url = "https://concentrix-catalyst.atlassian.net/browse/ZBWR-646")

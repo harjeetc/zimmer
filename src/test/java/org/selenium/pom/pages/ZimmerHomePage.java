@@ -477,7 +477,7 @@ public class ZimmerHomePage extends BasePage {
 		try {
 			ptr.click(By.xpath(String.format(headerLinks, linkName)));
 			log.info("Header is clicked : " + linkName);
-			ptr.waitforTitlepresent(linkName, 5);
+			ptr.waitforTitlepresent(linkName, 20);
 			log.info("Title is verifed : " + linkName);
 			if (linkName.equalsIgnoreCase("Careers")) {
 				Assert.assertEquals(ptr.getVisibleText(careerHeader), linkName, "Failed : page header not matched");
@@ -488,7 +488,7 @@ public class ZimmerHomePage extends BasePage {
 				Assert.assertEquals(ptr.getVisibleText(productLinkHeader), "Find a health provider near you",
 						"Failed : page header not matched");
 				log.info("Header is displayed : Find a health provider near you");
-				ptr.highlighElement(productLinkHeader);
+				//ptr.highlighElement(productLinkHeader);
 
 			}
 

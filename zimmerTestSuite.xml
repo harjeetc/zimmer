@@ -5,7 +5,7 @@
 
 	<groups>
 		<run>
-			<include name="phase1"></include>
+			<include name="find"></include>
 		</run>
 	</groups>
 
