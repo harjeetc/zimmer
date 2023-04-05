@@ -16,7 +16,7 @@ public class ChromeDriverManagerAbstract extends DriverManagerAbstract {
 		opt.addArguments("--remote-allow-origins=*");
 		opt.addArguments("--headless=new");
 	//	opt.addArguments("--disable-dev-shm-usage"); // overcome limited resource
-	//	opt.addArguments("--window-size=1920x1200");
+		opt.addArguments("--window-size=1920x1200");
 	//	opt.addArguments("--screenshot");
 	//	opt.addArguments("--enable-screenshot-testing-with-mode");
 	//	opt.addArguments("--hide-scrollbars");
