@@ -42,9 +42,18 @@ public class ChromeDriverManagerAbstract extends DriverManagerAbstract {
 		opt.addArguments("--disable-gpu");
 		opt.addArguments("--disable-extensions");
 		opt.setExperimentalOption("useAutomationExtension", false);
-		opt.addArguments("--proxy-server='direct://'");
-		opt.addArguments("--proxy-bypass-list=*");
-		opt.addArguments("--start-maximized");
+		opt.addArguments("--disable-dev-shm-usage");
+		opt.addArguments("--disable-renderer-backgrounding");
+		opt.addArguments("--disable-background-timer-throttling");
+		opt.addArguments("--disable-backgrounding-occluded-windows");
+		opt.addArguments("--disable-client-side-phishing-detection");
+		opt.addArguments("--disable-crash-reporter");
+		opt.addArguments("--disable-oopr-debug-crash-dump");
+		opt.addArguments("--no-crash-upload");
+		opt.addArguments("--disable-extensions");
+		opt.addArguments("--disable-low-res-tiling");
+		opt.addArguments("--log-level=3");
+		opt.addArguments("--silent");
 	
 		
 		
