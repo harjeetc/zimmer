@@ -475,6 +475,7 @@ public class ZimmerHomePage extends BasePage {
 
 	public void navigateAndVerifyHeaderLinkTitle(String linkName) throws InterruptedException {
 		try {
+			ptr.delay(10);
 			ptr.click(By.xpath(String.format(headerLinks, linkName)));
 			log.info("Header is clicked : " + linkName);
 			ptr.waitforTitlepresent(linkName, 20);

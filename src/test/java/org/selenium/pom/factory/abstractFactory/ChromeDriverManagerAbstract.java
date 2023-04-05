@@ -50,7 +50,7 @@ public class ChromeDriverManagerAbstract extends DriverManagerAbstract {
 		
 		
 		opt.addArguments("--no-sandbox"); // Bypass OS security model
-		opt.addArguments("--disable-setuid-sandbox");
+	//	opt.addArguments("--disable-setuid-sandbox");
 		opt.addArguments("--remote-debugging-port=9222");
 
 		driver = new ChromeDriver(opt);
