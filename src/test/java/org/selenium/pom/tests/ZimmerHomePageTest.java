@@ -147,7 +147,7 @@ public class ZimmerHomePageTest extends BaseTest {
 	 * Validate The accept cookies button is accepted
 	 */
 
-	@Test(groups = { "HomePage", "phase1" }, enabled = true)
+	@Test(groups = { "testme", "phase1" }, enabled = true)
 	@Description("TC 1 : Verify the 'Accept' cookies button is accepted on HomePage")
 	@Story("ZB Site - Verification of the cookie pop up")
 	@Link(name = "ZBWR-665", url = "https://concentrix-catalyst.atlassian.net/browse/ZBWR-665")
