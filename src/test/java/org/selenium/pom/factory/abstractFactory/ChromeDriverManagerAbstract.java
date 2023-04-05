@@ -1,5 +1,7 @@
 package org.selenium.pom.factory.abstractFactory;
 
+import java.time.Duration;
+
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -38,6 +40,7 @@ public class ChromeDriverManagerAbstract extends DriverManagerAbstract {
 		opt.addArguments("--remote-debugging-port=9222");
 
 		driver = new ChromeDriver(opt);
+		driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(30));
 		driver.manage().window().setSize(new Dimension(1920, 1200));
 		//driver.manage().window().maximize().;
 
