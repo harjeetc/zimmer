@@ -21,7 +21,7 @@ public class ZimmerHomePageTest extends BaseTest {
 	 * Validate the Page Title is correct
 	 */
 
-	@Test(groups = { "HomePage", "Test", "phase1" }, enabled = true)
+	@Test(groups = { "HomePage", "testme", "phase1" }, enabled = true)
 	@Description("Test to verify HomePage Title is Welcome to Zimmer Biomet")
 	@Feature("HomePage Tests")
 	public void verifyHomePageTitle() throws InterruptedException {
@@ -37,7 +37,7 @@ public class ZimmerHomePageTest extends BaseTest {
 	 * Validate the verifyPrivacyNoticePage is correct
 	 */
 
-	@Test(groups = { "HomePage", "phase1" }, enabled = true)
+	@Test(groups = { "testme", "phase1" }, enabled = true)
 	@Description("Verify Privacy Notice Page by clicking link on HomePage")
 
 	public void verifyPrivacyNoticePage() throws InterruptedException {

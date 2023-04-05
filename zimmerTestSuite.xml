@@ -5,17 +5,17 @@
 
 	<groups>
 		<run>
-			<include name="find"></include>
+			<include name="testme"></include>
 		</run>
 	</groups>
 
 
-	<!-- <test name="HomePageTests" thread-count="6" parallel="methods">
+	 <test name="HomePageTests" thread-count="6" parallel="methods">
 		<parameter name="browser" value="CHROME" />
 		<classes>
 			<class name="org.selenium.pom.tests.ZimmerHomePageTest" />
 		</classes>
-	</test> -->
+	</test> 
 
 	<test name="FindADocPageTests" thread-count="6" parallel="methods">
 		<parameter name="browser" value="CHROME" />
