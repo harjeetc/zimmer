@@ -24,11 +24,11 @@ public class ChromeDriverManagerAbstract extends DriverManagerAbstract {
 	//	opt.addArguments("--disable-dev-shm-usage"); // overcome limited resource
 		//opt.addArguments("--window-size=1920x1200");
 		//opt.addArguments("--window-position=0x0");
-		//opt.addArguments("--proxy-server='direct://'");
-		//opt.addArguments("--proxy-bypass-list=*");
-		//opt.addArguments("--disable-browser-side-navigation");
+		opt.addArguments("--ingore-certificate-erorrs");
+		opt.addArguments("--allow-running-insecure-content");
+		opt.addArguments("--disable-browser-side-navigation");
 	//	opt.addArguments("--window-size=1840,1080");
-	//	opt.addArguments("--screenshot");
+		opt.addArguments("--screenshot");
 	//	opt.addArguments("--enable-screenshot-testing-with-mode");
 	//	opt.addArguments("--hide-scrollbars");
 	//	opt.addArguments("--disable-gpu");
@@ -45,7 +45,7 @@ public class ChromeDriverManagerAbstract extends DriverManagerAbstract {
 	
 		
 		
-		
+		opt.addArguments("--display=:99");
 		opt.addArguments("--no-sandbox"); // Bypass OS security model
 		opt.addArguments("--disable-setuid-sandbox");
 		//opt.addArguments("--remote-debugging-port=9222");
