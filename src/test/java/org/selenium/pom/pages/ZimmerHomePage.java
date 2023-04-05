@@ -45,7 +45,9 @@ public class ZimmerHomePage extends BasePage {
 
 	}
 
-	By findADoc = By.xpath("//a[@class='link link--blank '][normalize-space()='Find a Doctor']");
+	//(//*[name()='svg'][@class='icon icon--fad icon--normal icon--default'])[1]
+	//By findADoc = By.xpath("//a[@class='link link--blank'][normalize-space()='Find a Doctor']");
+	By findADoc = By.xpath("(//*[name()='svg'][@class='icon icon--fad icon--normal icon--default'])[1]");
 	By locationTextBox = By.cssSelector("#location");
 	By radiusTextBox = By.cssSelector("#radius");
 	By docTypes = By.xpath("//ul[@justify='content-between']/li");
