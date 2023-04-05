@@ -17,14 +17,16 @@ public class ChromeDriverManagerAbstract extends DriverManagerAbstract {
 		System.out.println("*** startDriver for ChromeDriver ***");
 		WebDriverManager.chromedriver().setup();
 		ChromeOptions opt = new ChromeOptions();
-		//opt.addArguments("--start-maximized");
-		opt.addArguments("--headless=new");
 		opt.addArguments("--no-sandbox"); // Bypass OS security model
 
-		opt.addArguments("--window-size=1280,720");
+	//	opt.addArguments("--start-maximized");
+		opt.addArguments("--headless=new");
+		opt.addArguments("--disable-extensions");
+		opt.addArguments("--disable-dev-shm-usage");
+		opt.addArguments("--window-size=1400,2100");
 		opt.addArguments("--disable-gpu");
-		
-	//	opt.addArguments("--remote-allow-origins=*");	
+		opt.addArguments("--disable-crash-reporter");
+		opt.addArguments("--remote-allow-origins=*");	
 		//opt.addArguments("--window-size=%s" + WINDOW_SIZE);
 	//	opt.addArguments("--disable-dev-shm-usage"); // overcome limited resource
 		//opt.addArguments("--window-size=1920x1200");
@@ -43,7 +45,7 @@ public class ChromeDriverManagerAbstract extends DriverManagerAbstract {
 		
 		
 		
-		opt.addArguments("--start-maximized");
+
 	
 	
 		
@@ -54,7 +56,7 @@ public class ChromeDriverManagerAbstract extends DriverManagerAbstract {
 
 		driver = new ChromeDriver(opt);
 	//	driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(30));
-		driver.manage().window().setSize(new Dimension(1920, 1080));
+	//	driver.manage().window().setSize(new Dimension(1920, 1080));
 		//driver.manage().window().maximize().;
 
 	}
