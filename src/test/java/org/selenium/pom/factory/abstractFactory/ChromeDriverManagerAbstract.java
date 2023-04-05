@@ -20,9 +20,9 @@ public class ChromeDriverManagerAbstract extends DriverManagerAbstract {
 	//	opt.addArguments("--screenshot");
 	//	opt.addArguments("--enable-screenshot-testing-with-mode");
 	//	opt.addArguments("--hide-scrollbars");
-	//	opt.addArguments("--disable-gpu");
+		opt.addArguments("--disable-gpu");
 	//	opt.addArguments("--disable-infobars");
-	//	opt.addArguments("--enable-automation");
+		opt.addArguments("--enable-automation");
 	//	opt.addArguments("--disable-notifications");
 		//opt.addArguments("--disable-gpu", "--window-size=1920,1080","--ignore-certificate-errors","--no-sandbox", "--disable-dev-shm-usage");
 		//2
