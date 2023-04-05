@@ -18,13 +18,18 @@ public class ChromeDriverManagerAbstract extends DriverManagerAbstract {
 		WebDriverManager.chromedriver().setup();
 		ChromeOptions opt = new ChromeOptions();
 		//opt.addArguments("--start-maximized");
-		opt.addArguments("--remote-allow-origins=*");
 		opt.addArguments("--headless=new");
+		opt.addArguments("--no-sandbox"); // Bypass OS security model
+
+		opt.addArguments("--window-size=1280,720");
+		opt.addArguments("--disable-gpu");
+		
+	//	opt.addArguments("--remote-allow-origins=*");	
 		//opt.addArguments("--window-size=%s" + WINDOW_SIZE);
 	//	opt.addArguments("--disable-dev-shm-usage"); // overcome limited resource
 		//opt.addArguments("--window-size=1920x1200");
 		//opt.addArguments("--window-position=0x0");
-		opt.addArguments("--disable-browser-side-navigation");
+	//	opt.addArguments("--disable-browser-side-navigation");
 	//	opt.addArguments("--window-size=1840,1080");
 	//	opt.addArguments("--screenshot");
 	//	opt.addArguments("--enable-screenshot-testing-with-mode");
@@ -36,16 +41,15 @@ public class ChromeDriverManagerAbstract extends DriverManagerAbstract {
 		//opt.addArguments("--disable-gpu", "--window-size=1920,1080","--ignore-certificate-errors","--no-sandbox", "--disable-dev-shm-usage");
 		//2
 		
-		opt.addArguments("--window-size=1920,1080");
-		opt.addArguments("--disable-gpu");
+		
+		
 		opt.addArguments("--start-maximized");
 	
 	
 		
 		
 	
-		opt.addArguments("--no-sandbox"); // Bypass OS security model
-		opt.addArguments("--disable-setuid-sandbox");
+	//	opt.addArguments("--disable-setuid-sandbox");
 		//opt.addArguments("--remote-debugging-port=9222");
 
 		driver = new ChromeDriver(opt);
