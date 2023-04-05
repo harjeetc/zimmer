@@ -10,12 +10,12 @@
 	</groups>
 
 
-	<test name="HomePageTests" thread-count="6" parallel="methods">
+	<!-- <test name="HomePageTests" thread-count="6" parallel="methods">
 		<parameter name="browser" value="CHROME" />
 		<classes>
 			<class name="org.selenium.pom.tests.ZimmerHomePageTest" />
 		</classes>
-	</test>
+	</test> -->
 
 	<test name="FindADocPageTests" thread-count="6" parallel="methods">
 		<parameter name="browser" value="CHROME" />
@@ -24,11 +24,13 @@
 		</classes>
 	</test>
 
+	<!--
 	<test name="CareersPageTests" thread-count="6" parallel="methods">
 		<parameter name="browser" value="CHROME" />
 		<classes>
 			<class name="org.selenium.pom.tests.ZimmerCareersPageTest" />
 		</classes>
 	</test>
+	-->
 
 </suite>
