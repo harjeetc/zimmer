@@ -13,11 +13,12 @@ public class ChromeDriverManagerAbstract extends DriverManagerAbstract {
 		System.out.println("*** startDriver for ChromeDriver ***");
 		WebDriverManager.chromedriver().setup();
 		ChromeOptions opt = new ChromeOptions();
+		opt.addArguments("--start-maximized");
 		opt.addArguments("--remote-allow-origins=*");
-		opt.addArguments("--headless=new");
+		//opt.addArguments("--headless=new");
 		opt.addArguments("--disable-dev-shm-usage"); // overcome limited resource
 		opt.addArguments("--window-size=1920x1200");
-		opt.addArguments("--window-position=0x0");
+		//opt.addArguments("--window-position=0x0");
 		opt.addArguments("--proxy-server='direct://'");
 		opt.addArguments("--proxy-bypass-list=*");
 		opt.addArguments("--disable-browser-side-navigation");
@@ -36,7 +37,7 @@ public class ChromeDriverManagerAbstract extends DriverManagerAbstract {
 		opt.addArguments("--remote-debugging-port=9222");
 
 		driver = new ChromeDriver(opt);
-		driver.manage().window().maximize();
+		//driver.manage().window().maximize();
 
 	}
 
