@@ -71,7 +71,7 @@ public class ZimmerHomePageTest extends BaseTest {
 	 * Validate The Navigations h1 links are opening and closing
 	 */
 
-	@Test(groups = { "HomePage", "Smoke" }, enabled = true)
+	@Test(groups = { "phase1", "Smoke" }, enabled = true)
 	@Description("Verify the Navigations h1 links Expand and Collapse 'Product & Solutions', 'Education & Resources' and 'Abous US'")
 	public void verifyExpandAndCollapseProdSolutionsLink() throws InterruptedException {
 		log.info("============Test started[ Verify the Navigation h1 links Expand and Collapse] =============");
@@ -96,7 +96,7 @@ public class ZimmerHomePageTest extends BaseTest {
 	 * validate images are not broken on homepage
 	 */
 
-	@Test(groups = { "HomePage", "phase1" }, enabled = true)
+	@Test(groups = { "testme", "phase1" }, enabled = true)
 
 	@Description("Verify Broken Images on HomePage")
 	public void verifyBrokenImages() {
