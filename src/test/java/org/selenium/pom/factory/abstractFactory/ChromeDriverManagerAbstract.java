@@ -40,30 +40,18 @@ public class ChromeDriverManagerAbstract extends DriverManagerAbstract {
 		
 		opt.addArguments("--window-size=1920,1080");
 		opt.addArguments("--disable-gpu");
-		opt.addArguments("--disable-extensions");
-		opt.setExperimentalOption("useAutomationExtension", false);
-		opt.addArguments("--disable-dev-shm-usage");
-		opt.addArguments("--disable-renderer-backgrounding");
-		opt.addArguments("--disable-background-timer-throttling");
-		opt.addArguments("--disable-backgrounding-occluded-windows");
-		opt.addArguments("--disable-client-side-phishing-detection");
-		opt.addArguments("--disable-crash-reporter");
-		opt.addArguments("--disable-oopr-debug-crash-dump");
-		opt.addArguments("--no-crash-upload");
-		opt.addArguments("--disable-extensions");
-		opt.addArguments("--disable-low-res-tiling");
-		opt.addArguments("--log-level=3");
-		opt.addArguments("--silent");
+		opt.addArguments("--start-maximized");
+	
 	
 		
 		
 		
 		opt.addArguments("--no-sandbox"); // Bypass OS security model
-	//	opt.addArguments("--disable-setuid-sandbox");
-		opt.addArguments("--remote-debugging-port=9222");
+		opt.addArguments("--disable-setuid-sandbox");
+		//opt.addArguments("--remote-debugging-port=9222");
 
 		driver = new ChromeDriver(opt);
-		driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(30));
+	//	driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(30));
 		//driver.manage().window().setSize(new Dimension(1920, 1080));
 		//driver.manage().window().maximize().;
 
