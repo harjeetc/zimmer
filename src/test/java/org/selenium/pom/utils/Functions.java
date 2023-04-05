@@ -60,7 +60,7 @@ public class Functions {
 	}
 
 	private long WAIT_DURATION_IN_SECONDS = 60;
-	private int TIME_OUT_IN_SECONDS = 20;
+	private int TIME_OUT_IN_SECONDS = 60;
 
 	private long NINTY_SECOND_IN_MILLIS = 90;
 
