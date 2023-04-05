@@ -46,8 +46,7 @@ public class ZimmerFindADocPage extends BasePage {
 	 * String headerLinks = "(//a[.='%s'])[1]"; String.format(headerLinks, linkName)
 	 * here format function will replace the %s with input string i.e. linkName
 	 */
-
-	String headerLinks = "//div[contains(@class,'header')]//a[contains(.,'%s')]";
+	String headerLinks = "//div[contains(@class,'header')]//a[contains(normalize-space(.),'%s')]";
 	String footerLinks = "//div[contains(@class,'footer')]//a[contains(.,'%s')]";
 
 	String buttons = "//button[.='%s']";
