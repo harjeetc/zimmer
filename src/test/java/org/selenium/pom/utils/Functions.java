@@ -796,7 +796,7 @@ public class Functions {
 	public void scrollPage(WebElement element) {
 		JavascriptExecutor executor = (JavascriptExecutor) driver;
 		try {
-			new WebDriverWait(driver, Duration.ofSeconds(2)).until(ExpectedConditions.visibilityOf(element));
+			new WebDriverWait(driver, Duration.ofSeconds(5)).until(ExpectedConditions.visibilityOf(element));
 			// executor.executeScript("arguments[0].scrollIntoView(true);", element);
 			executor.executeScript(
 					"arguments[0].scrollIntoView({behavior: \"auto\", block: \"center\", inline: \"nearest\"});",

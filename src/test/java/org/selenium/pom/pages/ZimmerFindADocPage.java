@@ -36,7 +36,7 @@ public class ZimmerFindADocPage extends BasePage {
 		ptr = new Functions(driver);
 	}
 
-	By findADoc = By.xpath("//a[@class='link link--blank '][normalize-space()='Find a Doctor']");
+	By findADoc = By.xpath("//a[@class='link link--blank'][normalize-space()='Find a Doctor']");
 	By locationTextBox = By.cssSelector("#location");
 	By radiusTextBox = By.cssSelector("#radius");
 	By docTypes = By.xpath("//ul[@justify='content-between']/li");
