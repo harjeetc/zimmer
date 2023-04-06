@@ -533,14 +533,16 @@ public class ZimmerHomePage extends BasePage {
 	}
 	
 	public void navigateAndVerifyHeaderLinkTitleCSS(String linkName) throws InterruptedException {
-		 ptr.delay(10);
+		
 		try {
 			log.info("I am in inside the css finddoc issue : " + linkName);
 			for (int i = 0; i < driver.findElements(By.cssSelector(headerLinksCSS)).size(); i++) {
 				if (driver.findElements(By.cssSelector(headerLinksCSS)).get(i).getText().trim()
 						.equalsIgnoreCase(linkName)) {
+					log.info("waitingto be clicked : " + linkName);
+					 ptr.delay(10);
 					ptr.click(driver.findElements(By.cssSelector(headerLinksCSS)).get(i));
-					
+				//	ptr.clickAt(locationError, linkName);
 				}
 			}
 			// ptr.delay(10);
