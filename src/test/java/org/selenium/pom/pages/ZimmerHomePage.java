@@ -541,8 +541,9 @@ public class ZimmerHomePage extends BasePage {
 						.equalsIgnoreCase(linkName)) {
 					log.info("waitingto be clicked : " + linkName);
 					ptr.waitForElementToBeClickable(driver, findADoc, 5);
-					ptr.click(driver.findElements(By.cssSelector(headerLinksCSS)).get(i));
-					log.info("clicked on find a doc now  : " + linkName);
+					ptr.clickedSomething(driver.findElements(By.cssSelector(headerLinksCSS)).get(i), linkName);
+			//		ptr.click(driver.findElements(By.cssSelector(headerLinksCSS)).get(i));
+					log.info("clicked on   : " + linkName);
 
 				}
 			}

@@ -455,6 +455,15 @@ public class Functions {
 		ele.click();
 		logger.info("Clicked at : " + eleName);
 	}
+	
+	// click and wait and log
+	public void clickedSomething(WebElement by, String eleName) {
+		WebElement ele = (new WebDriverWait(driver, Duration.ofSeconds(TIME_OUT_IN_SECONDS)))
+				.until(ExpectedConditions.elementToBeClickable(by));
+		highlighElement(by);
+		ele.click();
+		logger.info("Clicked at : " + eleName);
+	}
 
 	public void switchWindowAndNavigateTo(String url) {
 
