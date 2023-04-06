@@ -5,7 +5,7 @@
 
 	<groups>
 		<run>
-			<include name="testme"></include>
+			<include name="finddoc"></include>
 		</run>
 	</groups>
 

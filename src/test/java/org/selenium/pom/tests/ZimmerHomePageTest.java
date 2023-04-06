@@ -245,7 +245,7 @@ public class ZimmerHomePageTest extends BaseTest {
 	/*
 	 * Validate the verifyPrivacyNoticePage is correct
 	 */
-	@Test(groups = { "HomePage", "Smoke", "phase1" }, enabled = true)
+	@Test(groups = { "finddoc", "Smoke", "phase1" }, enabled = true)
 	@Description("Verify Find a Doctor Page by clicking link on HomePage")
 	@Story("ZBWR-646")
 	@Link(name = "")
