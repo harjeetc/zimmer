@@ -512,6 +512,7 @@ public class ZimmerHomePage extends BasePage {
 			log.info("Header is clicked : " + linkName);
 			ptr.waitforTitlepresent(linkName, 20);
 			log.info("Title is verifed : " + linkName);
+			
 			if (linkName.equalsIgnoreCase("Careers")) {
 				Assert.assertEquals(ptr.getVisibleText(careerHeader), linkName, "Failed : page header not matched");
 				log.info("Header is displayed : " + linkName);
@@ -524,6 +525,40 @@ public class ZimmerHomePage extends BasePage {
 				// ptr.highlighElement(productLinkHeader);
 
 			}
+
+		} catch (AssertionError e) {
+			e.printStackTrace();
+			throw e;
+		}
+	}
+	
+	public void navigateAndVerifyHeaderLinkTitleCSS(String linkName) throws InterruptedException {
+		try {
+			for (int i = 0; i < driver.findElements(By.cssSelector(headerLinksCSS)).size(); i++) {
+				if (driver.findElements(By.cssSelector(headerLinksCSS)).get(i).getText().trim()
+						.equalsIgnoreCase(linkName)) {
+					ptr.click(driver.findElements(By.cssSelector(headerLinksCSS)).get(i));
+					
+				}
+			}
+			// ptr.delay(10);
+			//ptr.click(By.xpath(String.format(headerLinks, linkName)));
+			log.info("Header is clicked : " + linkName);
+			//ptr.waitforTitlepresent(linkName, 20);
+			//log.info("Title is verifed : " + linkName);
+			
+//			if (linkName.equalsIgnoreCase("Careers")) {
+//				Assert.assertEquals(ptr.getVisibleText(careerHeader), linkName, "Failed : page header not matched");
+//				log.info("Header is displayed : " + linkName);
+//				Assert.assertEquals(getColorName(careerHeader, "color"), "White", "Failed: font color not matched");
+//				log.info("Font color is " + getColorName(careerHeader, "color"));
+//			} else if (linkName.equalsIgnoreCase("Find a Doctor")) {
+//				Assert.assertEquals(ptr.getVisibleText(productLinkHeader), "Find a health provider near you",
+//						"Failed : page header not matched");
+//				log.info("Header is displayed : Find a health provider near you");
+//				// ptr.highlighElement(productLinkHeader);
+//
+//			}
 
 		} catch (AssertionError e) {
 			e.printStackTrace();

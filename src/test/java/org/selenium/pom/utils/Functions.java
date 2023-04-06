@@ -389,6 +389,35 @@ public class Functions {
 			}
 		}
 	}
+	public void click(WebElement by) {
+		WebElement ele = (new WebDriverWait(driver, Duration.ofSeconds(20)))
+				.until(ExpectedConditions.elementToBeClickable(by));
+	//	highlighElement(by);
+		int timeout=20;
+		try {
+			ele.click();
+		} catch (ElementClickInterceptedException e) {
+			int i = 0;
+			while (i < timeout) {
+				try {
+					Thread.sleep(i * 1000);
+				} catch (InterruptedException e2) {
+					/*
+					 * Thrown when a thread is waiting, sleeping, or otherwise occupied, and the thread is interrupted, either before or during the activity. 
+					 * Occasionally a method may wish to test whether the current thread has been interrupted, and if so, to immediately throw this exception.
+					 */
+					e2.printStackTrace();
+				}
+				try {
+					ele.click();
+					logger.info("Cliked for ElementClickInterceptedException");
+					break;
+				} catch (Exception e1) {
+
+				}
+			}
+		}
+	}
 
 	public void waitElementToLoad(By locator, int time) throws InterruptedException {
 		int visible = 0;

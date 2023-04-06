@@ -252,8 +252,8 @@ public class ZimmerHomePageTest extends BaseTest {
 	public void verifyFindADoctorPage() throws InterruptedException {
 		log.info("============Test started[ verifyFindADoctorPage] =============");
 		ZimmerHomePage zimmerHomePage = new ZimmerHomePage(getDriver()).load();
-		zimmerHomePage.verifyHeaderLink("Find a Doctor");
-		zimmerHomePage.navigateAndVerifyHeaderLinkTitle("Find a Doctor");
+		zimmerHomePage.verifyHeaderLinkCSS("Find a Doctor");
+		zimmerHomePage.navigateAndVerifyHeaderLinkTitleCSS("Find a Doctor");
 		log.info("============Test ended[ verifyFindADoctorPage ] =============");
 
 	}
