@@ -21,7 +21,7 @@ public class ZimmerHomePageTest extends BaseTest {
 	 * Validate the Page Title is correct
 	 */
 
-	@Test(groups = { "HomePage", "", "phase1" }, enabled = true)
+	@Test(groups = { "HomePage", "phaseTest", "phase1" }, enabled = true)
 	@Description("Test to verify HomePage Title is Welcome to Zimmer Biomet")
 	@Feature("HomePage Tests")
 	public void verifyHomePageTitle() throws InterruptedException {
@@ -96,7 +96,7 @@ public class ZimmerHomePageTest extends BaseTest {
 	 * validate images are not broken on homepage
 	 */
 
-	@Test(groups = { "", "phase1" }, enabled = true)
+	@Test(groups = { "phaseTest", "phase1" }, enabled = true)
 
 	@Description("Verify Broken Images on HomePage")
 	public void verifyBrokenImages() {
@@ -109,7 +109,7 @@ public class ZimmerHomePageTest extends BaseTest {
 	 * validate header links are not broken on homepage
 	 */
 
-	@Test(groups = { "HomePage", "phase1" }, enabled = true)
+	@Test(groups = { "phaseTest", "phase1" }, enabled = true)
 	@Description("Test : Verify Header Broken Links")
 	public void verifyHeaderBrokenLinks() {
 		log.info("============Test started[ verifyHeaderLinks are not Broken ] =============");
@@ -121,7 +121,7 @@ public class ZimmerHomePageTest extends BaseTest {
 	 * Validate any footer links are broken need to add the 200 status codes
 	 */
 
-	@Test(groups = { "HomePage", "phase1" }, enabled = true)
+	@Test(groups = { "phaseTest", "phase1" }, enabled = true)
 	@Description("Test : Verify Footer Broken Links are working")
 	public void verifyFooterBrokenLinks() {
 		log.info("============Test started[ Verify Footer Links are working ] =============");
@@ -135,7 +135,7 @@ public class ZimmerHomePageTest extends BaseTest {
 	 * validate social media links are not broken
 	 */
 
-	@Test(groups = { "HomePage", "phase1" }, enabled = true)
+	@Test(groups = { "phaseTest", "phase1" }, enabled = true)
 	@Description("Test : Verify Social Media Links are not broken (Linkedin Link is returning 999 status code)")
 	public void verifySocialMediaBrokenLinks() {
 		log.info("============Test started[ verifySocialMediaLink are present and not broken ] =============");
