@@ -23,7 +23,7 @@ public class ChromeDriverManagerAbstract extends DriverManagerAbstract {
 		opt.addArguments("--headless=new");
 		opt.addArguments("--disable-extensions");
 		opt.addArguments("--disable-dev-shm-usage");
-		opt.addArguments("--window-size=1920,1180");
+		opt.addArguments("--window-size=1920,1080");
 	//	opt.addArguments("--disable-gpu");
 		opt.addArguments("--disable-crash-reporter");
 		opt.addArguments("--remote-allow-origins=*");	
