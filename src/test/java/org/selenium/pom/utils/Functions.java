@@ -465,7 +465,9 @@ public class Functions {
 			    .orElse(null);
 
 			if (matchingButton != null) {
-			    matchingButton.click();
+				JavascriptExecutor js = (JavascriptExecutor) driver;
+				js.executeScript("arguments[0].click();",matchingButton  );
+			//    matchingButton.click();
 			    logger.info("clicked on   : " + textValue);
 			}
 		
