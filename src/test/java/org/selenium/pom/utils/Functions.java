@@ -457,12 +457,19 @@ public class Functions {
 	}
 	
 	// click and wait and log
-	public void clickedSomething(WebElement by, String eleName) {
-		WebElement ele = (new WebDriverWait(driver, Duration.ofSeconds(TIME_OUT_IN_SECONDS)))
-				.until(ExpectedConditions.elementToBeClickable(by));
-		highlighElement(by);
-		ele.click();
-		logger.info("Clicked at : " + eleName);
+	public void clickUsingText(By by, String textValue) {
+		
+		WebElement matchingButton = driver.findElements(by).stream()
+			    .filter(e -> e.getText().contains(textValue))
+			    .findFirst()
+			    .orElse(null);
+
+			if (matchingButton != null) {
+			    matchingButton.click();
+			    logger.info("clicked on   : " + textValue);
+			}
+		
+		
 	}
 
 	public void switchWindowAndNavigateTo(String url) {

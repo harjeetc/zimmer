@@ -245,15 +245,15 @@ public class ZimmerHomePageTest extends BaseTest {
 	/*
 	 * Validate the verifyPrivacyNoticePage is correct
 	 */
-	@Test(groups = { "finddoc", "Smoke", "phase1" }, enabled = true)
+	@Test(groups = { "finddoc", "Smoke", "phaseTest" }, enabled = true)
 	@Description("Verify Find a Doctor Page by clicking link on HomePage")
 	@Story("ZBWR-646")
 	@Link(name = "")
 	public void verifyFindADoctorPage() throws InterruptedException {
 		log.info("============Test started[ verifyFindADoctorPage] =============");
 		ZimmerHomePage zimmerHomePage = new ZimmerHomePage(getDriver()).load();
-		zimmerHomePage.verifyHeaderLinkCSS("Find a Doctor");
-		zimmerHomePage.navigateAndVerifyHeaderLinkTitleCSS("Find a Doctor");
+		zimmerHomePage.verifyHeaderLink("Find a Doctor");
+		zimmerHomePage.navigateAndVerifyHeaderLinkTitle("Find a Doctor");
 		log.info("============Test ended[ verifyFindADoctorPage ] =============");
 
 	}
