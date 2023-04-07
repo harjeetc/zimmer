@@ -248,6 +248,7 @@ public class ZimmerHomePage extends BasePage {
 	@Step("Verify Header Link")
 	public void verifyHeaderLink(String linkName) {
 		try {
+			 ptr.delay(3);
 			ptr.scrollPage(By.xpath(String.format(headerLinks, linkName)));
 
 			Assert.assertEquals(ptr.waitForElement(By.xpath(String.format(headerLinks, linkName))).isDisplayed(), true,
@@ -274,15 +275,7 @@ public class ZimmerHomePage extends BasePage {
 				log.info("Link is displayed : " + linkName);
 			}
 		}
-		try {
-			// ptr.scrollPage(By.xpath(String.format(headerLinks, linkName)));
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		} catch (AssertionError e) {
-			e.printStackTrace();
-			throw e;
-		}
+		
 
 	}
 
@@ -507,7 +500,7 @@ public class ZimmerHomePage extends BasePage {
 
 	public void navigateAndVerifyHeaderLinkTitle(String linkName) throws InterruptedException {
 		try {
-			// ptr.delay(10);
+			ptr.waitForElementToBeClickable(driver, findADoc, 5);
 			ptr.clickUsingText(By.xpath(String.format(headerLinks, linkName)),linkName);
 			log.info("Header is clicked : " + linkName);
 			ptr.waitforTitlepresent(linkName, 20);
