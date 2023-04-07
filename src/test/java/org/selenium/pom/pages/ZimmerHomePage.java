@@ -540,7 +540,7 @@ public class ZimmerHomePage extends BasePage {
 				if (driver.findElements(By.cssSelector(headerLinksCSS)).get(i).getText().trim()
 						.equalsIgnoreCase(linkName)) {
 					log.info("waitingto be clicked : " + linkName);
-					ptr.waitForElementToBeClickable(driver, findADoc, 5);
+				//	ptr.waitForElementToBeClickable(driver, findADoc, 5);
 					ptr.clickedSomething(driver.findElements(By.cssSelector(headerLinksCSS)).get(i), linkName);
 			//		ptr.click(driver.findElements(By.cssSelector(headerLinksCSS)).get(i));
 					log.info("clicked on   : " + linkName);
