@@ -536,13 +536,13 @@ public class ZimmerHomePage extends BasePage {
 		
 		try {
 			log.info("I am in inside the css finddoc issue : " + linkName);
-			for (int i = 0; i < driver.findElements(By.cssSelector(headerLinksCSS)).size(); i++) {
-				if (driver.findElements(By.cssSelector(headerLinksCSS)).get(i).getText().trim()
+			for (int i = 0; i < driver.findElements(By.xpath(headerLinks)).size(); i++) {
+				if (driver.findElements(By.xpath(headerLinks)).get(i).getText().trim()
 						.equalsIgnoreCase(linkName)) {
 					log.info("waitingto be clicked : " + linkName);
 			//		ptr.waitForElementToBeClickable(driver, findADoc, 5);
 					
-					WebElement matchingButton = driver.findElements(By.cssSelector(headerLinksCSS)).stream()
+					WebElement matchingButton = driver.findElements(By.xpath(headerLinks)).stream()
 						    .filter(e -> e.getText().contains(linkName))
 						    .findFirst()
 						    .orElse(null);
