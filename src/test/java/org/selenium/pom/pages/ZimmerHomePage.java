@@ -540,8 +540,17 @@ public class ZimmerHomePage extends BasePage {
 				if (driver.findElements(By.cssSelector(headerLinksCSS)).get(i).getText().trim()
 						.equalsIgnoreCase(linkName)) {
 					log.info("waitingto be clicked : " + linkName);
-				//	ptr.waitForElementToBeClickable(driver, findADoc, 5);
-					ptr.clickedSomething(driver.findElements(By.cssSelector(headerLinksCSS)).get(i), linkName);
+			//		ptr.waitForElementToBeClickable(driver, findADoc, 5);
+					
+					WebElement matchingButton = driver.findElements(By.cssSelector(headerLinksCSS)).stream()
+						    .filter(e -> e.getText().contains(linkName))
+						    .findFirst()
+						    .orElse(null);
+
+						if (matchingButton != null) {
+						    matchingButton.click();
+						}
+			//		ptr.clickedSomething(driver.findElements(By.cssSelector(headerLinksCSS)).get(i), linkName);
 			//		ptr.click(driver.findElements(By.cssSelector(headerLinksCSS)).get(i));
 					log.info("clicked on   : " + linkName);
 
@@ -549,7 +558,7 @@ public class ZimmerHomePage extends BasePage {
 			}
 			// ptr.delay(10);
 			//ptr.click(By.xpath(String.format(headerLinks, linkName)));
-			log.info("Header is clicked : " + linkName);
+		//	log.info("Header is clicked : " + linkName);
 			//ptr.waitforTitlepresent(linkName, 20);
 			//log.info("Title is verifed : " + linkName);
 			
