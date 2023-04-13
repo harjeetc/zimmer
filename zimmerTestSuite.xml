@@ -5,7 +5,7 @@
 
 	<groups>
 		<run>
-			<include name="phaseTest"></include>
+			<include name="phase1"></include>
 		</run>
 	</groups>
 
@@ -24,13 +24,13 @@
 		</classes>
 	</test>
 
-	<!--
+	
 	<test name="CareersPageTests" thread-count="6" parallel="methods">
 		<parameter name="browser" value="CHROME" />
 		<classes>
 			<class name="org.selenium.pom.tests.ZimmerCareersPageTest" />
 		</classes>
 	</test>
-	-->
+	
 
 </suite>
